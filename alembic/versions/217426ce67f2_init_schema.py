@@ -90,7 +90,6 @@ def upgrade() -> None:
         sa.Column('user_request', sa.Text, nullable=False),
         sa.Column('ai_response', sa.Text, nullable=True),
         sa.Column('created_at', sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
-        sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
         sa.Column('deleted_at', sa.DateTime(timezone=True), nullable=True),
     )
     op.create_index('ix_messages_thread_id', 'messages', ['thread_id'])
