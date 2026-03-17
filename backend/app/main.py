@@ -37,12 +37,12 @@ def ensure_bootstrap_admin() -> None:
 
         # No active account exists; create the bootstrap admin.
         user = User(
-                email=settings.admin_email,
-                password_hash=hash_password(settings.admin_password),
-                first_name=settings.admin_first_name,
-                last_name=settings.admin_last_name,
-                role=UserRole.ADMIN,
-            )
+            email=settings.admin_email,
+            password_hash=hash_password(settings.admin_password),
+            first_name=settings.admin_first_name,
+            last_name=settings.admin_last_name,
+            role=UserRole.ADMIN,
+        )
         db.add(user)
         db.commit()
     finally:

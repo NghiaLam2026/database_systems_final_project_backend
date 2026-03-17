@@ -44,6 +44,9 @@ Key features:
     - `deleted_at` (NULL = active; non-NULL = soft-deleted)
   - **Notes**:
     - Application queries treat `deleted_at IS NOT NULL` as deleted and ignore such rows in normal flows.
+    - **Email uniqueness with soft delete**:
+      - Email is unique **only among active users** (`deleted_at IS NULL`).
+      - This allows re-registering/recreating an account with the same email after the previous account is soft-deleted.
 
 - **`builds`**
   - **Columns**:
@@ -244,6 +247,25 @@ The FastAPI backend will be roughly organized into modules such as:
     - A user can access only their own `builds`, `threads`, and `messages`.
     - Admins can access broader user and catalog data.
 
+### 4.3 Bootstrap Admin (RBAC Source-of-Truth)
+
+The first admin user is **not created via the public registration flow**. Instead, it is configured via environment variables and ensured on backend startup.
+
+- **Configuration** (in `.env`):
+  - `ADMIN_EMAIL`
+  - `ADMIN_PASSWORD`
+  - `ADMIN_FIRST_NAME` (optional)
+  - `ADMIN_LAST_NAME` (optional)
+
+- **Startup behavior**:
+  - If `ADMIN_EMAIL` is not set, bootstrap admin logic is skipped.
+  - If `ADMIN_EMAIL` is set but `ADMIN_PASSWORD` is missing, the backend fails fast on startup.
+  - If an **active** user exists with `ADMIN_EMAIL`:
+    - If that user is already an admin, do nothing.
+    - If that user is **not** an admin, fail fast (no privilege escalation).
+  - If no **active** user exists with that email, create a new admin user from the configured credentials.
+    - This is compatible with soft delete email reuse because email uniqueness is enforced only for active users.
+
 ### 4.3 Database Access
 
 - Likely using SQLAlchemy or async PostgreSQL driver.
@@ -272,6 +294,11 @@ The FastAPI backend will be roughly organized into modules such as:
   - Invokes the orchestrator with this message’s `build_id` and recent thread context.
   - Once orchestrator responds, backend updates `ai_response` for that `messages` row.
   - Returns the completed message to the client.
+
+**Current implementation note (CRUD-first phase)**:
+
+- The API currently implements CRUD for builds, threads, messages, and read-only catalog browsing.
+- The AI orchestrator call is intentionally stubbed; `ai_response` is filled with a placeholder until the AI layer is implemented later.
 
 **Pagination & context**:
 
