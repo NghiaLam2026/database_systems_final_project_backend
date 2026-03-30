@@ -13,7 +13,12 @@ class User(Base, TimestampMixin):
     first_name: Mapped[str] = mapped_column(String(100), nullable=False)
     last_name: Mapped[str] = mapped_column(String(100), nullable=False)
     role: Mapped[UserRole] = mapped_column(
-        Enum(UserRole, name="user_role", create_type=False),
+        Enum(
+            UserRole,
+            name="user_role",
+            create_type=False,
+            values_callable=lambda e: [member.value for member in e],
+        ),
         nullable=False,
         default=UserRole.USER,
         server_default="user",
