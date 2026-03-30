@@ -1,9 +1,10 @@
 """RAG document and chunk models."""
 
 from datetime import datetime
-from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text, func
-from sqlalchemy.dialects.postgresql import ARRAY, JSON
+from sqlalchemy import DateTime, ForeignKey, String, Text, func
+from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from pgvector.sqlalchemy import Vector
 from app.db.base import Base
 
 class Document(Base):
@@ -35,8 +36,8 @@ class DocumentChunk(Base):
         index=True,
     )
     chunk_text: Mapped[str] = mapped_column(Text, nullable=False)
-    embedding: Mapped[list[float] | None] = mapped_column(
-        ARRAY(Float),
+    embedding = mapped_column(
+        Vector(),
         nullable=True,
     )
     meta: Mapped[dict | None] = mapped_column("metadata", JSON, nullable=True)

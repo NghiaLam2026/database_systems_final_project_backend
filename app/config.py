@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     """App config. All fields can be overridden via env vars or .env file."""
 
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).resolve().parents[2] / ".env",
+        env_file=Path(__file__).resolve().parents[1] / ".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",

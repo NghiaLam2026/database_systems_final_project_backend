@@ -1,21 +1,28 @@
 """Auth: password hashing and JWT creation."""
 
 from datetime import datetime, timedelta, timezone
-from jose import jwt
-from passlib.context import CryptContext
+
+import bcrypt
+from jose import JWTError, jwt
+
 from app.config import get_settings
 from app.models.user import User
 from app.schemas.auth import TokenPayload
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 settings = get_settings()
 
+# Bcrypt ignores input beyond 72 bytes; keep API/schema limits aligned with that if you raise them.
+
+
 def hash_password(plain: str) -> str:
-    return pwd_context.hash(plain)
+    return bcrypt.hashpw(plain.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
+    try:
+        return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
+    except (ValueError, TypeError):
+        return False
 
 def create_access_token(user: User) -> str:
     now = datetime.now(timezone.utc)

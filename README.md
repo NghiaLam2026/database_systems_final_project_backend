@@ -1,34 +1,28 @@
 # PC Build Assistant – Backend
 
-FastAPI backend for the PC Build Assistant (monorepo). Uses SQLAlchemy + PostgreSQL and JWT auth.
+FastAPI backend for the PC Build Assistant. Uses SQLAlchemy + PostgreSQL and JWT auth.
+
+> The frontend lives in a [separate repository](https://github.com/NghiaLam2026/database_systems_final_project_frontend) and communicates with this API over REST.
 
 ## Setup
 
-1. **Create a virtualenv and install deps** (from repo root or `backend/`):
+1. **Create a virtualenv and install deps** (from repo root):
 
    ```bash
    python -m venv .venv
    .venv\Scripts\activate   # Windows
-   pip install -r backend/requirements.txt
+   pip install -r requirements.txt
    ```
 
-2. **Database**: Create a PostgreSQL database and set `DATABASE_URL` in the project-root `.env` (see `.env.example`). Run migrations from the **project root**:
+2. **Database**: Create a PostgreSQL database and set `DATABASE_URL` in `.env` (see `.env.example`). Run migrations:
 
    ```bash
    alembic upgrade head
    ```
 
-3. **Run the API** (from project root so `app` is importable):
+3. **Run the API** (from repo root):
 
    ```bash
-   uvicorn backend.app.main:app --reload --app-dir .
-   ```
-
-   Or from `backend/`:
-
-   ```bash
-   cd backend
-   set PYTHONPATH=..   # or $env:PYTHONPATH=".." in PowerShell
    uvicorn app.main:app --reload
    ```
 

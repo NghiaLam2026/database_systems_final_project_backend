@@ -5,10 +5,14 @@ uvicorn[standard]>=0.32.0
 # Database
 sqlalchemy>=2.0.0
 psycopg2-binary>=2.9.9
+alembic>=1.13.0
+pgvector>=0.3.0
 
 # Auth
 python-jose[cryptography]>=3.3.0
-passlib[bcrypt]>=1.7.4
+
+# Use bcrypt directly; passlib is unmaintained and breaks bcrypt 4.1+ on import/startup.
+bcrypt>=4.3.0
 
 # Config & validation
 pydantic[email]>=2.0.0
@@ -17,3 +21,5 @@ python-dotenv>=1.0.0
 
 # HTTP
 python-multipart>=0.0.9
+
+# 
