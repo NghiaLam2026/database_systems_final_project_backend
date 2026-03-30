@@ -8,6 +8,7 @@ Create Date: 2026-03-12 23:02:00.194316
 from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import ENUM
 
 # revision identifiers, used by Alembic.
 revision: str = '217426ce67f2'
@@ -19,7 +20,9 @@ def upgrade() -> None:
     """Create initial schema."""
 
     # --- Custom types ---
-    part_type_enum = sa.Enum(
+    # Use postgresql.ENUM (not sa.Enum): create_type=False is honored so we do not
+    # emit CREATE TYPE again inside op.create_table (duplicate without this).
+    part_type_enum = ENUM(
         'cpu',
         'gpu',
         'mobo',
@@ -30,12 +33,14 @@ def upgrade() -> None:
         'case_fans',
         'storage',
         name='part_type',
+        create_type=False,
     )
 
-    role_enum = sa.Enum(
+    role_enum = ENUM(
         'user',
         'admin',
         name='user_role',
+        create_type=False,
     )
 
     # Register enums
