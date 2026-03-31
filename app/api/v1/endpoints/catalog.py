@@ -1,168 +1,126 @@
-"""Read-only catalog: list hardware components (no auth required for browse)."""
+"""Read-only catalog: browse hardware components (no auth required)."""
 
-from decimal import Decimal
-from fastapi import APIRouter, Query
+from enum import Enum
+from typing import Any
+from fastapi import APIRouter, HTTPException, Query, status
+from pydantic import BaseModel
+from sqlalchemy import func
+from sqlalchemy.orm import Session
 from app.api.deps import DbSession
+from app.db.base import Base
 from app.models.component import (
-    Mobo,
-    CPU,
-    Memory,
-    Case,
-    Storage,
-    CPUCooler,
-    PSU,
-    CaseFan,
-    GPU,
+    CPU, GPU, Case, CaseFan, CPUCooler, Memory, Mobo, PSU, Storage,
 )
+from app.schemas.catalog import (
+    CPUOut, GPUOut, CaseOut, CaseFanOut, CPUCoolerOut,
+    MemoryOut, MoboOut, PSUOut, StorageOut,
+)
+from app.schemas.common import Paginated
 
 router = APIRouter()
 
-# Generic list with optional price filter; all component tables have id, name, price (and others).
+class SortOrder(str, Enum):
+    asc = "asc"
+    desc = "desc"
 
-@router.get("/mobo", response_model=list[dict])
-def list_mobo(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    """List motherboards. Optional price filter."""
-    q = db.query(Mobo)
+_CATALOG_REGISTRY: dict[str, dict[str, Any]] = {
+    "cpu":        {"model": CPU,       "schema": CPUOut},
+    "gpu":        {"model": GPU,       "schema": GPUOut},
+    "mobo":       {"model": Mobo,      "schema": MoboOut},
+    "memory":     {"model": Memory,    "schema": MemoryOut},
+    "psu":        {"model": PSU,       "schema": PSUOut},
+    "case":       {"model": Case,      "schema": CaseOut},
+    "cpu_cooler": {"model": CPUCooler, "schema": CPUCoolerOut},
+    "case_fans":  {"model": CaseFan,   "schema": CaseFanOut},
+    "storage":    {"model": Storage,   "schema": StorageOut},
+}
+
+def _list_components(
+    db: Session,
+    model: type[Base],
+    page: int,
+    size: int,
+    min_price: float | None,
+    max_price: float | None,
+    search: str | None,
+    sort_by: str,
+    order: SortOrder,
+) -> dict:
+    q = db.query(model)
+    count_q = db.query(func.count(model.id))
+
     if min_price is not None:
-        q = q.filter(Mobo.price >= min_price)
+        q = q.filter(model.price >= min_price)
+        count_q = count_q.filter(model.price >= min_price)
     if max_price is not None:
-        q = q.filter(Mobo.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+        q = q.filter(model.price <= max_price)
+        count_q = count_q.filter(model.price <= max_price)
 
-@router.get("/cpu", response_model=list[dict])
-def list_cpu(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(CPU)
-    if min_price is not None:
-        q = q.filter(CPU.price >= min_price)
-    if max_price is not None:
-        q = q.filter(CPU.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+    if search and hasattr(model, "name"):
+        pattern = f"%{search}%"
+        q = q.filter(model.name.ilike(pattern))
+        count_q = count_q.filter(model.name.ilike(pattern))
 
-@router.get("/memory", response_model=list[dict])
-def list_memory(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(Memory)
-    if min_price is not None:
-        q = q.filter(Memory.price >= min_price)
-    if max_price is not None:
-        q = q.filter(Memory.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+    valid_columns = {c.name for c in model.__table__.columns}
+    if sort_by not in valid_columns:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid sort_by column '{sort_by}'. Valid columns: {sorted(valid_columns)}",
+        )
+    sort_col = getattr(model, sort_by)
+    q = q.order_by(sort_col.asc() if order == SortOrder.asc else sort_col.desc())
 
-@router.get("/case", response_model=list[dict])
-def list_case(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(Case)
-    if min_price is not None:
-        q = q.filter(Case.price >= min_price)
-    if max_price is not None:
-        q = q.filter(Case.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+    total = count_q.scalar() or 0
+    items = q.offset((page - 1) * size).limit(size).all()
+    pages = (total + size - 1) // size if total else 0
 
-@router.get("/storage", response_model=list[dict])
-def list_storage(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(Storage)
-    if min_price is not None:
-        q = q.filter(Storage.price >= min_price)
-    if max_price is not None:
-        q = q.filter(Storage.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+    return {"items": items, "total": total, "page": page, "size": size, "pages": pages}
 
-@router.get("/cpu_cooler", response_model=list[dict])
-def list_cpu_cooler(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(CPUCooler)
-    if min_price is not None:
-        q = q.filter(CPUCooler.price >= min_price)
-    if max_price is not None:
-        q = q.filter(CPUCooler.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+def _get_component(db: Session, model: type[Base], component_id: int):
+    row = db.query(model).filter(model.id == component_id).first()
+    if not row:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Component not found",
+        )
+    return row
 
-@router.get("/psu", response_model=list[dict])
-def list_psu(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(PSU)
-    if min_price is not None:
-        q = q.filter(PSU.price >= min_price)
-    if max_price is not None:
-        q = q.filter(PSU.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+def _register_routes(
+    key: str,
+    model: type[Base],
+    schema: type[BaseModel],
+) -> None:
+    """Register list + detail routes for a component type."""
 
-@router.get("/case_fans", response_model=list[dict])
-def list_case_fans(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(CaseFan)
-    if min_price is not None:
-        q = q.filter(CaseFan.price >= min_price)
-    if max_price is not None:
-        q = q.filter(CaseFan.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+    @router.get(
+        f"/{key}",
+        response_model=Paginated[schema],
+        summary=f"List {key} components",
+        name=f"list_{key}",
+    )
+    def list_items(
+        db: DbSession,
+        page: int = Query(1, ge=1, description="Page number"),
+        size: int = Query(50, ge=1, le=200, description="Items per page"),
+        min_price: float | None = Query(None, ge=0, description="Minimum price filter"),
+        max_price: float | None = Query(None, ge=0, description="Maximum price filter"),
+        search: str | None = Query(None, min_length=1, max_length=100, description="Search by name"),
+        sort_by: str = Query("price", description="Column to sort by (e.g. price, name)"),
+        order: SortOrder = Query(SortOrder.asc, description="Sort order"),
+    ) -> dict:
+        return _list_components(db, model, page, size, min_price, max_price, search, sort_by, order)
 
-@router.get("/gpu", response_model=list[dict])
-def list_gpu(
-    db: DbSession,
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
-    limit: int = Query(50, ge=1, le=200),
-) -> list[dict]:
-    q = db.query(GPU)
-    if min_price is not None:
-        q = q.filter(GPU.price >= min_price)
-    if max_price is not None:
-        q = q.filter(GPU.price <= max_price)
-    rows = q.limit(limit).all()
-    return [_row_to_dict(r) for r in rows]
+    @router.get(
+        f"/{key}/{{component_id}}",
+        response_model=schema,
+        summary=f"Get {key} by ID",
+        name=f"get_{key}",
+    )
+    def get_item(
+        component_id: int,
+        db: DbSession,
+    ):
+        return _get_component(db, model, component_id)
 
-def _row_to_dict(row) -> dict:
-    """Turn an ORM row into a JSON-serializable dict (Decimal -> float)."""
-    d = {}
-    for c in row.__table__.columns:
-        v = getattr(row, c.name)
-        if hasattr(v, "value"):  # enum
-            v = v.value
-        elif isinstance(v, Decimal):
-            v = float(v)
-        d[c.name] = v
-    return d
+for _key, _conf in _CATALOG_REGISTRY.items():
+    _register_routes(_key, _conf["model"], _conf["schema"])

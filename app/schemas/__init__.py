@@ -5,6 +5,17 @@ from app.schemas.user import UserOut, UserUpdate
 from app.schemas.build import BuildCreate, BuildOut, BuildUpdate, BuildPartCreate, BuildPartOut
 from app.schemas.thread import ThreadCreate, ThreadOut, MessageCreate, MessageOut
 from app.schemas.common import Paginated
+from app.schemas.catalog import (
+    CPUOut,
+    GPUOut,
+    CaseOut,
+    CaseFanOut,
+    CPUCoolerOut,
+    MemoryOut,
+    MoboOut,
+    PSUOut,
+    StorageOut,
+)
 
 __all__ = [
     "Token",
@@ -23,4 +34,13 @@ __all__ = [
     "MessageCreate",
     "MessageOut",
     "Paginated",
+    "CPUOut",
+    "GPUOut",
+    "CaseOut",
+    "CaseFanOut",
+    "CPUCoolerOut",
+    "MemoryOut",
+    "MoboOut",
+    "PSUOut",
+    "StorageOut",
 ]
