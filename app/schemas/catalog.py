@@ -10,7 +10,7 @@ class _ComponentBase(BaseModel):
 
 class MoboOut(_ComponentBase):
     name: str
-    socket: str
+    socket: str | None
     form_factor: str
     memory_max: int | None
     memory_slot: int | None

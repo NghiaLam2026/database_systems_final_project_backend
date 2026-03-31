@@ -157,9 +157,9 @@ CATEGORIES: dict[str, CategoryConfig] = {
         model=Mobo,
         field_map={
             "name":        ("Name", parse_str),
-            "socket":      ("Socket / CPU", parse_str),
+            "socket":      ("Socket", parse_str),
             "form_factor": ("Form Factor", parse_str),
-            "memory_max":  ("Memory Max", parse_int),
+            "memory_max":  ("Memory", parse_int),
             "memory_slot": ("Memory Slots", parse_int),
             "color":       ("Color", parse_str),
             "price":       ("Price", parse_price),

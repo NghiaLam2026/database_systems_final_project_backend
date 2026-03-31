@@ -112,7 +112,7 @@ def upgrade() -> None:
         'mobo',
         sa.Column('id', sa.Integer, primary_key=True),
         sa.Column('name', sa.String(length=255), nullable=False),
-        sa.Column('socket', sa.String(length=50), nullable=False),
+        sa.Column('socket', sa.String(length=50), nullable=True),
         sa.Column('form_factor', sa.String(length=50), nullable=False),
         sa.Column('memory_max', sa.Integer, nullable=True),
         sa.Column('memory_slot', sa.Integer, nullable=True),

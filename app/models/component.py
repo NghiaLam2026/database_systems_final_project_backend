@@ -10,7 +10,7 @@ class Mobo(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
-    socket: Mapped[str] = mapped_column(String(50), nullable=False)
+    socket: Mapped[str | None] = mapped_column(String(50), nullable=True)
     form_factor: Mapped[str] = mapped_column(String(50), nullable=False)
     memory_max: Mapped[int | None] = mapped_column(Integer, nullable=True)
     memory_slot: Mapped[int | None] = mapped_column(Integer, nullable=True)
