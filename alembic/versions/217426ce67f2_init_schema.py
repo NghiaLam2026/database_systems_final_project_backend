@@ -175,7 +175,7 @@ def upgrade() -> None:
         sa.Column('id', sa.Integer, primary_key=True),
         sa.Column('name', sa.String(length=255), nullable=False),
         sa.Column('fan_rpm', sa.Integer, nullable=True),
-        sa.Column('noise_level', sa.Numeric(4, 2), nullable=True),
+        sa.Column('noise_level', sa.Numeric(5, 2), nullable=True),
         sa.Column('color', sa.String(length=50), nullable=True),
         sa.Column('radiator_size', sa.Integer, nullable=True),
         sa.Column('price', sa.Numeric(10, 2), nullable=False),
@@ -196,11 +196,12 @@ def upgrade() -> None:
     op.create_table(
         'case_fans',
         sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('name', sa.String(length=255), nullable=False),
         sa.Column('size', sa.Integer, nullable=False),
         sa.Column('color', sa.String(length=50), nullable=True),
         sa.Column('rpm', sa.Integer, nullable=True),
         sa.Column('airflow', sa.Numeric(6, 2), nullable=True),
-        sa.Column('noise_level', sa.Numeric(4, 2), nullable=True),
+        sa.Column('noise_level', sa.Numeric(5, 2), nullable=True),
         sa.Column('pwm', sa.Boolean, nullable=True),
         sa.Column('price', sa.Numeric(10, 2), nullable=False),
     )

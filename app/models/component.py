@@ -9,7 +9,7 @@ class Mobo(Base):
     __tablename__ = "mobo"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     socket: Mapped[str] = mapped_column(String(50), nullable=False)
     form_factor: Mapped[str] = mapped_column(String(50), nullable=False)
     memory_max: Mapped[int | None] = mapped_column(Integer, nullable=True)
@@ -21,7 +21,7 @@ class CPU(Base):
     __tablename__ = "cpu"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     core_count: Mapped[int] = mapped_column(Integer, nullable=False)
     perf_clock: Mapped[Decimal | None] = mapped_column(Numeric(4, 2), nullable=True)
     boost_clock: Mapped[Decimal | None] = mapped_column(Numeric(4, 2), nullable=True)
@@ -34,7 +34,7 @@ class Memory(Base):
     __tablename__ = "memory"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     speed: Mapped[int] = mapped_column(Integer, nullable=False)
     modules: Mapped[int] = mapped_column(Integer, nullable=False)
     color: Mapped[str | None] = mapped_column(String(50), nullable=True)
@@ -46,7 +46,7 @@ class Case(Base):
     __tablename__ = "case"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     type: Mapped[str] = mapped_column(String(50), nullable=False)
     color: Mapped[str | None] = mapped_column(String(50), nullable=True)
     power_supply: Mapped[str | None] = mapped_column(String(100), nullable=True)
@@ -59,7 +59,7 @@ class Storage(Base):
     __tablename__ = "storage"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     capacity: Mapped[int] = mapped_column(Integer, nullable=False)
     type: Mapped[str] = mapped_column(String(50), nullable=False)
     cache: Mapped[int | None] = mapped_column(Integer, nullable=True)
@@ -71,9 +71,9 @@ class CPUCooler(Base):
     __tablename__ = "cpu_cooler"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     fan_rpm: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    noise_level: Mapped[Decimal | None] = mapped_column(Numeric(4, 2), nullable=True)
+    noise_level: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), nullable=True)
     color: Mapped[str | None] = mapped_column(String(50), nullable=True)
     radiator_size: Mapped[int | None] = mapped_column(Integer, nullable=True)
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
@@ -82,7 +82,7 @@ class PSU(Base):
     __tablename__ = "psu"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     type: Mapped[str] = mapped_column(String(50), nullable=False)
     efficiency: Mapped[str | None] = mapped_column(String(50), nullable=True)
     wattage: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -94,11 +94,12 @@ class CaseFan(Base):
     __tablename__ = "case_fans"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     size: Mapped[int] = mapped_column(Integer, nullable=False)
     color: Mapped[str | None] = mapped_column(String(50), nullable=True)
     rpm: Mapped[int | None] = mapped_column(Integer, nullable=True)
     airflow: Mapped[Decimal | None] = mapped_column(Numeric(6, 2), nullable=True)
-    noise_level: Mapped[Decimal | None] = mapped_column(Numeric(4, 2), nullable=True)
+    noise_level: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), nullable=True)
     pwm: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
 
@@ -106,7 +107,7 @@ class GPU(Base):
     __tablename__ = "gpu"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     chipset: Mapped[str] = mapped_column(String(100), nullable=False)
     memory: Mapped[int] = mapped_column(Integer, nullable=False)
     core_clock: Mapped[Decimal | None] = mapped_column(Numeric(6, 2), nullable=True)

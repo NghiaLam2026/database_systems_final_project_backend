@@ -14,13 +14,32 @@ FastAPI backend for the PC Build Assistant. Uses SQLAlchemy + PostgreSQL and JWT
    pip install -r requirements.txt
    ```
 
-2. **Database**: Create a PostgreSQL database and set `DATABASE_URL` in `.env` (see `.env.example`). Run migrations:
+2. **Database**: Create a PostgreSQL database and set `DATABASE_URL` in `.env` (see `.env.example`).
+
+3. **Run migrations**:
 
    ```bash
    alembic upgrade head
    ```
 
-3. **Run the API** (from repo root):
+   To reset the DB and re-run from scratch:
+
+   ```bash
+   alembic downgrade base
+   alembic upgrade head
+   ```
+
+4. **Seed the catalog** (optional): Place CSV files in `data/` and run:
+
+   ```bash
+   python -m scripts.seed_catalog              # all categories
+   python -m scripts.seed_catalog cpu gpu       # specific categories
+   python -m scripts.seed_catalog --dry-run     # preview without writing
+   ```
+
+   Supported categories: `cpu`, `gpu`, `mobo`, `memory`, `psu`, `case`, `cpu_cooler`, `case_fans`, `storage`. Each expects a corresponding CSV in `data/` (e.g. `cpu_data.csv`). Rows without a name or price are skipped. Re-running upserts by name.
+
+5. **Run the API** (from repo root):
 
    ```bash
    uvicorn app.main:app --reload

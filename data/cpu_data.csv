@@ -1,0 +1,56 @@
+Name,Core Count,Performance Core Clock,Performance Core Boost Clock,Microarchitecture,TDP,Integrated Graphics,Price
+AMD Ryzen 7 9800X3D,8,4.7 GHz,5.2 GHz,Zen 5,120 W,Radeon,$419.95
+AMD Ryzen 7 7800X3D,8,4.2 GHz,5 GHz,Zen 4,120 W,Radeon,$384.00
+AMD Ryzen 5 9600X,6,3.9 GHz,5.4 GHz,Zen 5,65 W,Radeon,$175.00
+AMD Ryzen 5 5500,6,3.6 GHz,4.2 GHz,Zen 3,65 W,None,$83.00
+AMD Ryzen 9 9950X3D,16,4.3 GHz,5.7 GHz,Zen 5,170 W,Radeon,$675.49
+AMD Ryzen 5 7600X,6,4.7 GHz,5.3 GHz,Zen 4,105 W,Radeon,$176.50
+AMD Ryzen 7 7700X,8,4.5 GHz,5.4 GHz,Zen 4,105 W,Radeon,$249.33
+AMD Ryzen 5 5600,6,3.5 GHz,4.4 GHz,Zen 3,65 W,None,$148.00
+AMD Ryzen 5 5600X,6,3.7 GHz,4.6 GHz,Zen 3,65 W,None,$170.99
+AMD Ryzen 7 9700X,8,3.8 GHz,5.5 GHz,Zen 5,65 W,Radeon,$264.99
+AMD Ryzen 7 9850X3D,8,4.7 GHz,5.6 GHz,Zen 5,120 W,Radeon,$499.00
+AMD Ryzen 7 5800X,8,3.8 GHz,4.7 GHz,Zen 3,105 W,None,$229.99
+Intel Core i7-14700K,20,3.4 GHz,5.6 GHz,Raptor Lake Refresh,125 W,Intel UHD Graphics 770,$339.79
+AMD Ryzen 7 5700X,8,3.4 GHz,4.6 GHz,Zen 3,65 W,None,$205.00
+Intel Core i5-12400F,6,2.5 GHz,4.4 GHz,Alder Lake,65 W,None,$149.00
+AMD Ryzen 7 5800XT,8,3.8 GHz,4.8 GHz,Zen 3,105 W,None,$221.95
+AMD Ryzen 9 9900X,12,4.4 GHz,5.6 GHz,Zen 5,120 W,Radeon,$314.99
+AMD Ryzen 5 3600,6,3.6 GHz,4.2 GHz,Zen 2,65 W,None,$132.99
+Intel Core Ultra 7 265K,20,3.9 GHz,5.5 GHz,Arrow Lake,125 W,Intel Xe,$282.00
+Intel Core i9-14900K,24,3.2 GHz,6 GHz,Raptor Lake Refresh,125 W,Intel UHD Graphics 770,$458.95
+AMD Ryzen 5 7500F,6,3.7 GHz,5 GHz,Zen 4,65 W,None,$157.95
+AMD Threadripper 3990X,64,2.9 GHz,4.3 GHz,Zen 2,280 W,None,$2700.00
+Intel Core Ultra 9 285K,24,3.7 GHz,5.7 GHz,Arrow Lake,125 W,Intel Xe,$529.77
+AMD Ryzen 5 7600,6,3.8 GHz,5.1 GHz,Zen 4,65 W,Radeon,$203.54
+AMD Ryzen 7 5800X3D,8,3.4 GHz,4.5 GHz,Zen 3,105 W,None,$199.97
+AMD Ryzen 9 7900X,12,4.7 GHz,5.6 GHz,Zen 4,170 W,Radeon,$267.99
+Intel Core i5-12600KF,10,3.7 GHz,4.9 GHz,Alder Lake,125 W,None,$159.99
+AMD Ryzen 9 9950X,16,4.3 GHz,5.7 GHz,Zen 5,170 W,Radeon,$515.00
+AMD Ryzen 9 5950X,16,3.4 GHz,4.9 GHz,Zen 3,105 W,None,$349.00
+Intel Core i5-14400F,10,2.5 GHz,4.7 GHz,Raptor Lake Refresh,65 W,None,$229.98
+AMD Ryzen 5 5600G,6,3.9 GHz,4.4 GHz,Zen 3,65 W,Radeon Vega 7,$179.99
+Intel Core i7-12700KF,12,3.6 GHz,5 GHz,Alder Lake,125 W,None,$258.95
+AMD Ryzen 5 8500G,6,4.1 GHz,5 GHz,Zen 4,65 W,Radeon 740M,$159.00
+Intel Core i5-12600K,10,3.7 GHz,4.9 GHz,Alder Lake,125 W,Intel UHD Graphics 770,$185.44
+AMD Ryzen 7 5700G,8,3.8 GHz,4.6 GHz,Zen 3,65 W,Radeon Vega 8,$198.01
+AMD Ryzen 5 7600X3D,6,4.1 GHz,4.7 GHz,Zen 4,65 W,Radeon,
+AMD Ryzen 3 3200G,4,3.6 GHz,4 GHz,Zen+,65 W,Radeon Vega 8,$79.98
+AMD Ryzen 7 3700X,8,3.6 GHz,4.4 GHz,Zen 2,65 W,None,$297.50
+AMD Ryzen 7 5700X3D,8,3 GHz,4.1 GHz,Zen 3,105 W,None,
+Intel Core i5-14600KF,14,3.5 GHz,5.3 GHz,Raptor Lake Refresh,125 W,None,$239.99
+AMD Ryzen 9 9900X3D,12,4.4 GHz,5.5 GHz,Zen 5,120 W,Radeon,$449.99
+AMD Ryzen 9 5900X,12,3.7 GHz,4.8 GHz,Zen 3,105 W,None,
+Intel Core i3-12100F,4,3.3 GHz,4.3 GHz,Alder Lake,58 W,None,$90.06
+Intel Core i5-14600K,14,3.5 GHz,5.3 GHz,Raptor Lake Refresh,125 W,Intel UHD Graphics 770,$239.99
+Intel Core Ultra 5 245K,14,4.2 GHz,5.2 GHz,Arrow Lake,125 W,Intel Xe,$202.59
+Intel Core i7-12700K,12,3.6 GHz,5 GHz,Alder Lake,125 W,Intel UHD Graphics 770,$279.68
+AMD Ryzen 7 5700,8,3.7 GHz,4.6 GHz,Zen 3,65 W,None,$170.00
+Intel Core Ultra 5 225F,10,3.3 GHz,4.9 GHz,Arrow Lake,65 W,None,$142.99
+AMD Ryzen 5 5600GT,6,3.6 GHz,4.6 GHz,Zen 3,65 W,Radeon Vega 7,$159.00
+AMD Ryzen 7 7800X3D,8,4.2 GHz,5 GHz,Zen 4,120 W,Radeon,
+Intel Core i9-12900K,16,3.2 GHz,5.2 GHz,Alder Lake,125 W,Intel UHD Graphics 770,$339.95
+AMD Ryzen 5 5600XT,6,3.7 GHz,4.7 GHz,Zen 3,65 W,None,$179.00
+AMD Ryzen 7 7700,8,3.6 GHz,5.3 GHz,Zen 4,65 W,Radeon,$329.99
+Intel Core i7-14700KF,20,3.4 GHz,5.6 GHz,Raptor Lake Refresh,125 W,None,$349.97
+AMD Ryzen 9 5900XT,16,3.3 GHz,4.8 GHz,Zen 3,105 W,None,$309.95
