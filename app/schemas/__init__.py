@@ -2,7 +2,17 @@
 
 from app.schemas.auth import Token, TokenPayload, UserCreate, UserLogin
 from app.schemas.user import UserOut, UserUpdate
-from app.schemas.build import BuildCreate, BuildOut, BuildUpdate, BuildPartCreate, BuildPartOut
+from app.schemas.build import (
+    BuildCreate,
+    BuildDetailOut,
+    BuildSummaryOut,
+    BuildUpdate,
+    BuildPartCreate,
+    BuildPartDetailOut,
+    BuildPartUpdate,
+    ComponentSummary,
+    PartTypeInfo,
+)
 from app.schemas.thread import ThreadCreate, ThreadOut, MessageCreate, MessageOut
 from app.schemas.common import Paginated
 from app.schemas.catalog import (
@@ -25,10 +35,14 @@ __all__ = [
     "UserOut",
     "UserUpdate",
     "BuildCreate",
-    "BuildOut",
+    "BuildDetailOut",
+    "BuildSummaryOut",
     "BuildUpdate",
     "BuildPartCreate",
-    "BuildPartOut",
+    "BuildPartDetailOut",
+    "BuildPartUpdate",
+    "ComponentSummary",
+    "PartTypeInfo",
     "ThreadCreate",
     "ThreadOut",
     "MessageCreate",

@@ -35,7 +35,8 @@ class BuildPart(Base, TimestampMixin):
         index=True,
     )
     part_type: Mapped[PartType] = mapped_column(
-        Enum(PartType, name="part_type", create_type=False),
+        Enum(PartType, name="part_type", create_type=False,
+             values_callable=lambda pt: [e.value for e in pt]),
         nullable=False,
     )
     part_id: Mapped[int] = mapped_column(Integer, nullable=False)

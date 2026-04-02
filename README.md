@@ -137,7 +137,7 @@ alembic upgrade head
 
 - **Docs**: http://localhost:8000/docs
 - **Auth**: `POST /api/v1/auth/register`, `POST /api/v1/auth/login`, `GET /api/v1/auth/me`
-- **Builds**: `GET/POST /api/v1/builds`, `GET/PATCH/DELETE /api/v1/builds/{id}`, `GET/POST/DELETE /api/v1/builds/{id}/parts`
+- **Builds**: `GET/POST /api/v1/builds`, `GET/PATCH/DELETE /api/v1/builds/{id}`, `POST /api/v1/builds/{id}/clone`, `GET/POST /api/v1/builds/{id}/parts`, `PATCH/DELETE /api/v1/builds/{id}/parts/{part_id}`, `GET /api/v1/builds/part-types`
 - **Threads**: `GET/POST /api/v1/threads`, `GET/DELETE /api/v1/threads/{id}`
 - **Messages**: `POST /api/v1/threads/{id}/messages`, `GET /api/v1/threads/{id}/messages`
 - **Catalog**: `GET /api/v1/catalog/{mobo|cpu|memory|case|storage|cpu_cooler|psu|case_fans|gpu}` (optional `min_price`, `max_price`, `limit`)
