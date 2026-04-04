@@ -90,6 +90,14 @@ def parse_bool(value: str) -> bool | None:
         return False
     return None
 
+def parse_module_count(value: str) -> int | None:
+    """Parse module strings like '2 x 16GB' → 2 (the count before 'x')."""
+    if not value or value.strip().upper() in ("", "NONE", "N/A"):
+        return None
+    match = re.match(r"(\d+)\s*x\s*", value.strip())
+    if match:
+        return int(match.group(1))
+    return parse_int(value)
 
 # ---------------------------------------------------------------------------
 # Category configurations
@@ -128,10 +136,10 @@ CATEGORIES: dict[str, CategoryConfig] = {
         field_map={
             "name":       ("Name", parse_str),
             "core_count": ("Core Count", parse_int),
-            "perf_clock":  ("Performance Core Clock", parse_decimal),
-            "boost_clock": ("Performance Core Boost Clock", parse_decimal),
+            "perf_clock":  ("Performance Core Clock", parse_str),
+            "boost_clock": ("Performance Core Boost Clock", parse_str),
             "microarch":   ("Microarchitecture", parse_str),
-            "tdp":         ("TDP", parse_int),
+            "tdp":         ("TDP", parse_str),
             "graphics":    ("Integrated Graphics", parse_str),
             "price":       ("Price", parse_price),
         },
@@ -143,11 +151,11 @@ CATEGORIES: dict[str, CategoryConfig] = {
         field_map={
             "name":       ("Name", parse_str),
             "chipset":    ("Chipset", parse_str),
-            "memory":     ("Memory", parse_int),
-            "core_clock": ("Core Clock", parse_decimal),
-            "boost_clock": ("Boost Clock", parse_decimal),
+            "memory":     ("Memory", parse_str),
+            "core_clock": ("Core Clock", parse_str),
+            "boost_clock": ("Boost Clock", parse_str),
             "color":      ("Color", parse_str),
-            "length":     ("Length", parse_decimal),
+            "length":     ("Length", parse_str),
             "price":      ("Price", parse_price),
         },
     ),
@@ -159,7 +167,7 @@ CATEGORIES: dict[str, CategoryConfig] = {
             "name":        ("Name", parse_str),
             "socket":      ("Socket", parse_str),
             "form_factor": ("Form Factor", parse_str),
-            "memory_max":  ("Memory", parse_int),
+            "memory_max":  ("Memory", parse_str),
             "memory_slot": ("Memory Slots", parse_int),
             "color":       ("Color", parse_str),
             "price":       ("Price", parse_price),
@@ -171,10 +179,10 @@ CATEGORIES: dict[str, CategoryConfig] = {
         model=Memory,
         field_map={
             "name":              ("Name", parse_str),
-            "speed":             ("Speed", parse_int),
-            "modules":           ("Modules", parse_int),
+            "speed":             ("Speed", parse_str),
+            "modules":           ("Modules", parse_str),
             "color":             ("Color", parse_str),
-            "first_word_latency": ("First Word Latency", parse_decimal),
+            "first_word_latency": ("First Word Latency", parse_str),
             "cas_latency":       ("CAS Latency", parse_decimal),
             "price":             ("Price", parse_price),
         },
@@ -187,7 +195,7 @@ CATEGORIES: dict[str, CategoryConfig] = {
             "name":       ("Name", parse_str),
             "type":       ("Type", parse_str),
             "efficiency": ("Efficiency Rating", parse_str),
-            "wattage":    ("Wattage", parse_int),
+            "wattage":    ("Wattage", parse_str),
             "modular":    ("Modular", parse_bool),
             "color":      ("Color", parse_str),
             "price":      ("Price", parse_price),
@@ -203,8 +211,8 @@ CATEGORIES: dict[str, CategoryConfig] = {
             "color":        ("Color", parse_str),
             "power_supply": ("Power Supply", parse_str),
             "side_panel":   ("Side Panel", parse_str),
-            "volume":       ("Volume", parse_decimal),
-            "bays":         ("External 5.25\" Bays", parse_int),
+            "volume":       ("External Volume", parse_str),
+            "bays":         ("Internal 3.5\" Bays", parse_int),
             "price":        ("Price", parse_price),
         },
     ),
@@ -214,10 +222,10 @@ CATEGORIES: dict[str, CategoryConfig] = {
         model=CPUCooler,
         field_map={
             "name":          ("Name", parse_str),
-            "fan_rpm":       ("Fan RPM", parse_int),
-            "noise_level":   ("Noise Level", parse_decimal),
+            "fan_rpm":       ("Fan RPM", parse_str),
+            "noise_level":   ("Noise Level", parse_str),
             "color":         ("Color", parse_str),
-            "radiator_size": ("Radiator Size", parse_int),
+            "radiator_size": ("Radiator Size", parse_str),
             "price":         ("Price", parse_price),
         },
     ),
@@ -227,9 +235,9 @@ CATEGORIES: dict[str, CategoryConfig] = {
         model=Storage,
         field_map={
             "name":        ("Name", parse_str),
-            "capacity":    ("Capacity", parse_int),
+            "capacity":    ("Capacity", parse_str),
             "type":        ("Type", parse_str),
-            "cache":       ("Cache", parse_int),
+            "cache":       ("Cache", parse_str),
             "form_factor": ("Form Factor", parse_str),
             "interface":   ("Interface", parse_str),
             "price":       ("Price", parse_price),
@@ -241,17 +249,16 @@ CATEGORIES: dict[str, CategoryConfig] = {
         model=CaseFan,
         field_map={
             "name":        ("Name", parse_str),
-            "size":        ("Size", parse_int),
+            "size":        ("Size", parse_str),
             "color":       ("Color", parse_str),
-            "rpm":         ("RPM", parse_int),
-            "airflow":     ("Airflow", parse_decimal),
-            "noise_level": ("Noise Level", parse_decimal),
+            "rpm":         ("RPM", parse_str),
+            "airflow":     ("Airflow", parse_str),
+            "noise_level": ("Noise Level", parse_str),
             "pwm":         ("PWM", parse_bool),
             "price":       ("Price", parse_price),
         },
     ),
 }
-
 
 # ---------------------------------------------------------------------------
 # Seeding logic
@@ -305,7 +312,6 @@ def seed_category(engine: sa.Engine, config: CategoryConfig, dry_run: bool = Fal
     rows_processed = len(batch)
     print(f"  [done] {rows_processed} rows upserted, {rows_skipped} skipped (no price/name)")
     return rows_processed
-
 
 def main():
     parser = argparse.ArgumentParser(description="Seed catalog tables from CSV files.")

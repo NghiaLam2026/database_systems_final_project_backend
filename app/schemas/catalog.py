@@ -12,25 +12,25 @@ class MoboOut(_ComponentBase):
     name: str
     socket: str | None
     form_factor: str
-    memory_max: int | None
+    memory_max: str | None
     memory_slot: int | None
     color: str | None
 
 class CPUOut(_ComponentBase):
     name: str
     core_count: int
-    perf_clock: Decimal | None
-    boost_clock: Decimal | None
+    perf_clock: str | None
+    boost_clock: str | None
     microarch: str | None
-    tdp: int | None
+    tdp: str | None
     graphics: str | None
 
 class MemoryOut(_ComponentBase):
     name: str
-    speed: int
-    modules: int
+    speed: str
+    modules: str
     color: str | None
-    first_word_latency: Decimal | None
+    first_word_latency: str | None
     cas_latency: Decimal | None
 
 class CaseOut(_ComponentBase):
@@ -39,46 +39,49 @@ class CaseOut(_ComponentBase):
     color: str | None
     power_supply: str | None
     side_panel: str | None
-    volume: Decimal | None
+    volume: str | None
     bays: int | None
 
 class StorageOut(_ComponentBase):
     name: str
-    capacity: int
+    capacity: str
     type: str
-    cache: int | None
+    cache: str | None
     form_factor: str
     interface: str
 
 class CPUCoolerOut(_ComponentBase):
     name: str
-    fan_rpm: int | None
-    noise_level: Decimal | None
+    fan_rpm: str | None
+    noise_level: str | None
     color: str | None
-    radiator_size: int | None
+    radiator_size: str | None
+
 
 class PSUOut(_ComponentBase):
     name: str
     type: str
     efficiency: str | None
-    wattage: int
+    wattage: str
     modular: bool | None
     color: str | None
 
+
 class CaseFanOut(_ComponentBase):
     name: str
-    size: int
+    size: str
     color: str | None
-    rpm: int | None
-    airflow: Decimal | None
-    noise_level: Decimal | None
+    rpm: str | None
+    airflow: str | None
+    noise_level: str | None
     pwm: bool | None
+
 
 class GPUOut(_ComponentBase):
     name: str
     chipset: str
-    memory: int
-    core_clock: Decimal | None
-    boost_clock: Decimal | None
+    memory: str
+    core_clock: str | None
+    boost_clock: str | None
     color: str | None
-    length: Decimal | None
+    length: str | None

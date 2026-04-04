@@ -43,6 +43,14 @@ FastAPI backend for the PC Build Assistant. Uses SQLAlchemy + PostgreSQL and JWT
 
    Supported categories: `cpu`, `gpu`, `mobo`, `memory`, `psu`, `case`, `cpu_cooler`, `case_fans`, `storage`. Each expects a corresponding CSV in `data/` (e.g. `cpu_data.csv`). Rows without a name or price are skipped. Re-running upserts by name.
 
+   To **erase** catalog data:
+
+   ```bash
+   python -m scripts.reset_catalog              # wipe all catalog tables
+   python -m scripts.reset_catalog cpu gpu       # wipe specific tables
+   python -m scripts.reset_catalog --dry-run     # preview without deleting
+   ```
+
 5. **Run the API** (from repo root):
 
    ```bash
