@@ -51,8 +51,8 @@ class Case(Base):
     color: Mapped[str | None] = mapped_column(String(50), nullable=True)
     power_supply: Mapped[str | None] = mapped_column(String(100), nullable=True)
     side_panel: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    volume: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    bays: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    external_volume: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    internal_bays: Mapped[int | None] = mapped_column(Integer, nullable=True)
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
 
 class Storage(Base):
@@ -84,7 +84,7 @@ class PSU(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     type: Mapped[str] = mapped_column(String(50), nullable=False)
-    efficiency: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    efficiency_rating: Mapped[str | None] = mapped_column(String(50), nullable=True)
     wattage: Mapped[str] = mapped_column(String(100), nullable=False)
     modular: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     color: Mapped[str | None] = mapped_column(String(50), nullable=True)

@@ -39,8 +39,8 @@ class CaseOut(_ComponentBase):
     color: str | None
     power_supply: str | None
     side_panel: str | None
-    volume: str | None
-    bays: int | None
+    external_volume: str | None
+    internal_bays: int | None
 
 class StorageOut(_ComponentBase):
     name: str
@@ -61,7 +61,7 @@ class CPUCoolerOut(_ComponentBase):
 class PSUOut(_ComponentBase):
     name: str
     type: str
-    efficiency: str | None
+    efficiency_rating: str | None
     wattage: str
     modular: bool | None
     color: str | None
