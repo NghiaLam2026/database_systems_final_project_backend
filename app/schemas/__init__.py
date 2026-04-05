@@ -13,7 +13,14 @@ from app.schemas.build import (
     ComponentSummary,
     PartTypeInfo,
 )
-from app.schemas.thread import ThreadCreate, ThreadOut, MessageCreate, MessageOut
+from app.schemas.thread import (
+    ThreadCreate,
+    ThreadListItemOut,
+    ThreadOut,
+    ThreadUpdate,
+    MessageCreate,
+    MessageOut,
+)
 from app.schemas.common import Paginated
 from app.schemas.catalog import (
     CPUOut,
@@ -44,7 +51,9 @@ __all__ = [
     "ComponentSummary",
     "PartTypeInfo",
     "ThreadCreate",
+    "ThreadListItemOut",
     "ThreadOut",
+    "ThreadUpdate",
     "MessageCreate",
     "MessageOut",
     "Paginated",
