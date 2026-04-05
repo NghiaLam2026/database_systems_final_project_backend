@@ -1,10 +1,11 @@
-"""Gemini-backed chat replies (orchestrator entrypoint until multi-agent routing is added)."""
+"""Gemini-backed chat replies via the official google-genai SDK (Gemini Developer API)."""
 
 from __future__ import annotations
-import google.generativeai as genai
 import logging
 from decimal import Decimal
 from typing import TYPE_CHECKING
+from google import genai
+from google.genai import types
 from app.models.build import Build
 from app.models.thread import Message
 from app.services.build import PART_TYPE_LABELS, get_build_detail
@@ -38,9 +39,9 @@ def _format_build_for_prompt(db: "Session", build: Build) -> str:
         price = comp.get("price")
         if price is not None:
             line_total = Decimal(str(price)) * qty
-            lines.append(f" - {label}: {name} x{qty} (${line_total:.2f})")
+            lines.append(f"  - {label}: {name} x{qty} (${line_total:.2f})")
         else:
-            lines.append(f" - {label}: {name} x{qty}")
+            lines.append(f"  - {label}: {name} x{qty}")
     return "\n".join(lines)
 
 def _prior_turns_block(db: "Session", *, thread_id: int, before_message_id: int) -> str:
@@ -67,23 +68,26 @@ def _prior_turns_block(db: "Session", *, thread_id: int, before_message_id: int)
             chunks.append("Assistant: (no reply recorded)")
     return "\n\n".join(chunks)
 
-def _extract_text_from_response(response) -> str:
+def _extract_text_from_response(response: types.GenerateContentResponse) -> str:
     try:
         text = (response.text or "").strip()
         if text:
             return text
-    except ValueError:
-        logger.warning("Gemini response had no text attribute (blocked or empty candidates)")
+    except Exception:
+        logger.warning("Gemini response had no usable .text (blocked or empty)")
 
-    if getattr(response, "candidates", None):
-        parts: list[str] = []
-        for c in response.candidates:
-            if getattr(c, "content", None) and getattr(c.content, "parts", None):
-                for p in c.content.parts:
-                    if getattr(p, "text", None):
-                        parts.append(p.text)
-        if parts:
-            return "\n".join(parts).strip()
+    candidates = getattr(response, "candidates", None) or []
+    parts: list[str] = []
+    for c in candidates:
+        content = getattr(c, "content", None)
+        if not content or not getattr(content, "parts", None):
+            continue
+        for p in content.parts:
+            t = getattr(p, "text", None)
+            if t:
+                parts.append(t)
+    if parts:
+        return "\n".join(parts).strip()
     return (
         "The assistant could not produce a reply for this request "
         "(safety filters, empty response, or model error). Try rephrasing."
@@ -98,7 +102,7 @@ def generate_chat_reply(
     user_request: str,
 ) -> str:
     """
-    Produce the assistant reply for this message using Gemini.
+    Produce the assistant reply for this message using Gemini (google-genai).
 
     If GEMINI_API_KEY is unset, returns a short notice instead of calling the API.
     """
@@ -119,28 +123,32 @@ def generate_chat_reply(
             build_section = "The user attached a build, but it could not be loaded."
 
     history = _prior_turns_block(db, thread_id=thread_id, before_message_id=message.id)
-    user_blob = f"""## Conversation so far (thread) {history} ## Current user message {user_request} """
+    user_blob = f"""## Conversation so far (thread)
+{history}
+
+## Current user message
+{user_request}
+"""
 
     if build_section:
         user_blob = f"{build_section}\n\n---\n\n{user_blob}"
 
-    genai.configure(api_key=settings.gemini_api_key)
-    model = genai.GenerativeModel(
-        settings.gemini_model,
+    config = types.GenerateContentConfig(
         system_instruction=_SYSTEM_INSTRUCTION,
+        max_output_tokens=8192,
+        temperature=0.7,
     )
 
     try:
-        response = model.generate_content(
-            user_blob,
-            generation_config=genai.types.GenerationConfig(
-                max_output_tokens=8192,
-                temperature=0.7,
-            ),
-        )
+        with genai.Client(api_key=settings.gemini_api_key) as client:
+            response = client.models.generate_content(
+                model=settings.gemini_model,
+                contents=user_blob,
+                config=config,
+            )
         return _extract_text_from_response(response)
     except Exception:
-        logger.exception("Gemini generate_content failed")
+        logger.exception("Gemini generate_content failed (google-genai)")
         return (
             "The assistant hit an error while generating a reply. Please try again in a moment."
         )

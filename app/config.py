@@ -42,9 +42,9 @@ class Settings(BaseSettings):
     # Google Gemini (chat orchestrator)
     gemini_api_key: str | None = Field(default=None, alias="GEMINI_API_KEY")
     gemini_model: str = Field(
-        default="gemini-3-flash-preview",
+        default="gemini-2.5-flash",
         alias="GEMINI_MODEL",
-        description="Model id passed to google-generativeai (e.g. gemini-2.0-flash, gemini-1.5-flash).",
+        description="Gemini model id for google-genai client.models.generate_content.",
     )
 
 @lru_cache
