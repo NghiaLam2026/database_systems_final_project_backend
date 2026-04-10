@@ -22,5 +22,7 @@ python-dotenv>=1.0.0
 # HTTP
 python-multipart>=0.0.9
 
-# AI (Gemini — official google-genai SDK; see https://googleapis.github.io/python-genai/)
+# AI — Pydantic AI orchestrator (Gemini via GoogleModel; uses google-genai)
+# https://ai.pydantic.dev/ | https://ai.pydantic.dev/models/google/
+pydantic-ai>=1.0.0
 google-genai>=1.0.0

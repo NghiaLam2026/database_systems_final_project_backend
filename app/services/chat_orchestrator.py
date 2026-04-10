@@ -1,17 +1,25 @@
-"""Gemini-backed chat replies via the official google-genai SDK (Gemini Developer API)."""
+"""PC build assistant orchestrator using Pydantic AI + Google Gemini.
+
+Uses `GoogleModel` / `GoogleProvider` (Gemini Developer API via `google-genai` under the hood).
+See: https://ai.pydantic.dev/models/google/
+
+SQL/RAG tools can be added later as `@agent.tool` hooks or sub-agents.
+"""
 
 from __future__ import annotations
 import logging
 from decimal import Decimal
 from typing import TYPE_CHECKING
-from google import genai
-from google.genai import types
+from pydantic_ai import Agent
+from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
+from pydantic_ai.providers.google import GoogleProvider
 from app.models.build import Build
 from app.models.thread import Message
 from app.services.build import PART_TYPE_LABELS, get_build_detail
 
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
+
     from app.config import Settings
 
 logger = logging.getLogger(__name__)
@@ -68,29 +76,15 @@ def _prior_turns_block(db: "Session", *, thread_id: int, before_message_id: int)
             chunks.append("Assistant: (no reply recorded)")
     return "\n\n".join(chunks)
 
-def _extract_text_from_response(response: types.GenerateContentResponse) -> str:
-    try:
-        text = (response.text or "").strip()
-        if text:
-            return text
-    except Exception:
-        logger.warning("Gemini response had no usable .text (blocked or empty)")
-
-    candidates = getattr(response, "candidates", None) or []
-    parts: list[str] = []
-    for c in candidates:
-        content = getattr(c, "content", None)
-        if not content or not getattr(content, "parts", None):
-            continue
-        for p in content.parts:
-            t = getattr(p, "text", None)
-            if t:
-                parts.append(t)
-    if parts:
-        return "\n".join(parts).strip()
-    return (
-        "The assistant could not produce a reply for this request "
-        "(safety filters, empty response, or model error). Try rephrasing."
+def _build_agent(settings: "Settings") -> Agent[None, str]:
+    """Single-turn agent (no tools yet). New instance per request keeps API key / model changes simple."""
+    provider = GoogleProvider(api_key=settings.gemini_api_key)
+    model = GoogleModel(settings.gemini_model, provider=provider)
+    model_settings = GoogleModelSettings(temperature=0.7, max_tokens=8192)
+    return Agent(
+        model,
+        instructions=_SYSTEM_INSTRUCTION,
+        model_settings=model_settings,
     )
 
 def generate_chat_reply(
@@ -102,7 +96,7 @@ def generate_chat_reply(
     user_request: str,
 ) -> str:
     """
-    Produce the assistant reply for this message using Gemini (google-genai).
+    Produce the assistant reply for this message using Pydantic AI + Gemini.
 
     If GEMINI_API_KEY is unset, returns a short notice instead of calling the API.
     """
@@ -133,22 +127,17 @@ def generate_chat_reply(
     if build_section:
         user_blob = f"{build_section}\n\n---\n\n{user_blob}"
 
-    config = types.GenerateContentConfig(
-        system_instruction=_SYSTEM_INSTRUCTION,
-        max_output_tokens=8192,
-        temperature=0.7,
-    )
-
     try:
-        with genai.Client(api_key=settings.gemini_api_key) as client:
-            response = client.models.generate_content(
-                model=settings.gemini_model,
-                contents=user_blob,
-                config=config,
-            )
-        return _extract_text_from_response(response)
+        agent = _build_agent(settings)
+        result = agent.run_sync(user_blob)
+        out = (result.output or "").strip()
+        if out:
+            return out
+        return (
+            "The assistant returned an empty reply. Try rephrasing or shortening your message."
+        )
     except Exception:
-        logger.exception("Gemini generate_content failed (google-genai)")
+        logger.exception("Pydantic AI / Gemini run failed")
         return (
             "The assistant hit an error while generating a reply. Please try again in a moment."
         )
