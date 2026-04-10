@@ -8,6 +8,11 @@ from app.models.build import Build
 from app.models.thread import Message
 from app.schemas.common import Paginated
 from app.schemas.thread import MessageCreate, MessageOut
+from app.services.chat_guardrails import (
+    GUARDRAIL_ASSISTANT_REPLY,
+    log_guardrail_block,
+    scan_user_message,
+)
 from app.services.chat_orchestrator import generate_chat_reply
 from app.services.thread_service import get_active_thread_for_user, touch_thread_updated_at
 
@@ -45,6 +50,22 @@ def send_message(
                 detail="Invalid build_id: build not found or not owned by you",
             )
 
+    settings = get_settings()
+    block_reason = scan_user_message(payload.user_request, settings)
+    if block_reason is not None:
+        log_guardrail_block(block_reason)
+        msg = Message(
+            thread_id=thread_id,
+            build_id=payload.build_id,
+            user_request=payload.user_request,
+            ai_response=GUARDRAIL_ASSISTANT_REPLY,
+        )
+        db.add(msg)
+        touch_thread_updated_at(thread)
+        db.commit()
+        db.refresh(msg)
+        return msg
+
     msg = Message(
         thread_id=thread_id,
         build_id=payload.build_id,
@@ -56,7 +77,6 @@ def send_message(
     db.commit()
     db.refresh(msg)
 
-    settings = get_settings()
     msg.ai_response = generate_chat_reply(
         db,
         settings,

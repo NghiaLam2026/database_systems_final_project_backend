@@ -47,6 +47,21 @@ class Settings(BaseSettings):
         description="Gemini model id for Pydantic AI GoogleModel (e.g. gemini-2.5-flash).",
     )
 
+    # Chat input guardrails (block before LLM; see app.services.chat_guardrails)
+    chat_guardrail_enabled: bool = Field(default=True, alias="CHAT_GUARDRAIL_ENABLED")
+    chat_guardrail_extra_phrases: str | None = Field(
+        default=None,
+        alias="CHAT_GUARDRAIL_EXTRA_PHRASES",
+        description="Comma-separated extra substrings to block (case-insensitive).",
+    )
+    chat_guardrail_max_message_length: int = Field(
+        default=32_000,
+        ge=256,
+        le=200_000,
+        alias="CHAT_GUARDRAIL_MAX_MESSAGE_LENGTH",
+        description="Reject messages longer than this before calling the model.",
+    )
+
 @lru_cache
 def get_settings() -> Settings:
     """Cached settings instance."""
