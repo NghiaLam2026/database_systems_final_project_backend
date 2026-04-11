@@ -1,0 +1,1487 @@
+name: pc_build_assistant
+description: >
+  Semantic layer for the PC Build Assistant application database.
+  Covers user accounts, PC builds with polymorphic part references,
+  a nine-category hardware catalog, AI chat threads/messages,
+  and RAG document storage. All prices are in USD.
+comments: >
+  Tables with a deleted_at column use soft deletes — always apply
+  "deleted_at IS NULL" unless specifically querying archived records.
+  The "case" table name is a SQL reserved word in PostgreSQL; quote it
+  as "case" (double quotes) in raw queries.
+
+# ──────────────────────────────────────────
+# 1. TABLES
+# ──────────────────────────────────────────
+tables:
+
+  # ── CORE: USERS ──────────────────────────
+  - name: users
+    synonyms: ["accounts", "members", "customers"]
+    description: "One row per registered user (regular or admin). Soft-deleted rows have deleted_at set."
+    base_table:
+      database: pc_build_assistant_v1
+      table: users
+    row_count_approx: 100
+    primary_key:
+      columns: ["id"]
+    notes: >
+      Always filter deleted_at IS NULL to exclude soft-deleted accounts.
+      Email is unique only among active users (partial index uq_users_email_active).
+      Never select or expose password_hash.
+    dimensions:
+      - name: Email
+        synonyms: ["email address", "user email"]
+        description: "User's email address (unique among active users)."
+        expr: email
+        data_type: VARCHAR(255)
+        sample_values: ["alice@example.com", "bob@example.com"]
+      - name: First Name
+        synonyms: ["given name"]
+        description: "User's first name."
+        expr: first_name
+        data_type: VARCHAR(100)
+        sample_values: ["Alice", "Bob"]
+      - name: Last Name
+        synonyms: ["surname", "family name"]
+        description: "User's last name."
+        expr: last_name
+        data_type: VARCHAR(100)
+        sample_values: ["Smith", "Johnson"]
+      - name: Role
+        synonyms: ["user role", "account type"]
+        description: "Account privilege level."
+        expr: role
+        data_type: user_role
+        sample_values: ["user", "admin"]
+        is_enum: true
+    time_dimensions:
+      - name: Created At
+        synonyms: ["signup date", "registration date", "date joined"]
+        description: "Timestamp when the account was created."
+        expr: created_at
+        data_type: TIMESTAMPTZ
+      - name: Updated At
+        synonyms: ["last modified"]
+        description: "Timestamp of last profile update."
+        expr: updated_at
+        data_type: TIMESTAMPTZ
+      - name: Deleted At
+        synonyms: ["deactivated at", "soft-deleted date"]
+        description: "Non-NULL means the account is soft-deleted."
+        expr: deleted_at
+        data_type: TIMESTAMPTZ
+    facts: []
+    metrics:
+      - name: total_users
+        synonyms: ["user count", "number of users"]
+        description: "Total active user accounts."
+        expr: "COUNT(*)"
+      - name: admin_count
+        synonyms: ["number of admins"]
+        description: "Number of active admin accounts."
+        expr: "COUNT(*) FILTER (WHERE role = 'admin')"
+    filters:
+      - name: active_users_only
+        synonyms: ["exclude deleted", "active accounts"]
+        description: "Exclude soft-deleted user accounts."
+        expr: "deleted_at IS NULL"
+
+  # ── CORE: BUILDS ─────────────────────────
+  - name: builds
+    synonyms: ["pc builds", "custom builds", "build lists", "rigs"]
+    description: "One row per PC build created by a user. Contains metadata; parts are in build_parts."
+    base_table:
+      database: pc_build_assistant_v1
+      table: builds
+    row_count_approx: 500
+    primary_key:
+      columns: ["id"]
+    notes: >
+      Always filter deleted_at IS NULL. Scope by user_id for per-user queries.
+      Parts list lives in build_parts, not in this table.
+    dimensions:
+      - name: Build Name
+        synonyms: ["build title", "rig name"]
+        description: "User-chosen name for this build."
+        expr: build_name
+        data_type: VARCHAR(255)
+        sample_values: ["Gaming Rig 2026", "Budget Office PC"]
+      - name: Description
+        synonyms: ["build description", "notes"]
+        description: "Optional free-text description of the build."
+        expr: description
+        data_type: TEXT
+    time_dimensions:
+      - name: Created At
+        synonyms: ["build date", "date created"]
+        description: "When the build was first created."
+        expr: created_at
+        data_type: TIMESTAMPTZ
+      - name: Updated At
+        synonyms: ["last modified"]
+        description: "Last time build metadata was updated."
+        expr: updated_at
+        data_type: TIMESTAMPTZ
+      - name: Deleted At
+        synonyms: ["archived at"]
+        description: "Non-NULL means the build is soft-deleted."
+        expr: deleted_at
+        data_type: TIMESTAMPTZ
+    facts:
+      - name: User ID
+        synonyms: ["owner id"]
+        description: "FK to users.id — the owner of this build."
+        expr: user_id
+        data_type: INTEGER
+    metrics:
+      - name: total_builds
+        synonyms: ["build count", "number of builds"]
+        description: "Total active builds."
+        expr: "COUNT(*)"
+    filters:
+      - name: active_builds_only
+        synonyms: ["exclude deleted builds"]
+        description: "Exclude soft-deleted builds."
+        expr: "deleted_at IS NULL"
+
+  # ── CORE: BUILD PARTS ────────────────────
+  - name: build_parts
+    synonyms: ["build components", "parts list", "build items"]
+    description: >
+      One row per component slot in a build. Uses a polymorphic reference:
+      (part_type, part_id) points to a row in the matching catalog table
+      (e.g. part_type='gpu' + part_id=42 → gpu.id=42).
+    base_table:
+      database: pc_build_assistant_v1
+      table: build_parts
+    row_count_approx: 2500
+    primary_key:
+      columns: ["id"]
+    notes: >
+      Always filter deleted_at IS NULL. part_type + part_id is a logical FK —
+      there is no physical foreign key to the catalog tables. To resolve the
+      component, join the catalog table whose name matches part_type on
+      id = part_id (e.g. WHERE part_type = 'cpu' JOIN cpu ON cpu.id = part_id).
+      Singular-slot types (cpu, gpu, mobo, psu, case, cpu_cooler) should appear
+      at most once per build; memory, storage, and case_fans allow multiples.
+    dimensions:
+      - name: Part Type
+        synonyms: ["component type", "category"]
+        description: "Which catalog table this part references."
+        expr: part_type
+        data_type: part_type
+        sample_values: ["cpu", "gpu", "mobo", "memory", "psu", "case", "cpu_cooler", "case_fans", "storage"]
+        is_enum: true
+    time_dimensions:
+      - name: Created At
+        description: "When this part was added to the build."
+        expr: created_at
+        data_type: TIMESTAMPTZ
+      - name: Updated At
+        description: "Last time this part entry was modified."
+        expr: updated_at
+        data_type: TIMESTAMPTZ
+      - name: Deleted At
+        description: "Non-NULL means removed from the build (soft-deleted)."
+        expr: deleted_at
+        data_type: TIMESTAMPTZ
+    facts:
+      - name: Build ID
+        description: "FK to builds.id."
+        expr: build_id
+        data_type: INTEGER
+      - name: Part ID
+        synonyms: ["component id", "catalog id"]
+        description: "Row ID in the catalog table identified by part_type."
+        expr: part_id
+        data_type: INTEGER
+      - name: Quantity
+        synonyms: ["qty", "count", "amount"]
+        description: "How many units of this component are in the build."
+        expr: quantity
+        data_type: INTEGER
+    metrics:
+      - name: total_parts
+        synonyms: ["part count"]
+        description: "Number of active part entries."
+        expr: "COUNT(*)"
+      - name: total_quantity
+        synonyms: ["sum of quantities"]
+        description: "Sum of all part quantities."
+        expr: "SUM(quantity)"
+    filters:
+      - name: active_parts_only
+        synonyms: ["exclude removed parts"]
+        description: "Exclude soft-deleted part entries."
+        expr: "deleted_at IS NULL"
+
+  # ── CHAT: THREADS ────────────────────────
+  - name: threads
+    synonyms: ["chat threads", "conversations", "chat sessions"]
+    description: "One row per AI chat session. Each thread belongs to one user and contains messages."
+    base_table:
+      database: pc_build_assistant_v1
+      table: threads
+    row_count_approx: 300
+    primary_key:
+      columns: ["id"]
+    notes: >
+      Always filter deleted_at IS NULL. Scope by user_id for per-user queries.
+      Deleting a thread also soft-deletes all its messages.
+    dimensions:
+      - name: Thread Name
+        synonyms: ["chat title", "conversation name"]
+        description: "Optional user-editable title for this chat session."
+        expr: thread_name
+        data_type: VARCHAR(255)
+        sample_values: ["GPU upgrade advice", "Budget build help"]
+    time_dimensions:
+      - name: Created At
+        synonyms: ["started at", "chat start date"]
+        description: "When the chat thread was created."
+        expr: created_at
+        data_type: TIMESTAMPTZ
+      - name: Updated At
+        synonyms: ["last activity"]
+        description: "Last time the thread was updated (e.g. new message)."
+        expr: updated_at
+        data_type: TIMESTAMPTZ
+      - name: Deleted At
+        description: "Non-NULL means the thread is soft-deleted."
+        expr: deleted_at
+        data_type: TIMESTAMPTZ
+    facts:
+      - name: User ID
+        description: "FK to users.id — the owner of this thread."
+        expr: user_id
+        data_type: INTEGER
+    metrics:
+      - name: total_threads
+        synonyms: ["thread count", "conversation count"]
+        description: "Total active chat threads."
+        expr: "COUNT(*)"
+    filters:
+      - name: active_threads_only
+        synonyms: ["exclude deleted threads"]
+        description: "Exclude soft-deleted threads."
+        expr: "deleted_at IS NULL"
+
+  # ── CHAT: MESSAGES ───────────────────────
+  - name: messages
+    synonyms: ["chat messages", "turns", "exchanges"]
+    description: >
+      One row per user–assistant exchange. Stores the user's request and the
+      AI's response together. Optionally links to a build for context.
+    base_table:
+      database: pc_build_assistant_v1
+      table: messages
+    row_count_approx: 3000
+    primary_key:
+      columns: ["id"]
+    notes: >
+      Always filter deleted_at IS NULL. build_id is NULL when the question is
+      not about a specific build. ai_response may be NULL briefly before the
+      LLM finishes, or may contain a canned guardrail refusal.
+    dimensions:
+      - name: User Request
+        synonyms: ["user message", "question", "prompt"]
+        description: "The user's raw chat message."
+        expr: user_request
+        data_type: TEXT
+      - name: AI Response
+        synonyms: ["assistant reply", "answer", "bot response"]
+        description: "The AI assistant's response to the user's request."
+        expr: ai_response
+        data_type: TEXT
+    time_dimensions:
+      - name: Created At
+        synonyms: ["sent at", "message date"]
+        description: "When this message exchange was created."
+        expr: created_at
+        data_type: TIMESTAMPTZ
+      - name: Deleted At
+        description: "Non-NULL means the message is soft-deleted."
+        expr: deleted_at
+        data_type: TIMESTAMPTZ
+    facts:
+      - name: Thread ID
+        description: "FK to threads.id — the conversation this message belongs to."
+        expr: thread_id
+        data_type: INTEGER
+      - name: Build ID
+        synonyms: ["attached build"]
+        description: "FK to builds.id — the build attached as context (NULL for general questions)."
+        expr: build_id
+        data_type: INTEGER
+    metrics:
+      - name: total_messages
+        synonyms: ["message count"]
+        description: "Total active messages."
+        expr: "COUNT(*)"
+      - name: messages_with_build
+        synonyms: ["build-attached messages"]
+        description: "Messages that have a build attached for context."
+        expr: "COUNT(*) FILTER (WHERE build_id IS NOT NULL)"
+    filters:
+      - name: active_messages_only
+        synonyms: ["exclude deleted messages"]
+        description: "Exclude soft-deleted messages."
+        expr: "deleted_at IS NULL"
+      - name: build_context_only
+        synonyms: ["has build attached"]
+        description: "Only messages that reference a specific build."
+        expr: "build_id IS NOT NULL"
+
+  # ── CATALOG: CPU ─────────────────────────
+  - name: cpu
+    synonyms: ["processors", "CPUs", "central processing units"]
+    description: "One row per CPU in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: cpu
+    row_count_approx: 800
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. Columns perf_clock, boost_clock, and tdp
+      store values with units as strings (e.g. '4.7 GHz', '125 W').
+    dimensions:
+      - name: Name
+        synonyms: ["cpu name", "processor name", "model"]
+        description: "Full product name of the CPU (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["AMD Ryzen 9 7950X", "Intel Core i9-14900K", "AMD Ryzen 5 5600X"]
+      - name: Microarchitecture
+        synonyms: ["arch", "architecture", "microarch", "generation"]
+        description: "CPU microarchitecture family."
+        expr: microarch
+        data_type: VARCHAR(100)
+        sample_values: ["Zen 4", "Raptor Lake", "Zen 3"]
+      - name: Graphics
+        synonyms: ["integrated graphics", "iGPU", "onboard graphics"]
+        description: "Integrated graphics model, or NULL if none."
+        expr: graphics
+        data_type: VARCHAR(100)
+        sample_values: ["Radeon (Zen 4)", "Intel UHD Graphics 770", null]
+      - name: Performance Clock
+        synonyms: ["base clock", "perf clock", "base frequency"]
+        description: "Base clock speed with units (e.g. '3.4 GHz')."
+        expr: perf_clock
+        data_type: VARCHAR(100)
+        sample_values: ["4.5 GHz", "3.0 GHz", "3.7 GHz"]
+      - name: Boost Clock
+        synonyms: ["turbo clock", "max clock", "boost frequency"]
+        description: "Max boost clock speed with units (e.g. '5.7 GHz')."
+        expr: boost_clock
+        data_type: VARCHAR(100)
+        sample_values: ["5.7 GHz", "5.8 GHz", "4.6 GHz"]
+      - name: TDP
+        synonyms: ["thermal design power", "power draw", "wattage"]
+        description: "Thermal design power with units (e.g. '125 W')."
+        expr: tdp
+        data_type: VARCHAR(100)
+        sample_values: ["170 W", "125 W", "65 W"]
+    time_dimensions: []
+    facts:
+      - name: Core Count
+        synonyms: ["cores", "number of cores", "cpu cores"]
+        description: "Number of physical CPU cores."
+        expr: core_count
+        data_type: INTEGER
+      - name: Price
+        synonyms: ["cost", "cpu price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_cpus
+        synonyms: ["cpu count", "number of processors"]
+        description: "Total CPUs in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_cpu_price
+        synonyms: ["average cpu cost"]
+        description: "Average CPU price."
+        expr: "AVG(price)"
+      - name: min_cpu_price
+        synonyms: ["cheapest cpu price"]
+        description: "Lowest CPU price in the catalog."
+        expr: "MIN(price)"
+      - name: max_cpu_price
+        synonyms: ["most expensive cpu price"]
+        description: "Highest CPU price in the catalog."
+        expr: "MAX(price)"
+      - name: avg_core_count
+        synonyms: ["average cores"]
+        description: "Average number of cores across all CPUs."
+        expr: "AVG(core_count)"
+    filters: []
+
+  # ── CATALOG: GPU ─────────────────────────
+  - name: gpu
+    synonyms: ["graphics cards", "GPUs", "video cards", "graphics"]
+    description: "One row per GPU / video card in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: gpu
+    row_count_approx: 1000
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. memory, core_clock, boost_clock, and
+      length are stored as strings with units (e.g. '16 GB', '2520 MHz', '358 mm').
+    dimensions:
+      - name: Name
+        synonyms: ["gpu name", "card name", "model"]
+        description: "Full product name of the GPU (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["MSI GeForce RTX 4090 Gaming X Trio", "Sapphire Radeon RX 7900 XTX Nitro+"]
+      - name: Chipset
+        synonyms: ["gpu chipset", "chip", "gpu chip"]
+        description: "GPU chipset / silicon (e.g. 'GeForce RTX 4090')."
+        expr: chipset
+        data_type: VARCHAR(100)
+        sample_values: ["GeForce RTX 4090", "Radeon RX 7900 XTX", "GeForce RTX 4070 Ti"]
+      - name: Color
+        synonyms: ["gpu color"]
+        description: "Exterior color of the card."
+        expr: color
+        data_type: VARCHAR(50)
+        sample_values: ["Black", "White", "Black / Silver"]
+      - name: Memory
+        synonyms: ["VRAM", "gpu memory", "video memory"]
+        description: "Video memory amount with units (e.g. '16 GB')."
+        expr: memory
+        data_type: VARCHAR(100)
+        sample_values: ["24 GB", "16 GB", "12 GB"]
+      - name: Core Clock
+        synonyms: ["base clock", "gpu clock"]
+        description: "Base core clock speed with units."
+        expr: core_clock
+        data_type: VARCHAR(100)
+        sample_values: ["2235 MHz", "2340 MHz", "2310 MHz"]
+      - name: Boost Clock
+        synonyms: ["max clock", "gpu boost"]
+        description: "Boost clock speed with units."
+        expr: boost_clock
+        data_type: VARCHAR(100)
+        sample_values: ["2610 MHz", "2520 MHz", "2685 MHz"]
+      - name: Length
+        synonyms: ["card length", "gpu length"]
+        description: "Physical card length with units."
+        expr: length
+        data_type: VARCHAR(100)
+        sample_values: ["340 mm", "358 mm", "304 mm"]
+    time_dimensions: []
+    facts:
+      - name: Price
+        synonyms: ["cost", "gpu price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_gpus
+        synonyms: ["gpu count", "number of gpus"]
+        description: "Total GPUs in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_gpu_price
+        synonyms: ["average gpu cost"]
+        description: "Average GPU price."
+        expr: "AVG(price)"
+      - name: min_gpu_price
+        synonyms: ["cheapest gpu price"]
+        description: "Lowest GPU price in the catalog."
+        expr: "MIN(price)"
+      - name: max_gpu_price
+        synonyms: ["most expensive gpu price"]
+        description: "Highest GPU price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── CATALOG: MOTHERBOARD ─────────────────
+  - name: mobo
+    synonyms: ["motherboards", "mobos", "mainboards"]
+    description: "One row per motherboard in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: mobo
+    row_count_approx: 700
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. memory_max stores a string with units
+      (e.g. '128 GB').
+    dimensions:
+      - name: Name
+        synonyms: ["mobo name", "motherboard name", "model"]
+        description: "Full product name of the motherboard (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["MSI MAG B650 TOMAHAWK WIFI", "ASUS ROG STRIX B760-F GAMING WIFI"]
+      - name: Socket
+        synonyms: ["cpu socket", "socket type"]
+        description: "CPU socket this board supports."
+        expr: socket
+        data_type: VARCHAR(50)
+        sample_values: ["AM5", "LGA1700", "AM4", "LGA1200"]
+        is_enum: true
+      - name: Form Factor
+        synonyms: ["board size", "mobo size", "motherboard form factor"]
+        description: "Physical form factor of the board."
+        expr: form_factor
+        data_type: VARCHAR(50)
+        sample_values: ["ATX", "Micro ATX", "Mini ITX", "EATX"]
+        is_enum: true
+      - name: Memory Max
+        synonyms: ["max RAM", "maximum memory"]
+        description: "Maximum supported memory with units (e.g. '128 GB')."
+        expr: memory_max
+        data_type: VARCHAR(100)
+        sample_values: ["128 GB", "192 GB", "64 GB"]
+      - name: Color
+        synonyms: ["mobo color"]
+        description: "Board color scheme."
+        expr: color
+        data_type: VARCHAR(50)
+        sample_values: ["Black", "Black / Silver", "White"]
+    time_dimensions: []
+    facts:
+      - name: Memory Slots
+        synonyms: ["RAM slots", "DIMM slots", "memory slot count"]
+        description: "Number of memory (DIMM) slots on the board."
+        expr: memory_slot
+        data_type: INTEGER
+      - name: Price
+        synonyms: ["cost", "mobo price", "motherboard price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_mobos
+        synonyms: ["motherboard count"]
+        description: "Total motherboards in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_mobo_price
+        synonyms: ["average motherboard cost"]
+        description: "Average motherboard price."
+        expr: "AVG(price)"
+      - name: min_mobo_price
+        synonyms: ["cheapest motherboard price"]
+        description: "Lowest motherboard price in the catalog."
+        expr: "MIN(price)"
+      - name: max_mobo_price
+        synonyms: ["most expensive motherboard price"]
+        description: "Highest motherboard price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── CATALOG: MEMORY ──────────────────────
+  - name: memory
+    synonyms: ["RAM", "memory kits", "DRAM", "memory modules"]
+    description: "One row per memory (RAM) kit in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: memory
+    row_count_approx: 1000
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. speed and modules are strings with units
+      (e.g. '6000 MHz', '2 x 16 GB'). first_word_latency is a string (e.g. '10 ns').
+    dimensions:
+      - name: Name
+        synonyms: ["RAM name", "memory name", "kit name", "model"]
+        description: "Full product name of the memory kit (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["Corsair Vengeance 32 GB (2 x 16 GB) DDR5-6000", "G.Skill Trident Z5 RGB 32 GB (2 x 16 GB) DDR5-6400"]
+      - name: Speed
+        synonyms: ["clock speed", "frequency", "memory speed"]
+        description: "Rated speed with units (e.g. 'DDR5-6000')."
+        expr: speed
+        data_type: VARCHAR(100)
+        sample_values: ["DDR5-6000", "DDR5-5600", "DDR4-3200"]
+      - name: Modules
+        synonyms: ["module config", "sticks", "kit configuration"]
+        description: "Module configuration with units (e.g. '2 x 16 GB')."
+        expr: modules
+        data_type: VARCHAR(50)
+        sample_values: ["2 x 16 GB", "2 x 8 GB", "4 x 8 GB"]
+      - name: Color
+        synonyms: ["RAM color"]
+        description: "Module color."
+        expr: color
+        data_type: VARCHAR(50)
+        sample_values: ["Black", "White", "Silver"]
+      - name: First Word Latency
+        synonyms: ["FWL", "latency"]
+        description: "First word latency with units (e.g. '10 ns')."
+        expr: first_word_latency
+        data_type: VARCHAR(100)
+        sample_values: ["10 ns", "9.5 ns", "12 ns"]
+    time_dimensions: []
+    facts:
+      - name: CAS Latency
+        synonyms: ["CL", "cas"]
+        description: "Column Access Strobe latency (numeric)."
+        expr: cas_latency
+        data_type: NUMERIC(4,2)
+      - name: Price
+        synonyms: ["cost", "RAM price", "memory price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_memory_kits
+        synonyms: ["memory count", "RAM count"]
+        description: "Total memory kits in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_memory_price
+        synonyms: ["average RAM cost"]
+        description: "Average memory kit price."
+        expr: "AVG(price)"
+      - name: min_memory_price
+        synonyms: ["cheapest RAM price"]
+        description: "Lowest memory kit price in the catalog."
+        expr: "MIN(price)"
+      - name: max_memory_price
+        synonyms: ["most expensive RAM price"]
+        description: "Highest memory kit price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── CATALOG: CASE ────────────────────────
+  - name: case
+    synonyms: ["cases", "PC cases", "chassis", "towers", "enclosures"]
+    description: "One row per PC case/chassis in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: "case"
+    row_count_approx: 600
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. 'case' is a SQL reserved word in
+      PostgreSQL — always double-quote the table name in raw queries.
+      external_volume stores a string with units (e.g. '52.8 L').
+    dimensions:
+      - name: Name
+        synonyms: ["case name", "chassis name", "model"]
+        description: "Full product name of the case (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["Fractal Design Meshify 2", "NZXT H7 Flow", "Corsair 4000D Airflow"]
+      - name: Type
+        synonyms: ["case type", "case size", "form factor"]
+        description: "Case form factor (e.g. ATX Mid Tower)."
+        expr: type
+        data_type: VARCHAR(50)
+        sample_values: ["ATX Mid Tower", "ATX Full Tower", "MicroATX Mini Tower"]
+        is_enum: true
+      - name: Color
+        synonyms: ["case color"]
+        description: "Case exterior color."
+        expr: color
+        data_type: VARCHAR(50)
+        sample_values: ["Black", "White", "Black / White"]
+      - name: Power Supply
+        synonyms: ["included PSU", "bundled PSU"]
+        description: "Included power supply info, if any."
+        expr: power_supply
+        data_type: VARCHAR(100)
+        sample_values: ["None", "600 W"]
+      - name: Side Panel
+        synonyms: ["panel type", "window"]
+        description: "Side panel material or style."
+        expr: side_panel
+        data_type: VARCHAR(100)
+        sample_values: ["Tempered Glass", "Solid", "Tinted Tempered Glass"]
+      - name: External Volume
+        synonyms: ["case volume", "size in liters"]
+        description: "Case volume with units (e.g. '52.8 L')."
+        expr: external_volume
+        data_type: VARCHAR(100)
+        sample_values: ["52.8 L", "45.3 L", "68.7 L"]
+    time_dimensions: []
+    facts:
+      - name: Internal Bays
+        synonyms: ["drive bays", "bays", "bay count"]
+        description: "Number of internal drive bays."
+        expr: internal_bays
+        data_type: INTEGER
+      - name: Price
+        synonyms: ["cost", "case price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_cases
+        synonyms: ["case count"]
+        description: "Total cases in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_case_price
+        synonyms: ["average case cost"]
+        description: "Average case price."
+        expr: "AVG(price)"
+      - name: min_case_price
+        synonyms: ["cheapest case price"]
+        description: "Lowest case price in the catalog."
+        expr: "MIN(price)"
+      - name: max_case_price
+        synonyms: ["most expensive case price"]
+        description: "Highest case price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── CATALOG: STORAGE ─────────────────────
+  - name: storage
+    synonyms: ["drives", "SSDs", "HDDs", "storage drives", "hard drives"]
+    description: "One row per storage drive in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: storage
+    row_count_approx: 800
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. capacity and cache store strings
+      with units (e.g. '2 TB', '256 MB').
+    dimensions:
+      - name: Name
+        synonyms: ["drive name", "storage name", "model"]
+        description: "Full product name of the storage drive (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["Samsung 990 Pro 2 TB", "WD Black SN850X 1 TB", "Seagate Barracuda 4 TB"]
+      - name: Capacity
+        synonyms: ["drive size", "storage size", "disk size"]
+        description: "Storage capacity with units (e.g. '2 TB')."
+        expr: capacity
+        data_type: VARCHAR(100)
+        sample_values: ["1 TB", "2 TB", "500 GB", "4 TB"]
+      - name: Type
+        synonyms: ["drive type", "storage type", "media type"]
+        description: "Storage technology."
+        expr: type
+        data_type: VARCHAR(50)
+        sample_values: ["SSD", "HDD", "Hybrid"]
+        is_enum: true
+      - name: Cache
+        synonyms: ["drive cache", "buffer"]
+        description: "Cache/buffer size with units (e.g. '256 MB')."
+        expr: cache
+        data_type: VARCHAR(100)
+        sample_values: ["256 MB", "512 MB", "64 MB"]
+      - name: Form Factor
+        synonyms: ["drive form factor", "storage form factor"]
+        description: "Physical form factor of the drive."
+        expr: form_factor
+        data_type: VARCHAR(50)
+        sample_values: ["M.2-2280", "2.5\"", "3.5\""]
+        is_enum: true
+      - name: Interface
+        synonyms: ["connection", "bus", "connector"]
+        description: "Drive interface / bus type."
+        expr: interface
+        data_type: VARCHAR(50)
+        sample_values: ["PCIe 4.0 x4", "SATA 6 Gb/s", "PCIe 5.0 x4"]
+        is_enum: true
+    time_dimensions: []
+    facts:
+      - name: Price
+        synonyms: ["cost", "drive price", "storage price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_storage
+        synonyms: ["storage count", "drive count"]
+        description: "Total storage drives in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_storage_price
+        synonyms: ["average drive cost"]
+        description: "Average storage drive price."
+        expr: "AVG(price)"
+      - name: min_storage_price
+        synonyms: ["cheapest drive price"]
+        description: "Lowest storage drive price in the catalog."
+        expr: "MIN(price)"
+      - name: max_storage_price
+        synonyms: ["most expensive drive price"]
+        description: "Highest storage drive price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── CATALOG: CPU COOLER ──────────────────
+  - name: cpu_cooler
+    synonyms: ["coolers", "CPU coolers", "heatsinks", "air coolers", "AIO coolers"]
+    description: "One row per CPU cooler in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: cpu_cooler
+    row_count_approx: 500
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. fan_rpm, noise_level, and radiator_size
+      store strings with units (e.g. '2000 RPM', '30 dB', '360 mm').
+    dimensions:
+      - name: Name
+        synonyms: ["cooler name", "heatsink name", "model"]
+        description: "Full product name of the CPU cooler (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["Noctua NH-D15", "Corsair iCUE H150i Elite", "be quiet! Dark Rock Pro 5"]
+      - name: Color
+        synonyms: ["cooler color"]
+        description: "Cooler color."
+        expr: color
+        data_type: VARCHAR(50)
+        sample_values: ["Black", "Silver", "White"]
+      - name: Fan RPM
+        synonyms: ["fan speed", "RPM"]
+        description: "Fan speed with units (e.g. '300 - 1500 RPM')."
+        expr: fan_rpm
+        data_type: VARCHAR(100)
+        sample_values: ["300 - 1500 RPM", "600 - 2000 RPM"]
+      - name: Noise Level
+        synonyms: ["noise", "decibels", "sound level"]
+        description: "Noise output with units (e.g. '24.6 dB')."
+        expr: noise_level
+        data_type: VARCHAR(100)
+        sample_values: ["24.6 dB", "19.8 - 36 dB", "28 dB"]
+      - name: Radiator Size
+        synonyms: ["rad size", "radiator"]
+        description: "Radiator size with units for AIOs, or NULL for air coolers."
+        expr: radiator_size
+        data_type: VARCHAR(100)
+        sample_values: ["360 mm", "280 mm", "240 mm", null]
+    time_dimensions: []
+    facts:
+      - name: Price
+        synonyms: ["cost", "cooler price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_coolers
+        synonyms: ["cooler count"]
+        description: "Total CPU coolers in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_cooler_price
+        synonyms: ["average cooler cost"]
+        description: "Average CPU cooler price."
+        expr: "AVG(price)"
+      - name: min_cooler_price
+        synonyms: ["cheapest cooler price"]
+        description: "Lowest CPU cooler price in the catalog."
+        expr: "MIN(price)"
+      - name: max_cooler_price
+        synonyms: ["most expensive cooler price"]
+        description: "Highest CPU cooler price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── CATALOG: PSU ─────────────────────────
+  - name: psu
+    synonyms: ["power supplies", "PSUs", "power supply units"]
+    description: "One row per power supply unit in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: psu
+    row_count_approx: 500
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. wattage stores a string with units
+      (e.g. '850 W').
+    dimensions:
+      - name: Name
+        synonyms: ["psu name", "power supply name", "model"]
+        description: "Full product name of the PSU (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["Corsair RM850x (2024)", "Seasonic Focus GX-1000", "EVGA SuperNOVA 750 G7"]
+      - name: Type
+        synonyms: ["psu type", "psu form factor"]
+        description: "PSU form factor."
+        expr: type
+        data_type: VARCHAR(50)
+        sample_values: ["ATX", "SFX"]
+        is_enum: true
+      - name: Efficiency Rating
+        synonyms: ["80+ rating", "efficiency", "certification"]
+        description: "80 PLUS efficiency certification level."
+        expr: efficiency_rating
+        data_type: VARCHAR(50)
+        sample_values: ["80+ Gold", "80+ Platinum", "80+ Bronze", "80+ Titanium"]
+        is_enum: true
+      - name: Wattage
+        synonyms: ["watts", "power output", "psu wattage"]
+        description: "Rated wattage with units (e.g. '850 W')."
+        expr: wattage
+        data_type: VARCHAR(100)
+        sample_values: ["850 W", "1000 W", "750 W", "650 W"]
+      - name: Modular
+        synonyms: ["modularity", "cable management"]
+        description: "Whether the PSU has modular cabling."
+        expr: modular
+        data_type: BOOLEAN
+        sample_values: ["true", "false"]
+      - name: Color
+        synonyms: ["psu color"]
+        description: "PSU exterior color."
+        expr: color
+        data_type: VARCHAR(50)
+        sample_values: ["Black", "White"]
+    time_dimensions: []
+    facts:
+      - name: Price
+        synonyms: ["cost", "psu price", "power supply price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_psus
+        synonyms: ["psu count", "power supply count"]
+        description: "Total PSUs in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_psu_price
+        synonyms: ["average psu cost"]
+        description: "Average PSU price."
+        expr: "AVG(price)"
+      - name: min_psu_price
+        synonyms: ["cheapest psu price"]
+        description: "Lowest PSU price in the catalog."
+        expr: "MIN(price)"
+      - name: max_psu_price
+        synonyms: ["most expensive psu price"]
+        description: "Highest PSU price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── CATALOG: CASE FANS ───────────────────
+  - name: case_fans
+    synonyms: ["fans", "chassis fans", "cooling fans"]
+    description: "One row per case fan product in the hardware catalog."
+    base_table:
+      database: pc_build_assistant_v1
+      table: case_fans
+    row_count_approx: 500
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Prices in USD. size, rpm, airflow, and noise_level
+      store strings with units (e.g. '120 mm', '1500 RPM', '62 CFM', '28 dB').
+    dimensions:
+      - name: Name
+        synonyms: ["fan name", "model"]
+        description: "Full product name of the case fan (unique)."
+        expr: name
+        data_type: VARCHAR(255)
+        sample_values: ["Noctua NF-A12x25 PWM", "Corsair iCUE SP120 RGB Elite", "Arctic P12 PST"]
+      - name: Size
+        synonyms: ["fan size", "diameter"]
+        description: "Fan diameter with units (e.g. '120 mm')."
+        expr: size
+        data_type: VARCHAR(100)
+        sample_values: ["120 mm", "140 mm", "80 mm"]
+      - name: Color
+        synonyms: ["fan color"]
+        description: "Fan color."
+        expr: color
+        data_type: VARCHAR(50)
+        sample_values: ["Black", "White", "Black / Gray"]
+      - name: RPM
+        synonyms: ["fan speed", "rotation speed"]
+        description: "Fan speed range with units (e.g. '450 - 2000 RPM')."
+        expr: rpm
+        data_type: VARCHAR(100)
+        sample_values: ["450 - 2000 RPM", "200 - 1500 RPM"]
+      - name: Airflow
+        synonyms: ["CFM", "air volume"]
+        description: "Airflow rating with units (e.g. '62 CFM')."
+        expr: airflow
+        data_type: VARCHAR(100)
+        sample_values: ["60.1 CFM", "73.4 CFM", "56.3 CFM"]
+      - name: Noise Level
+        synonyms: ["noise", "decibels", "sound"]
+        description: "Noise output with units (e.g. '22.6 dB')."
+        expr: noise_level
+        data_type: VARCHAR(100)
+        sample_values: ["22.6 dB", "18 - 30 dB", "26 dB"]
+      - name: PWM
+        synonyms: ["PWM support", "pulse width modulation"]
+        description: "Whether the fan supports PWM speed control."
+        expr: pwm
+        data_type: BOOLEAN
+        sample_values: ["true", "false"]
+    time_dimensions: []
+    facts:
+      - name: Price
+        synonyms: ["cost", "fan price"]
+        description: "Current catalog price in USD."
+        expr: price
+        data_type: NUMERIC(10,2)
+    metrics:
+      - name: total_fans
+        synonyms: ["fan count"]
+        description: "Total case fans in the catalog."
+        expr: "COUNT(*)"
+      - name: avg_fan_price
+        synonyms: ["average fan cost"]
+        description: "Average case fan price."
+        expr: "AVG(price)"
+      - name: min_fan_price
+        synonyms: ["cheapest fan price"]
+        description: "Lowest case fan price in the catalog."
+        expr: "MIN(price)"
+      - name: max_fan_price
+        synonyms: ["most expensive fan price"]
+        description: "Highest case fan price in the catalog."
+        expr: "MAX(price)"
+    filters: []
+
+  # ── RAG: DOCUMENTS ───────────────────────
+  - name: documents
+    synonyms: ["docs", "knowledge base articles", "reference documents"]
+    description: "One row per ingested knowledge document used by the RAG subsystem."
+    base_table:
+      database: pc_build_assistant_v1
+      table: documents
+    row_count_approx: 50
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. Used by the RAG agent, not typical user-facing SQL queries.
+      The metadata column is JSONB and may contain tags like 'gpu', 'psu', 'gaming'.
+    dimensions:
+      - name: Title
+        synonyms: ["document title", "doc name"]
+        description: "Title of the document."
+        expr: title
+        data_type: VARCHAR(255)
+      - name: Source
+        synonyms: ["document source", "origin"]
+        description: "Source category (e.g. 'paper', 'blog', 'benchmark')."
+        expr: source
+        data_type: VARCHAR(50)
+        sample_values: ["paper", "blog", "benchmark"]
+        is_enum: true
+      - name: URL
+        synonyms: ["link", "document link"]
+        description: "Original URL of the document, if applicable."
+        expr: url
+        data_type: VARCHAR(500)
+      - name: Metadata
+        synonyms: ["tags", "doc metadata"]
+        description: "JSONB metadata (e.g. topic tags)."
+        expr: metadata
+        data_type: JSONB
+    time_dimensions:
+      - name: Created At
+        synonyms: ["ingested at"]
+        description: "When the document was ingested."
+        expr: created_at
+        data_type: TIMESTAMPTZ
+    facts: []
+    metrics:
+      - name: total_documents
+        synonyms: ["document count"]
+        description: "Total documents in the knowledge base."
+        expr: "COUNT(*)"
+    filters: []
+
+  # ── RAG: DOCUMENT CHUNKS ─────────────────
+  - name: document_chunks
+    synonyms: ["chunks", "text chunks", "embeddings"]
+    description: >
+      One row per text chunk extracted from a document, with an optional
+      pgvector embedding for similarity search.
+    base_table:
+      database: pc_build_assistant_v1
+      table: document_chunks
+    row_count_approx: 5000
+    primary_key:
+      columns: ["id"]
+    notes: >
+      No soft deletes. The embedding column is a pgvector Vector type used
+      for cosine/L2 similarity search by the RAG agent. The metadata column
+      is JSONB for optional per-chunk tags.
+    dimensions:
+      - name: Chunk Text
+        synonyms: ["text", "content", "passage"]
+        description: "The raw text content of this chunk."
+        expr: chunk_text
+        data_type: TEXT
+      - name: Metadata
+        synonyms: ["chunk metadata", "tags"]
+        description: "JSONB metadata for this chunk."
+        expr: metadata
+        data_type: JSONB
+    time_dimensions:
+      - name: Created At
+        synonyms: ["indexed at"]
+        description: "When this chunk was created."
+        expr: created_at
+        data_type: TIMESTAMPTZ
+    facts:
+      - name: Document ID
+        description: "FK to documents.id — the parent document."
+        expr: document_id
+        data_type: INTEGER
+    metrics:
+      - name: total_chunks
+        synonyms: ["chunk count"]
+        description: "Total text chunks."
+        expr: "COUNT(*)"
+      - name: avg_chunks_per_doc
+        synonyms: ["chunks per document"]
+        description: "Average number of chunks per document."
+        expr: "COUNT(*) / NULLIF(COUNT(DISTINCT document_id), 0)"
+    filters: []
+
+# ──────────────────────────────────────────
+# 2. RELATIONSHIPS
+# ──────────────────────────────────────────
+relationships:
+  - name: users_to_builds
+    left_table: users
+    right_table: builds
+    relationship_columns:
+      - left_column: id
+        right_column: user_id
+
+  - name: users_to_threads
+    left_table: users
+    right_table: threads
+    relationship_columns:
+      - left_column: id
+        right_column: user_id
+
+  - name: builds_to_build_parts
+    left_table: builds
+    right_table: build_parts
+    relationship_columns:
+      - left_column: id
+        right_column: build_id
+
+  - name: threads_to_messages
+    left_table: threads
+    right_table: messages
+    relationship_columns:
+      - left_column: id
+        right_column: thread_id
+
+  - name: messages_to_builds
+    left_table: messages
+    right_table: builds
+    relationship_columns:
+      - left_column: build_id
+        right_column: id
+
+  - name: documents_to_document_chunks
+    left_table: documents
+    right_table: document_chunks
+    relationship_columns:
+      - left_column: id
+        right_column: document_id
+
+  # Polymorphic: build_parts → catalog tables.
+  # These are logical (not physical FK) joins filtered by part_type.
+  - name: build_parts_to_cpu
+    left_table: build_parts
+    right_table: cpu
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'cpu'
+
+  - name: build_parts_to_gpu
+    left_table: build_parts
+    right_table: gpu
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'gpu'
+
+  - name: build_parts_to_mobo
+    left_table: build_parts
+    right_table: mobo
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'mobo'
+
+  - name: build_parts_to_memory
+    left_table: build_parts
+    right_table: memory
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'memory'
+
+  - name: build_parts_to_psu
+    left_table: build_parts
+    right_table: psu
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'psu'
+
+  - name: build_parts_to_case
+    left_table: build_parts
+    right_table: "case"
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'case'
+
+  - name: build_parts_to_cpu_cooler
+    left_table: build_parts
+    right_table: cpu_cooler
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'cpu_cooler'
+
+  - name: build_parts_to_case_fans
+    left_table: build_parts
+    right_table: case_fans
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'case_fans'
+
+  - name: build_parts_to_storage
+    left_table: build_parts
+    right_table: storage
+    relationship_columns:
+      - left_column: part_id
+        right_column: id
+    # Apply: WHERE build_parts.part_type = 'storage'
+
+# ──────────────────────────────────────────
+# 3. CROSS-TABLE METRICS
+# ──────────────────────────────────────────
+metrics:
+  - name: avg_parts_per_build
+    synonyms: ["average components per build", "parts per rig"]
+    description: "Average number of active part entries per active build."
+    expr: build_parts.total_parts / NULLIF(builds.total_builds, 0)
+
+  - name: avg_messages_per_thread
+    synonyms: ["messages per conversation", "turns per chat"]
+    description: "Average number of active messages per active thread."
+    expr: messages.total_messages / NULLIF(threads.total_threads, 0)
+
+  - name: avg_build_price
+    synonyms: ["average build cost", "mean build total"]
+    description: >
+      Average total build cost across all active builds. Requires joining
+      build_parts to their respective catalog tables and summing price * quantity.
+    expr: >
+      SUM(catalog.price * build_parts.quantity) / NULLIF(COUNT(DISTINCT builds.id), 0)
+
+  - name: builds_per_user
+    synonyms: ["average builds per user", "rigs per user"]
+    description: "Average number of active builds per active user."
+    expr: builds.total_builds / NULLIF(users.total_users, 0)
+
+  - name: threads_per_user
+    synonyms: ["chats per user", "conversations per user"]
+    description: "Average number of active chat threads per active user."
+    expr: threads.total_threads / NULLIF(users.total_users, 0)
+
+# ──────────────────────────────────────────
+# 4. VERIFIED QUERIES (few-shot examples)
+# ──────────────────────────────────────────
+verified_queries:
+  - name: top_5_cheapest_gpus
+    question: "What are the top 5 cheapest GPUs?"
+    use_as_onboarding_question: true
+    sql: |
+      SELECT name, chipset, memory, price
+      FROM gpu
+      ORDER BY price ASC
+      LIMIT 5;
+
+  - name: am5_motherboards_under_200
+    question: "Show me all AM5 motherboards under $200."
+    use_as_onboarding_question: true
+    sql: |
+      SELECT name, socket, form_factor, memory_max, memory_slot, price
+      FROM mobo
+      WHERE socket = 'AM5'
+        AND price < 200
+      ORDER BY price ASC;
+
+  - name: ddr5_memory_kits
+    question: "List all DDR5 memory kits sorted by price."
+    use_as_onboarding_question: true
+    sql: |
+      SELECT name, speed, modules, cas_latency, price
+      FROM memory
+      WHERE speed ILIKE '%DDR5%'
+      ORDER BY price ASC;
+
+  - name: build_parts_with_names
+    question: "Show all parts in build 7 with their component names and prices."
+    sql: |
+      SELECT
+        bp.id          AS part_entry_id,
+        bp.part_type,
+        bp.part_id,
+        bp.quantity,
+        COALESCE(c.name, g.name, m.name, mem.name, p.name,
+                 cs.name, cc.name, cf.name, s.name) AS component_name,
+        COALESCE(c.price, g.price, m.price, mem.price, p.price,
+                 cs.price, cc.price, cf.price, s.price) AS unit_price
+      FROM build_parts bp
+      LEFT JOIN cpu        c   ON bp.part_type = 'cpu'        AND bp.part_id = c.id
+      LEFT JOIN gpu        g   ON bp.part_type = 'gpu'        AND bp.part_id = g.id
+      LEFT JOIN mobo       m   ON bp.part_type = 'mobo'       AND bp.part_id = m.id
+      LEFT JOIN memory     mem ON bp.part_type = 'memory'     AND bp.part_id = mem.id
+      LEFT JOIN psu        p   ON bp.part_type = 'psu'        AND bp.part_id = p.id
+      LEFT JOIN "case"     cs  ON bp.part_type = 'case'       AND bp.part_id = cs.id
+      LEFT JOIN cpu_cooler cc  ON bp.part_type = 'cpu_cooler' AND bp.part_id = cc.id
+      LEFT JOIN case_fans  cf  ON bp.part_type = 'case_fans'  AND bp.part_id = cf.id
+      LEFT JOIN storage    s   ON bp.part_type = 'storage'    AND bp.part_id = s.id
+      WHERE bp.build_id = 7
+        AND bp.deleted_at IS NULL
+      ORDER BY bp.part_type, bp.id;
+
+  - name: total_build_cost
+    question: "What is the total cost of build 7?"
+    sql: |
+      SELECT
+        SUM(
+          COALESCE(c.price, g.price, m.price, mem.price, p.price,
+                   cs.price, cc.price, cf.price, s.price, 0)
+          * bp.quantity
+        ) AS total_cost
+      FROM build_parts bp
+      LEFT JOIN cpu        c   ON bp.part_type = 'cpu'        AND bp.part_id = c.id
+      LEFT JOIN gpu        g   ON bp.part_type = 'gpu'        AND bp.part_id = g.id
+      LEFT JOIN mobo       m   ON bp.part_type = 'mobo'       AND bp.part_id = m.id
+      LEFT JOIN memory     mem ON bp.part_type = 'memory'     AND bp.part_id = mem.id
+      LEFT JOIN psu        p   ON bp.part_type = 'psu'        AND bp.part_id = p.id
+      LEFT JOIN "case"     cs  ON bp.part_type = 'case'       AND bp.part_id = cs.id
+      LEFT JOIN cpu_cooler cc  ON bp.part_type = 'cpu_cooler' AND bp.part_id = cc.id
+      LEFT JOIN case_fans  cf  ON bp.part_type = 'case_fans'  AND bp.part_id = cf.id
+      LEFT JOIN storage    s   ON bp.part_type = 'storage'    AND bp.part_id = s.id
+      WHERE bp.build_id = 7
+        AND bp.deleted_at IS NULL;
+
+  - name: user_build_summary
+    question: "How many builds does each user have?"
+    sql: |
+      SELECT
+        u.id          AS user_id,
+        u.first_name,
+        u.last_name,
+        COUNT(b.id)   AS build_count
+      FROM users u
+      LEFT JOIN builds b
+        ON b.user_id = u.id
+        AND b.deleted_at IS NULL
+      WHERE u.deleted_at IS NULL
+      GROUP BY u.id, u.first_name, u.last_name
+      ORDER BY build_count DESC;
+
+  - name: most_popular_gpus_in_builds
+    question: "Which GPUs appear in the most builds?"
+    use_as_onboarding_question: true
+    sql: |
+      SELECT
+        g.name         AS gpu_name,
+        g.chipset,
+        g.price,
+        COUNT(DISTINCT bp.build_id) AS build_count
+      FROM build_parts bp
+      JOIN gpu g ON g.id = bp.part_id
+      WHERE bp.part_type = 'gpu'
+        AND bp.deleted_at IS NULL
+      GROUP BY g.id, g.name, g.chipset, g.price
+      ORDER BY build_count DESC
+      LIMIT 10;
+
+  - name: cpu_mobo_socket_compatibility
+    question: "Show me builds where the CPU and motherboard sockets don't match."
+    sql: |
+      SELECT
+        b.id           AS build_id,
+        b.build_name,
+        cpu.name       AS cpu_name,
+        mobo.name      AS mobo_name,
+        mobo.socket    AS mobo_socket
+      FROM builds b
+      JOIN build_parts bp_cpu  ON bp_cpu.build_id  = b.id AND bp_cpu.part_type  = 'cpu'   AND bp_cpu.deleted_at  IS NULL
+      JOIN build_parts bp_mobo ON bp_mobo.build_id = b.id AND bp_mobo.part_type = 'mobo'  AND bp_mobo.deleted_at IS NULL
+      JOIN cpu  ON cpu.id  = bp_cpu.part_id
+      JOIN mobo ON mobo.id = bp_mobo.part_id
+      WHERE b.deleted_at IS NULL
+        AND mobo.socket IS NOT NULL
+        AND cpu.name NOT ILIKE '%' || mobo.socket || '%'
+      ORDER BY b.id;
+
+  - name: nvme_ssds_under_100
+    question: "What NVMe SSDs are available under $100?"
+    use_as_onboarding_question: true
+    sql: |
+      SELECT name, capacity, form_factor, interface, price
+      FROM storage
+      WHERE interface ILIKE '%PCIe%'
+        AND type = 'SSD'
+        AND price < 100
+      ORDER BY price ASC;
+
+  - name: gold_rated_psus_over_750w
+    question: "Show me 80+ Gold PSUs with at least 750 watts."
+    sql: |
+      SELECT name, wattage, efficiency_rating, modular, price
+      FROM psu
+      WHERE efficiency_rating ILIKE '%Gold%'
+        AND CAST(regexp_replace(wattage, '[^0-9]', '', 'g') AS INTEGER) >= 750
+      ORDER BY price ASC;
+
+  - name: recent_chat_activity
+    question: "Which users had chat activity in the last 7 days?"
+    sql: |
+      SELECT
+        u.id         AS user_id,
+        u.first_name,
+        u.last_name,
+        COUNT(m.id)  AS messages_last_7d
+      FROM users u
+      JOIN threads t ON t.user_id = u.id AND t.deleted_at IS NULL
+      JOIN messages m ON m.thread_id = t.id AND m.deleted_at IS NULL
+      WHERE u.deleted_at IS NULL
+        AND m.created_at >= NOW() - INTERVAL '7 days'
+      GROUP BY u.id, u.first_name, u.last_name
+      ORDER BY messages_last_7d DESC;
+
+  - name: catalog_price_summary
+    question: "What is the average, min, and max price for each component category?"
+    use_as_onboarding_question: true
+    sql: |
+      SELECT 'cpu'        AS category, COUNT(*) AS total, MIN(price) AS min_price, AVG(price)::NUMERIC(10,2) AS avg_price, MAX(price) AS max_price FROM cpu
+      UNION ALL
+      SELECT 'gpu',        COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM gpu
+      UNION ALL
+      SELECT 'mobo',       COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM mobo
+      UNION ALL
+      SELECT 'memory',     COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM memory
+      UNION ALL
+      SELECT 'case',       COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM "case"
+      UNION ALL
+      SELECT 'storage',    COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM storage
+      UNION ALL
+      SELECT 'cpu_cooler', COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM cpu_cooler
+      UNION ALL
+      SELECT 'psu',        COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM psu
+      UNION ALL
+      SELECT 'case_fans',  COUNT(*), MIN(price), AVG(price)::NUMERIC(10,2), MAX(price) FROM case_fans
+      ORDER BY category;
