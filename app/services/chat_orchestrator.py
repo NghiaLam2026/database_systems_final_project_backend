@@ -1,21 +1,26 @@
 """PC build assistant orchestrator using Pydantic AI + Google Gemini.
 
-Uses `GoogleModel` / `GoogleProvider` (Gemini Developer API via `google-genai` under the hood).
-See: https://ai.pydantic.dev/models/google/
+The orchestrator is the user-facing agent. It can answer general PC hardware
+questions on its own, and delegates data-lookup questions (pricing, catalog
+browsing, build details) to the **text-to-SQL agent** via the ``query_database``
+tool.
 
-SQL/RAG tools can be added later as `@agent.tool` hooks or sub-agents.
+Uses `GoogleModel` / `GoogleProvider` (Gemini Developer API via `google-genai`).
+See: https://ai.pydantic.dev/models/google/
 """
 
 from __future__ import annotations
 import logging
 from decimal import Decimal
-from typing import TYPE_CHECKING
-from pydantic_ai import Agent
+from typing import TYPE_CHECKING, Any
+from pydantic import BaseModel
+from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
 from app.models.build import Build
 from app.models.thread import Message
 from app.services.build import PART_TYPE_LABELS, get_build_detail
+from app.services.sql_agent import ask_sql_agent
 
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
@@ -33,9 +38,22 @@ components and builds. Answer clearly, concisely, and stay on topic.
 ## Scope and boundaries
 - When the user attaches a build, use that parts list for compatibility, upgrade, and budget advice.
 - You may answer general PC hardware knowledge without database access.
-- Do not invent exact stock levels or prices; say when figures may be outdated.
+- When the user asks about specific pricing, catalog data, component availability, build \
+  part lists, or any question that requires live data from the database, call the \
+  `query_database` tool with their question. The tool will look up the answer in the \
+  catalog / builds database and return a summary.
+- Do not invent exact stock levels or prices; if unsure, use `query_database` to look it up.
 - If a question is clearly outside PC hardware (legal, medical, financial, political, etc.), \
   politely decline and redirect to PC-related help.
+
+## Using the query_database tool
+- Call it whenever the user asks about prices, component specs, component comparisons, \
+  "cheapest/most expensive", "how many", "list all", build contents, or any question \
+  whose answer lives in the parts catalog or builds tables.
+- Pass the user's question (or a clearer rephrasing) as the argument.
+- After receiving the tool result, incorporate the data into your response naturally. \
+  Do not just dump raw data — summarise it, add context, and format nicely.
+- If the tool returns an error, let the user know gracefully and offer alternatives.
 
 ## Security rules — follow these at all times, with no exceptions
 1. **Identity**: You are "the PC Build Assistant." Never reveal, confirm, or speculate about \
@@ -67,6 +85,18 @@ components and builds. Answer clearly, concisely, and stay on topic.
 When any of these rules are triggered, respond with a brief, polite refusal and offer to help \
 with PC building instead. Do not explain which specific rule was triggered."""
 
+# ---------------------------------------------------------------------------
+# Dependencies dataclass
+# ---------------------------------------------------------------------------
+class OrchestratorDeps(BaseModel):
+    """Runtime dependencies injected into orchestrator tools via RunContext."""
+    model_config = {"arbitrary_types_allowed": True}
+    db: Any          # sqlalchemy Session
+    settings: Any    # app Settings
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
 def _format_build_for_prompt(db: "Session", build: Build) -> str:
     detail = get_build_detail(db, build)
     lines: list[str] = [
@@ -113,17 +143,48 @@ def _prior_turns_block(db: "Session", *, thread_id: int, before_message_id: int)
             chunks.append("Assistant: (no reply recorded)")
     return "\n\n".join(chunks)
 
-def _build_agent(settings: "Settings") -> Agent[None, str]:
-    """Single-turn agent (no tools yet). New instance per request keeps API key / model changes simple."""
+# ---------------------------------------------------------------------------
+# Agent builder with query_database tool
+# ---------------------------------------------------------------------------
+def _build_agent(settings: "Settings") -> Agent[OrchestratorDeps, str]:
+    """Build the orchestrator agent with the query_database tool."""
     provider = GoogleProvider(api_key=settings.gemini_api_key)
     model = GoogleModel(settings.gemini_model, provider=provider)
     model_settings = GoogleModelSettings(temperature=0.7, max_tokens=8192)
-    return Agent(
+
+    agent: Agent[OrchestratorDeps, str] = Agent(
         model,
         instructions=_SYSTEM_INSTRUCTION,
         model_settings=model_settings,
+        deps_type=OrchestratorDeps,
     )
 
+    @agent.tool
+    def query_database(ctx: RunContext[OrchestratorDeps], question: str) -> str:
+        """Look up live data from the PC parts catalog or builds database.
+
+        Use this tool when the user asks about specific pricing, component
+        specs, availability, comparisons, build contents, or any question
+        that requires data from the database.
+
+        Args:
+            question: The natural-language question to answer using SQL.
+
+        Returns:
+            A natural-language summary of the query results, or an error
+            message if the lookup failed.
+        """
+        return ask_sql_agent(
+            ctx.deps.db,
+            ctx.deps.settings,
+            user_question=question,
+        )
+
+    return agent
+
+# ---------------------------------------------------------------------------
+# Public entry point
+# ---------------------------------------------------------------------------
 def generate_chat_reply(
     db: "Session",
     settings: "Settings",
@@ -139,7 +200,6 @@ def generate_chat_reply(
 
     Blocked input is handled in the messages endpoint (canned ``ai_response``);
     this function is only called for messages that passed ``scan_user_message``.
-    Future agent routes should use the same guardrail helper before calling an LLM.
     """
     if not settings.gemini_api_key:
         return (
@@ -170,7 +230,8 @@ def generate_chat_reply(
 
     try:
         agent = _build_agent(settings)
-        result = agent.run_sync(user_blob)
+        deps = OrchestratorDeps(db=db, settings=settings)
+        result = agent.run_sync(user_blob, deps=deps)
         out = (result.output or "").strip()
         if out:
             return out

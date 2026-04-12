@@ -26,3 +26,6 @@ python-multipart>=0.0.9
 # https://ai.pydantic.dev/ | https://ai.pydantic.dev/models/google/
 pydantic-ai>=1.0.0
 google-genai>=1.0.0
+
+# SQL parsing / validation (text-to-SQL agent safety filter)
+sqlglot>=26.0.0
