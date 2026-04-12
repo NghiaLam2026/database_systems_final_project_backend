@@ -14,13 +14,13 @@ import logging
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 from pydantic import BaseModel
-from pydantic_ai import Agent, RunContext
+from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
 from app.models.build import Build
 from app.models.thread import Message
 from app.services.build import PART_TYPE_LABELS, get_build_detail
-from app.services.sql_agent import ask_sql_agent
+from app.tools import register_query_database
 
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
@@ -160,27 +160,7 @@ def _build_agent(settings: "Settings") -> Agent[OrchestratorDeps, str]:
         deps_type=OrchestratorDeps,
     )
 
-    @agent.tool
-    def query_database(ctx: RunContext[OrchestratorDeps], question: str) -> str:
-        """Look up live data from the PC parts catalog or builds database.
-
-        Use this tool when the user asks about specific pricing, component
-        specs, availability, comparisons, build contents, or any question
-        that requires data from the database.
-
-        Args:
-            question: The natural-language question to answer using SQL.
-
-        Returns:
-            A natural-language summary of the query results, or an error
-            message if the lookup failed.
-        """
-        return ask_sql_agent(
-            ctx.deps.db,
-            ctx.deps.settings,
-            user_question=question,
-            user_role=ctx.deps.user_role,
-        )
+    register_query_database(agent)
 
     return agent
 
