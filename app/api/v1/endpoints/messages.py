@@ -83,6 +83,7 @@ def send_message(
         thread_id=thread_id,
         message=msg,
         user_request=payload.user_request,
+        user_role=user.role.value,
     )
     db.commit()
     db.refresh(msg)

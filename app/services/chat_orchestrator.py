@@ -93,6 +93,7 @@ class OrchestratorDeps(BaseModel):
     model_config = {"arbitrary_types_allowed": True}
     db: Any          # sqlalchemy Session
     settings: Any    # app Settings
+    user_role: str   # "user" or "admin"
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -178,6 +179,7 @@ def _build_agent(settings: "Settings") -> Agent[OrchestratorDeps, str]:
             ctx.deps.db,
             ctx.deps.settings,
             user_question=question,
+            user_role=ctx.deps.user_role,
         )
 
     return agent
@@ -192,6 +194,7 @@ def generate_chat_reply(
     thread_id: int,
     message: Message,
     user_request: str,
+    user_role: str = "user",
 ) -> str:
     """
     Produce the assistant reply for this message using Pydantic AI + Gemini.
@@ -200,6 +203,12 @@ def generate_chat_reply(
 
     Blocked input is handled in the messages endpoint (canned ``ai_response``);
     this function is only called for messages that passed ``scan_user_message``.
+
+    Parameters
+    ----------
+    user_role:
+        ``"user"`` or ``"admin"``.  Passed through to the SQL agent to
+        control which tables the generated SQL may access.
     """
     if not settings.gemini_api_key:
         return (
@@ -230,7 +239,7 @@ def generate_chat_reply(
 
     try:
         agent = _build_agent(settings)
-        deps = OrchestratorDeps(db=db, settings=settings)
+        deps = OrchestratorDeps(db=db, settings=settings, user_role=user_role)
         result = agent.run_sync(user_blob, deps=deps)
         out = (result.output or "").strip()
         if out:

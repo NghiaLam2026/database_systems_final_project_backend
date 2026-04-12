@@ -8,13 +8,15 @@ Flow
    semantic layer so the model knows every table, column, relationship,
    metric, and verified-query example.
 3. The agent has a single tool — ``run_sql`` — which validates the SQL
-   (read-only check via ``sql_validator``) and executes it against
-   PostgreSQL, returning rows as dicts.
+   (read-only check + role-based table/column enforcement via
+   ``sql_validator``) and executes it against PostgreSQL, returning rows
+   as dicts.
 4. The orchestrator calls ``ask_sql_agent()`` when it needs catalog /
    build / pricing data from the database.
 """
 
 from __future__ import annotations
+
 import json
 import logging
 from decimal import Decimal
@@ -22,6 +24,7 @@ from datetime import datetime, date
 from pathlib import Path
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any
+
 from pydantic import BaseModel
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
@@ -41,6 +44,7 @@ _SEMANTIC_LAYER_PATH = Path(__file__).resolve().parents[2] / "semantic_layer.yam
 _MAX_ROWS = 50
 _MAX_RESULT_CHARS = 8_000
 
+
 # ---------------------------------------------------------------------------
 # Semantic layer loading
 # ---------------------------------------------------------------------------
@@ -49,14 +53,37 @@ def _load_semantic_layer() -> str:
     """Read the YAML file and return it as a string for the system prompt."""
     return _SEMANTIC_LAYER_PATH.read_text(encoding="utf-8")
 
+
 # ---------------------------------------------------------------------------
-# System prompt
+# System prompts (role-dependent preamble + shared body)
 # ---------------------------------------------------------------------------
+_ROLE_PREAMBLE_USER = """\
+## Access control — you are serving a **regular user**
+You may ONLY query the hardware catalog tables:
+  cpu, gpu, mobo, memory, "case", storage, cpu_cooler, psu, case_fans.
+You MUST NOT query users, builds, build_parts, threads, messages,
+documents, or document_chunks. If the user asks about those topics,
+reply that this information is not available to regular users.
+You MUST NOT select the column `password_hash` from any table.
+"""
+
+_ROLE_PREAMBLE_ADMIN = """\
+## Access control — you are serving an **admin**
+You may query all application tables: users, builds, build_parts,
+threads, messages, documents, document_chunks, and all catalog tables
+(cpu, gpu, mobo, memory, "case", storage, cpu_cooler, psu, case_fans).
+You MUST NOT select the column `password_hash` — ever.
+When querying user-related tables, always apply `deleted_at IS NULL`
+unless the admin explicitly asks about deleted records.
+"""
+
 _SQL_AGENT_SYSTEM_PROMPT = """\
 You are a **text-to-SQL specialist** embedded inside the PC Build Assistant.
 Your ONLY job is to convert the user's natural-language question into a single,
 safe, read-only PostgreSQL SELECT statement, execute it via the `run_sql` tool,
 and then present the results in a clear, conversational summary.
+
+{role_preamble}
 
 ## Rules — follow every one without exception
 1. **Read-only**: Generate ONLY `SELECT` statements. Never `INSERT`, `UPDATE`,
@@ -74,15 +101,15 @@ and then present the results in a clear, conversational summary.
    join on `part_id = <catalog_table>.id`.
 6. **Limit results**: Unless the user asks for a specific count or "all",
    add `LIMIT 25` to avoid huge result sets.
-7. **Privacy**: Never expose `password_hash`. Never query other users'
-   data unless the question is clearly administrative / aggregate.
+7. **Privacy**: Never expose `password_hash`. Never use SELECT * on the
+   users table — always list specific columns.
 8. **No fabrication**: If the data doesn't exist or the query returns no
    rows, say so honestly. Do not invent data.
 9. **Explain your answer**: After getting results from `run_sql`, summarise
    them in natural language. Include the most relevant numbers, names, and
    prices. You may use markdown tables for clarity.
 10. **If you cannot answer**: If the question cannot be answered with the
-    available schema, say so and explain what information is missing.
+    tables you have access to, say so and explain what is outside your scope.
 
 ## Workflow
 1. Read the semantic layer (provided below) to understand tables, columns,
@@ -99,14 +126,17 @@ The full semantic layer is provided below. Use it as your schema reference.
 ```
 """
 
+
 # ---------------------------------------------------------------------------
 # Dependencies dataclass (passed to tool via RunContext)
 # ---------------------------------------------------------------------------
 class SQLAgentDeps(BaseModel):
     """Runtime dependencies injected into the agent's tool context."""
     model_config = {"arbitrary_types_allowed": True}
-    db: Any  # sqlalchemy Session
+    db: Any        # sqlalchemy Session
     settings: Any  # app Settings
+    user_role: str # "user" or "admin"
+
 
 # ---------------------------------------------------------------------------
 # Result serialiser
@@ -125,17 +155,23 @@ def _serialise_value(v: Any) -> Any:
 def _rows_to_serialisable(columns: list[str], rows: list[tuple]) -> list[dict]:
     return [{c: _serialise_value(v) for c, v in zip(columns, row)} for row in rows]
 
+
 # ---------------------------------------------------------------------------
 # Build the agent and register the tool
 # ---------------------------------------------------------------------------
-def _build_sql_agent(settings: "Settings") -> Agent[SQLAgentDeps, str]:
+def _build_sql_agent(settings: "Settings", *, user_role: str) -> Agent[SQLAgentDeps, str]:
     provider = GoogleProvider(api_key=settings.gemini_api_key)
     model = GoogleModel(settings.gemini_model, provider=provider)
     model_settings = GoogleModelSettings(temperature=0.0, max_tokens=4096)
 
     semantic_layer_text = _load_semantic_layer()
-    system_prompt = _SQL_AGENT_SYSTEM_PROMPT.replace(
-        "{semantic_layer}", semantic_layer_text
+    role_preamble = (
+        _ROLE_PREAMBLE_ADMIN if user_role == "admin" else _ROLE_PREAMBLE_USER
+    )
+    system_prompt = (
+        _SQL_AGENT_SYSTEM_PROMPT
+        .replace("{role_preamble}", role_preamble)
+        .replace("{semantic_layer}", semantic_layer_text)
     )
 
     agent: Agent[SQLAgentDeps, str] = Agent(
@@ -157,7 +193,7 @@ def _build_sql_agent(settings: "Settings") -> Agent[SQLAgentDeps, str]:
             an ``error`` key if validation / execution fails.
         """
         try:
-            clean_sql = validate_sql(sql_query)
+            clean_sql = validate_sql(sql_query, user_role=ctx.deps.user_role)
         except SQLValidationError as exc:
             logger.warning("SQL validation rejected: %s — %s", sql_query[:120], exc)
             return json.dumps({"error": f"SQL rejected: {exc}"})
@@ -182,6 +218,7 @@ def _build_sql_agent(settings: "Settings") -> Agent[SQLAgentDeps, str]:
 
     return agent
 
+
 # ---------------------------------------------------------------------------
 # Public entry point
 # ---------------------------------------------------------------------------
@@ -190,13 +227,20 @@ def ask_sql_agent(
     settings: "Settings",
     *,
     user_question: str,
+    user_role: str = "user",
 ) -> str:
     """Run the text-to-SQL agent and return its final natural-language answer.
 
     Called by the orchestrator when a question requires live database data.
+
+    Parameters
+    ----------
+    user_role:
+        ``"user"`` or ``"admin"``.  Controls which tables the generated
+        SQL is allowed to touch.
     """
-    agent = _build_sql_agent(settings)
-    deps = SQLAgentDeps(db=db, settings=settings)
+    agent = _build_sql_agent(settings, user_role=user_role)
+    deps = SQLAgentDeps(db=db, settings=settings, user_role=user_role)
 
     try:
         result = agent.run_sync(user_question, deps=deps)

@@ -3,19 +3,29 @@
 Uses ``sqlglot`` to parse the SQL into an AST and inspect the statement type.
 Only SELECT statements are allowed.  Any DDL, DML, DCL, TCL, or otherwise
 destructive / state-changing SQL is rejected before it reaches the database.
+
+Role-based access
+-----------------
+- **user**: may only query the 9 catalog tables (cpu, gpu, mobo, memory,
+  case, storage, cpu_cooler, psu, case_fans).
+- **admin**: may query all application tables, but ``password_hash`` is
+  always denied.
 """
 
 from __future__ import annotations
+
 import logging
+
 import sqlglot
 from sqlglot import exp
 
 logger = logging.getLogger(__name__)
 
-# AST node types that represent read-only queries
+# ---------------------------------------------------------------------------
+# Statement-level rules (same for all roles)
+# ---------------------------------------------------------------------------
 _ALLOWED_NODES: frozenset[type[exp.Expression]] = frozenset({exp.Select})
 
-# AST node types that must never appear anywhere in the tree
 _FORBIDDEN_NODES: tuple[type[exp.Expression], ...] = (
     exp.Insert,
     exp.Update,
@@ -32,8 +42,10 @@ _FORBIDDEN_NODES: tuple[type[exp.Expression], ...] = (
     exp.Set,
 )
 
-# Table names that must never be accessed
-_FORBIDDEN_TABLES: frozenset[str] = frozenset({
+# ---------------------------------------------------------------------------
+# System tables — always blocked regardless of role
+# ---------------------------------------------------------------------------
+_SYSTEM_TABLES: frozenset[str] = frozenset({
     "pg_catalog",
     "pg_stat_activity",
     "pg_roles",
@@ -42,19 +54,55 @@ _FORBIDDEN_TABLES: frozenset[str] = frozenset({
     "information_schema",
 })
 
+# ---------------------------------------------------------------------------
+# Role-based table allowlists
+# ---------------------------------------------------------------------------
+_CATALOG_TABLES: frozenset[str] = frozenset({
+    "cpu", "gpu", "mobo", "memory", "case",
+    "storage", "cpu_cooler", "psu", "case_fans",
+})
+
+_APP_TABLES: frozenset[str] = frozenset({
+    "users", "builds", "build_parts",
+    "threads", "messages",
+    "documents", "document_chunks",
+})
+
+_USER_ALLOWED_TABLES: frozenset[str] = _CATALOG_TABLES
+_ADMIN_ALLOWED_TABLES: frozenset[str] = _CATALOG_TABLES | _APP_TABLES
+
+# ---------------------------------------------------------------------------
+# Column denylist — always blocked regardless of role
+# ---------------------------------------------------------------------------
+_DENIED_COLUMNS: frozenset[str] = frozenset({
+    "password_hash",
+})
+
+
 class SQLValidationError(Exception):
     """Raised when the generated SQL fails safety checks."""
 
-def validate_sql(sql: str) -> str:
+
+def validate_sql(sql: str, *, user_role: str = "user") -> str:
     """Return the cleaned SQL string, or raise ``SQLValidationError``.
+
+    Parameters
+    ----------
+    sql:
+        Raw SQL string from the LLM.
+    user_role:
+        ``"user"`` or ``"admin"``.  Controls which tables are accessible.
 
     Steps
     -----
     1. Strip leading/trailing whitespace and trailing semicolons.
     2. Parse with ``sqlglot`` using the ``postgres`` dialect.
     3. Must yield exactly one statement whose root is a SELECT.
-    4. Walk the entire AST — reject if any forbidden node type is found.
-    5. Inspect referenced table names — reject system catalogs.
+    4. Reject SELECT … INTO.
+    5. Walk the entire AST — reject if any forbidden node type is found.
+    6. Inspect referenced table names — reject system catalogs and tables
+       outside the caller's role allowlist.
+    7. Inspect referenced column names — reject denied columns.
     """
     cleaned = sql.strip().rstrip(";").strip()
     if not cleaned:
@@ -81,7 +129,6 @@ def validate_sql(sql: str) -> str:
             f"Got: {type(tree).__name__}."
         )
 
-    # Reject SELECT … INTO (creates a new table from a SELECT)
     if tree.find(exp.Into):
         raise SQLValidationError(
             "SELECT INTO is not allowed (it creates a new table)."
@@ -93,15 +140,46 @@ def validate_sql(sql: str) -> str:
                 f"SQL contains a forbidden operation: {type(node).__name__}."
             )
 
+    # --- Table checks (system + role-based) ---
+    allowed_tables = (
+        _ADMIN_ALLOWED_TABLES if user_role == "admin" else _USER_ALLOWED_TABLES
+    )
+
     for table in tree.find_all(exp.Table):
         table_name = (table.name or "").lower()
         catalog = (table.catalog or "").lower()
         db = (table.db or "").lower()
+
         for part in (table_name, catalog, db):
-            if part in _FORBIDDEN_TABLES:
+            if part in _SYSTEM_TABLES:
                 raise SQLValidationError(
                     f"Access to system table/schema '{part}' is not allowed."
                 )
 
-    logger.info("SQL validation passed: %.120s…", cleaned)
+        if table_name and table_name not in allowed_tables:
+            raise SQLValidationError(
+                f"Access to table '{table_name}' is not allowed for your role."
+            )
+
+    # --- Column denylist ---
+    for col in tree.find_all(exp.Column):
+        col_name = (col.name or "").lower()
+        if col_name in _DENIED_COLUMNS:
+            raise SQLValidationError(
+                f"Access to column '{col_name}' is not allowed."
+            )
+
+    # Block SELECT * when any referenced table contains denied columns
+    if tree.find(exp.Star):
+        referenced = {
+            (t.name or "").lower() for t in tree.find_all(exp.Table)
+        }
+        if "users" in referenced:
+            raise SQLValidationError(
+                "SELECT * is not allowed when the users table is referenced "
+                "(it would expose sensitive columns). "
+                "List specific columns instead."
+            )
+
+    logger.info("SQL validation passed (role=%s): %.120s…", user_role, cleaned)
     return cleaned
