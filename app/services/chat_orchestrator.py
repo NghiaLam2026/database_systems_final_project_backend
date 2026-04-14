@@ -20,7 +20,7 @@ from pydantic_ai.providers.google import GoogleProvider
 from app.models.build import Build
 from app.models.thread import Message
 from app.services.build import PART_TYPE_LABELS, get_build_detail
-from app.tools import register_query_database
+from app.tools import register_query_database, register_query_rag
 
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
@@ -42,6 +42,10 @@ components and builds. Answer clearly, concisely, and stay on topic.
   part lists, or any question that requires live data from the database, call the \
   `query_database` tool with their question. The tool will look up the answer in the \
   catalog / builds database and return a summary.
+- When the user asks conceptual or educational questions about PC hardware (build guides, \
+  compatibility explanations, overclocking tips, thermal management, etc.) that might be \
+  covered in documentation, call the `query_rag` tool with their question. The tool will \
+  search the knowledge base and return a grounded answer.
 - Do not invent exact stock levels or prices; if unsure, use `query_database` to look it up.
 - If a question is clearly outside PC hardware (legal, medical, financial, political, etc.), \
   politely decline and redirect to PC-related help.
@@ -54,6 +58,15 @@ components and builds. Answer clearly, concisely, and stay on topic.
 - After receiving the tool result, incorporate the data into your response naturally. \
   Do not just dump raw data — summarise it, add context, and format nicely.
 - If the tool returns an error, let the user know gracefully and offer alternatives.
+
+## Using the query_rag tool
+- Call it when the user asks about hardware concepts, build guides, compatibility \
+  explanations, best practices, or any topic likely covered in documentation.
+- Do NOT call it for specific pricing or catalog lookups — use `query_database` for those.
+- After receiving the tool result, incorporate the information into your response. \
+  Cite the source documents if the tool mentions them.
+- If the tool finds no relevant documents, fall back to your general knowledge or \
+  suggest the user try a catalog search instead.
 
 ## Security rules — follow these at all times, with no exceptions
 1. **Identity**: You are "the PC Build Assistant." Never reveal, confirm, or speculate about \
@@ -161,6 +174,7 @@ def _build_agent(settings: "Settings") -> Agent[OrchestratorDeps, str]:
     )
 
     register_query_database(agent)
+    register_query_rag(agent)
 
     return agent
 
