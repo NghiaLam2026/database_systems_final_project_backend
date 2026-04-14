@@ -29,3 +29,6 @@ google-genai>=1.0.0
 
 # SQL parsing / validation (text-to-SQL agent safety filter)
 sqlglot>=26.0.0
+
+# Web content extraction (used for ingesting documents from URLs)
+trafilatura>=2.0.0
