@@ -47,6 +47,23 @@ class Settings(BaseSettings):
         description="Gemini model id for Pydantic AI GoogleModel (e.g. gemini-2.5-flash).",
     )
 
+    # Ollama (local embedding model)
+    ollama_base_url: str = Field(
+        default="http://localhost:11434",
+        alias="OLLAMA_BASE_URL",
+        description="Base URL for the Ollama server used for local embeddings.",
+    )
+    embedding_model: str = Field(
+        default="qwen3-embedding:8b",
+        alias="EMBEDDING_MODEL",
+        description="Ollama model id for text embeddings (e.g. qwen3-embedding:8b, qwen3-embedding:0.6b).",
+    )
+    embedding_dimensions: int = Field(
+        default=768,
+        alias="EMBEDDING_DIMENSIONS",
+        description="Output dimensionality for embeddings (MRL truncation). Must match DB vector column width.",
+    )
+
     # Chat input guardrails (block before LLM; see app.services.chat_guardrails)
     chat_guardrail_enabled: bool = Field(default=True, alias="CHAT_GUARDRAIL_ENABLED")
     chat_guardrail_extra_phrases: str | None = Field(

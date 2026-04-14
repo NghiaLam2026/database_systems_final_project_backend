@@ -1,8 +1,12 @@
 """Ingest text/markdown documents into the RAG vector store.
 
 Reads files from ``data/documents/``, splits them into overlapping chunks,
-generates embeddings via Gemini ``gemini-embedding-001``, and upserts into
-the ``documents`` + ``document_chunks`` tables.
+generates embeddings via a local Ollama model (default: ``qwen3-embedding:8b``),
+and upserts into the ``documents`` + ``document_chunks`` tables.
+
+Prerequisites:
+    1. Ollama must be installed and running (``ollama serve``).
+    2. Pull the embedding model: ``ollama pull qwen3-embedding:8b``
 
 Usage:
     python -m scripts.ingest_documents                   # ingest all files

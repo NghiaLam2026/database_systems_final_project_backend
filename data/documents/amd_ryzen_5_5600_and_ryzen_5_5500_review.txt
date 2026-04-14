@@ -1,0 +1,47 @@
+Tom's Hardware Verdict
+The Ryzen 5 5600 and Ryzen 5 5500 bring a new level of value to the Zen 3 lineup and could make a great value-centric update if you're updating a first-gen Ryzen system, but competing Intel Alder Lake processors are a better deal for new builds.
+Pros
+Competent gaming and application performance
+Solid upgrade path for Ryzen 1000 owners
+Bundled CPU Cooler
+Overclockable
+Broad support with 300-series motherboards
+Cons
+Value prop is poor vs Intel chips
+No integrated GPU
+5500 only supports PCIe 3.0
+Why you can trust Tom's Hardware
+Intel's competitive Alder Lake chips have upset AMD's dominance with its Ryzen processors, particularly in the lower price ranges, but the new $199 six-core 12-thread Ryzen 5 5600 and $159 Ryzen 5 5500 are designed to plug key gaps in the company's portfolio. These new chips come as part of AMD's broader launch of seven new Ryzen 5000 models that aim to shore up the company's rankings in CPU benchmarks and retake its position on the Best CPUs for gaming list.
+AMD's Ryzen 5000 chips fully eclipsed Intel's performance lead in desktop PCs when they launched back in 2020, but the company has long neglected to launch any sub-$250 chips with the potent Zen 3 architecture. That's kept the bar for entry unattainably high for value seekers.
+AMD's new chips are long overdue, arriving a year and a half after the first wave of Ryzen 5000 chips, but they’re badly needed. Intel’s Alder Lake launch caught AMD uncharacteristically flat-footed, wresting away AMD’s performance lead. Intel’s aggressive pricing also brought superior value in every price range while exploiting AMD’s glaring lack of any sub-$250 Zen 3 chips.
+AMD's solution is pretty simple: The company is bringing back its non-X models, but with a twist. As a reminder, AMD's non-X models are the lower-cost and lower-performing versions of the 'X' models (like the Ryzen 5 5600X), but they have historically offered nearly the same performance as their counterparts, particularly after overclocking. AMD is also putting a new spin on the practice: Some of these new models, like the Ryzen 5 5500, are repurposed APUs with a disabled integrated GPU.
+| Header Cell - Column 0 | Price Street/MSRP | Design - Arch. | E/P – Core|Thread | P-Core Base/Boost (GHz) | TDP / PBP / MTP | L3 Cache |
+|---|---|---|---|---|---|---|
+| Ryzen 7 5800X3D | $449 | Zen 3 - Vermeer | 8P | 16T | 3.4 / 4.5 | 105W | 96MB |
+| Ryzen 7 5700X | $299 | Zen 3 - Vermeer | 8P | 16T | 3.4 / 4.6 | 65W | 32MB |
+| Ryzen 5 5600 | $199 | Zen 3 - Vermeer | 6P|12T | 3.5 / 4.4 | 65W | 32MB |
+| Ryzen 5 5500 | $159 | Zen 3 - Cezanne | 6P | 12T | 3.6 / 4.2 | 65W | 16MB |
+| Ryzen 5 4600G | $154 | Zen 2 - Renoir | 6P | 12T | 3.7 / 4.2 | 65W | 8MB |
+| Ryzen 5 4500 | $129 | Zen 2 - Renoir | 6P | 12T | 3.6 / 4.1 | 65W | 8MB |
+| Ryzen 3 4100 | $99 | Zen 2 - Renoir | 4P | 8T | 3.8 / 4.0 | 65W | 4MB |
+The four new non-X models are designed to respond to Intel's commanding lead on the low end, and AMD has also slashed pricing on its existing Ryzen 5000 models. AMD is even enabling support for Ryzen 5000 chips on older 300-series motherboards, opening up a value option that’s a good fit for the new low-end Ryzen lineup. Here's how AMD's new mainstream contenders stack up.
+AMD Ryzen 5 5600 and 5500 Specifications and Pricing
+| Header Cell - Column 0 | Price - Street/MSRP | Design - Arch. | E/P – Core|Thread | P-Core Base/Boost (GHz) | E-Core Base/Boost (GHz) | TDP / PBP / MTP | Memory Support | L3 Cache |
+|---|---|---|---|---|---|---|---|---|
+| Ryzen 5 5600X | $230 ($299) | Zen 3 - Vermeer | 6P | 12T | 3.7 / 4.6 | - | 65W | DDR4-3200 | 32MB |
+| Ryzen 5 5600G (APU) | $220 ($259 ) | Zen 3 - Cezanne | 6P | 12T | 3.9 / 4.4 | - | 65W | DDR4-3200 | 16MB |
+| Ryzen 5 5600 | $199 | Zen 3 - Vermeer | 6P|12T | 3.5 / 4.4 | - | 65W | DDR4-3200 | 32MB |
+| Core i5-12400 / F | $192 - $167 (F) | Alder Lake | 6P+0E | 6C/12T | 4.4 / 2.5 | - | 65W / 117W | DDR4/5-3200/4800 | 18MB |
+| Ryzen 5 3600X | $250 ($240) | Zen 2 | 6P | 12T | 3.8 / 4.4 | - | 95W | DDR4-3200 | 32MB |
+| Ryzen 5 3600 | $229 ($200) | Zen 2 | 6P | 12T | 3.6 / 4.2 | - | 65W | DDR4-3200 | 32MB |
+| Ryzen 5 5500 | $159 | Zen 3 - Cezanne | 6P | 12T | 3.6 / 4.2 | - | 65W | DDR4-3200 | 16MB |
+| Ryzen 5 4600G (APU) | $154 | Zen 2 - Renoir | 6P | 12T | 3.7 / 4.2 | - | 65W | DDR4-3200 | 8MB |
+| Core i3-12100 / F | $122 - $97 (F) | Alder Lake | 4P+0E | 4C/8T | 3.3 / 4.3 | - | 60W / 89W | DDR4/5-3200/4800 | 12MB |
+The Ryzen 5 5600 and 5500 have drastically different designs, but there are a few commonalities. Like their more full-fledged counterparts, both chips come with a bundled Wraith Stealth cooler that is sufficient for stock operation. They also support up to DDR4-3200 memory. In addition, these chips are fully unlocked for overclocking the CPU cores, memory, and fabric. In contrast, Intel's non-K models only support memory overclocking, and the company's nonsensical decision to keep certain voltages locked restricts DDR4 overclocking headroom.
+The $199 Ryzen 5 5600 is a new Vermeer model, meaning it comes with the standard chiplet-based Zen 3 architecture. This chip is the long-awaited and badly-needed ‘non-X’ version of the Ryzen 5 5600X, so it shares the same feature set, albeit with reduced clocks. The 5600 has a 3.5 GHz base and 4.4 GHz boost, so you're only losing 200 MHz for the base and boost clock rate compared to the 5600X. This chip will grapple with Intel’s popular Core i5-12400.
+For its lowest-end Zen 3 chip, the $159 Ryzen 5 5500 finds AMD employing a new tactic of repurposing its monolithic (single-chip) Cezanne silicon that it typically uses for APUs, but the company has disabled the chip’s integrated Radeon Vega graphics engine. This six-core 12-thread chip slots in to compete with Intel's graphics-less $167 Core i5-12400F.
+Aside from the disabled iGPU, the 5500 has the same design as the Ryzen 5 5600G, including support for PCIe 3.0 instead of PCIe 4.0. As a result, this chip will make a great pairing for older, lower-end AM4 motherboards (you definitely don’t want to pay for functionality you don’t need by pairing it with a PCIe 4.0-supporting motherboard).
+The 5500 is very similar to the 5600G that has the same architecture, but an active iGPU — there’s only a 200 MHz difference in CPU base/boost clock rates between the two chips. Like its counterpart, the Ryzen 5 5500 also comes with 16MB of cache, half that of the chiplet-based Ryzen 5 5600 that has the same number of cores and threads. This will result in reduced performance in several workloads.
+The Ryzen 5 5600 and Ryzen 5 5500 would make great pairings for inexpensive 300- and 400-series motherboards. These chips are already supported on 400-series boards, and as of AGESA version 1207, most 300-series motherboards will support Zen 3 Ryzen 5000 processors after a BIOS update (make sure the BIOS has AGESA 1207 or newer). AMD says that Ryzen 5000 support will vary by vendor, as will the timeline for new BIOS revisions. However, we should see the updates arrive in the April-May timeframe. Notably, these BIOS revisions will also include the fix for AMD’s fTPM stuttering issues. Let's move on to the CPU benchmarks.
+Current page: The Non-X Factor
+Next Page AMD Ryzen 5 5600 and 5500 Power Consumption, Efficiency and Test Setup-

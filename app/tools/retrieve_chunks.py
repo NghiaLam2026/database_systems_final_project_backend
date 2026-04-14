@@ -1,8 +1,9 @@
 """retrieve_chunks tool — vector-similarity search over document chunks.
 
-Used by the RAG agent. Embeds the user's question with
-``RETRIEVAL_QUERY`` task type, then runs a hardcoded pgvector cosine
-similarity query.  No LLM-generated SQL — the query is fully static.
+Used by the RAG agent. Embeds the user's question via the local Ollama
+embedding model with ``RETRIEVAL_QUERY`` task type, then runs a hardcoded
+pgvector cosine-similarity query.  No LLM-generated SQL — the query is
+fully static.
 """
 
 from __future__ import annotations
