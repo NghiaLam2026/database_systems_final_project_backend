@@ -68,13 +68,28 @@ def register(agent: Agent) -> None:
             rows = result.fetchmany(_MAX_ROWS)
             data = _rows_to_serialisable(columns, rows)
 
-            payload = json.dumps(
-                {"columns": columns, "rows": data, "row_count": len(data)},
+            # Progressively drop trailing rows until the payload fits,
+            # so the LLM always receives valid JSON.
+            truncated = False
+            while data:
+                payload = json.dumps(
+                    {
+                        "columns": columns,
+                        "rows": data,
+                        "row_count": len(data),
+                        "truncated": truncated,
+                    },
+                    default=str,
+                )
+                if len(payload) <= _MAX_RESULT_CHARS:
+                    return payload
+                data = data[: len(data) // 2]
+                truncated = True
+
+            return json.dumps(
+                {"columns": columns, "rows": [], "row_count": 0, "truncated": True},
                 default=str,
             )
-            if len(payload) > _MAX_RESULT_CHARS:
-                payload = payload[:_MAX_RESULT_CHARS] + '…(truncated)"}'
-            return payload
         except Exception as exc:
             logger.exception("SQL execution failed: %s", clean_sql[:120])
             return json.dumps({"error": f"Query execution failed: {exc}"})

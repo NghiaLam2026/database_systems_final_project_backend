@@ -37,7 +37,7 @@ class DocumentChunk(Base):
     )
     chunk_text: Mapped[str] = mapped_column(Text, nullable=False)
     embedding = mapped_column(
-        Vector(),
+        Vector(768),
         nullable=True,
     )
     meta: Mapped[dict | None] = mapped_column("metadata", JSON, nullable=True)
