@@ -12,6 +12,7 @@ Usage:
 """
 
 import argparse
+import json
 import sys
 from pathlib import Path
 import sqlalchemy as sa
@@ -66,6 +67,16 @@ def _discover_files(names: list[str] | None) -> list[Path]:
         if p.is_file() and p.suffix.lower() in _SUPPORTED_EXTENSIONS
     )
 
+def _load_sidecar(file_path: Path) -> dict | None:
+    """Load the ``.meta.json`` sidecar written by ``get_documents``, if present."""
+    meta_path = file_path.with_suffix(file_path.suffix + ".meta.json")
+    if not meta_path.exists():
+        return None
+    try:
+        return json.loads(meta_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+
 def ingest_file(
     engine: sa.Engine,
     settings,
@@ -81,6 +92,11 @@ def ingest_file(
         print(f"  [skip] {file_path.name} is empty")
         return 0
 
+    sidecar = _load_sidecar(file_path)
+    source_url = sidecar.get("source_url") if sidecar else None
+    if sidecar:
+        print(f"  [meta] source: {source_url or '(none)'}")
+
     chunks = _chunk_text(text, chunk_size, overlap)
     print(f"  {file_path.name}: {len(text)} chars -> {len(chunks)} chunks")
 
@@ -91,6 +107,11 @@ def ingest_file(
         if len(chunks) > 3:
             print(f"    ... and {len(chunks) - 3} more")
         return len(chunks)
+
+    doc_meta = {"path": str(file_path.relative_to(DATA_DIR))}
+    if sidecar:
+        doc_meta["fetched_at"] = sidecar.get("fetched_at")
+        doc_meta["flags"] = sidecar.get("flags")
 
     print(f"  Embedding {len(chunks)} chunks...")
     vectors = embed_texts(chunks, settings, task_type="RETRIEVAL_DOCUMENT")
@@ -106,12 +127,16 @@ def ingest_file(
                 DocumentChunk.document_id == existing.id
             ).delete()
             doc = existing
+            doc.url = source_url
+            doc.source = "web" if source_url else "file"
+            doc.meta = doc_meta
             print(f"  Replacing existing document (id={doc.id})")
         else:
             doc = Document(
                 title=file_path.name,
-                source="file",
-                meta={"path": str(file_path.relative_to(DATA_DIR))},
+                source="web" if source_url else "file",
+                url=source_url,
+                meta=doc_meta,
             )
             session.add(doc)
             session.flush()

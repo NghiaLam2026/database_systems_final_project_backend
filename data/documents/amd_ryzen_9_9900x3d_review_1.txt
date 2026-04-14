@@ -1,0 +1,47 @@
+Tom's Hardware Verdict
+The $600 Ryzen 9 9900X3D is the fastest 12-core gaming chip on the market, but its high price point exposes it to competition from both higher- and lower-cost chips, making it hard to recommend unless it sees a significant price cut.
+Pros
+Fastest 12-core chip in gaming
+Productivity performance
+Fully overclockable
+Energy efficient under load
+AVX-512 support
+Cons
+Pricing makes other 3D V-Cache processors the better alternative
+Behaves like a 6-core X3D CPU for gaming
+High idle power consumption
+Why you can trust Tom's Hardware
+The $600 12-core Ryzen 9 9900X3D slots into AMD's 9000 X3D product stack as a midrange alternative between the current best CPU for gaming, the eight-core $480 Ryzen 7 9800X3D, and the company's flagship 16-core $700 Ryzen 9 9950X3D. The Ryzen 9 9900X3D leverages the same game-boosting 3D V-Cache technology as its X3D counterparts to deliver impressive Intel-beating gaming performance while still maintaining most of its performance potential in productivity applications, thus reducing the trade-offs of selecting one of AMD's gaming-specific processors. But not all of the news is good.
+AMD has been curiously reluctant for the press to test the Ryzen 9 9900X3D — it didn't sample the chip to press, so we had to purchase it at retail. Sure, the prior-gen Ryzen 7 7900X3D wasn't received well, but AMD claimed that some of the issues with the prior-gen model have been resolved with this generation, such as reducing the performance chasm between the Ryzen 9 X3D models, and saying that the 99000X3D beats the prior-gen 16-core 32-thread flagship 7950X3D in gaming. We've put those claims to the test.
+Intel isn't much of a contender, as it faces a vexing issue with its latest lineup of chips — it has no single chip that can compete with the Ryzen 9000X3D processors in both gaming and productivity work. The new Core Ultra chips aren't as fast as their prior-gen counterparts in gaming, but they serve up impressive performance in productivity applications. As a result, the $620 Intel Core Ultra 9 285K is 23% faster in multi-threaded productivity tasks than the 9900X3D, but the 9900X3D is 28% faster in gaming. Meanwhile, the prior-gen $445 Core i9-14900K shaves away some of the deficit, but the 9900X3D is still 18% faster in gaming.
+CPU | Street (MSRP) | Arch | Cores / Threads (P+E) | P-Core Base / Boost Clock (GHz) | Cache (L2/L3) | TDP / PBP or MTP | Memory |
+|---|---|---|---|---|---|---|---|
+Ryzen 9 9950X3D | $699 | Zen 5 X3D | 16 / 32 | 4.3 / 5.7 | 144 MB (16+128) | 170W / 230W | DDR5-5600 |
+$545 ($599) | Zen 5 | 16 / 32 | 4.3 / 5.7 | 80MB (16+64) | 170W / 230W | DDR5-5600 | |
+Ryzen 9 9900X3D | $599 | Zen 5 X3D | 12 / 24 | 4.4 / 5.5 | 140 (12+128) | 120W /162W | DDR5-5600 |
+Ryzen 7 9800X3D | $480 | Zen 5 X3D | 8 / 16 | 4.7 / 5.2 | 104MB (8+96) | 120W / 162W | DDR5-5600 |
+$380 ($469) | Zen 5 | 12 / 24 | 4.4 / 5.6 | 76MB (12+64) | 120W / 162W | DDR5-5600 | |
+$289 ($329) | Zen 5 | 8 / 16 | 3.8 / 5.5 | 40MB (8+32) | 65W / 88W / 105W | DDR5-5600 |
+AMD's goal is to master both disciplines — gaming and productivity — with its dual-chiplet X3D processors, but that's a challenge. To build on the success of the first-gen models, the company altered its underlying 3D V-Cache design and refined its chipset drivers to deliver more accurate thread scheduling. AMD also added full overclocking support this time around, which we’ve tested, allowing you to eke out more performance in gaming and productivity work.
+If you're looking for a quick take on performance, see the image album below, which breaks down performance in gaming and productivity applications. These overall measurements are backed up by our benchmarks and power testing on the following pages, so be sure to check those out. As you can see, the Ryzen 9 9900X3D is compelling, but its counterparts retain distinct advantages.
+That makes the 9900X3D a better all-rounder than any competing Intel chips, but its real competition comes from within AMD's own lineup. Just as we saw with the last-gen model, the Ryzen 9 9900X3D faces a conundrum due to its price point. Let's quickly look at the 900X3D's specs, then move on to the benchmarks.
+AMD Ryzen 9 9900X3D Pricing and Specifications
+CPU | Street (MSRP) | Arch | Cores / Threads (P+E) | P-Core Base / Boost Clock (GHz) | E-Core Base / Boost Clock (GHz) | Cache (L2/L3) | TDP / PBP or MTP | Memory |
+|---|---|---|---|---|---|---|---|---|
+Ryzen 9 9950X3D | $699 | Zen 5 X3D | 16 / 32 | 4.3 / 5.7 | — | 144 MB (16+128) | 170W / 230W | DDR5-5600 |
+$740 ($699) | Zen 4 X3D | 16 / 32 | 4.2 / 5.7 | — | 144MB (16+128) | 120W / 162W | DDR5-5200 | |
+$545 ($599) | Zen 5 | 16 / 32 | 4.3 / 5.7 | — | 80MB (16+64) | 170W / 230W | DDR5-5600 | |
+$620 ($589) | Arrow Lake | 24 / 24 (8+16) | 3.7 / 5.7 | 3.2 / 4.6 | 76MB (40+36) | 125W / 250W | CUDIMM DDR5-6400 / DDR5-5600 | |
+Ryzen 9 9900X3D | $599 | Zen 5 X3D | 12 / 24 | 4.4 / 5.5 | — | 140MB (12+128) | 120W / 162W | DDR5-5600 |
+$740 ($599) | Zen 4 X3D | 12 / 24 | 4.4 / 5.6 | — | 140MB (12+128) | 120W / 162W | DDR5-5200 | |
+Ryzen 7 9800X3D | $480 | Zen 5 X3D | 8 / 16 | 4.7 / 5.2 | — | 104MB (8+96) | 120W / 162W | DDR5-5600 |
+$450 ($449) | Zen 4 X3D | 8 / 16 | 4.2 / 5.0 | — | 104MB (8+96) | 120W / 162W | DDR5-5200 | |
+$380 ($469) | Zen 5 | 12 / 24 | 4.4 / 5.6 | — | 76MB (12+64) | 120W / 162W | DDR5-5600 | |
+$365 ($394) / $339 ($379) | Arrow Lake | 20 / 20 (8+12 | 3.9 / 5.5 | 3.3 / 4.6 | 66MB (36+30) | 125W / 250W | CUDIMM DDR5-6400 / DDR5-5600 | |
+$289 ($329) | Zen 5 | 8 / 16 | 3.8 / 5.5 | — | 40MB (8+32) | 65W / 88W / 105W | DDR5-5600 |
+As with the prior-gen Ryzen 9 7000X3D chips, the new 9900X3D uses two compute dies, with one die featuring a 3D-stacked V-Cache chiplet that increases L3 cache capacity to 128 MB. The 9900X3D's standard chiplet boosts to higher frequencies to deliver more performance in both single- and multi-threaded tasks. Overall, the Ryzen 9 9900X3D is built on the same foundation as the Ryzen 9 9900X; it just has a single L3 SRAM chiplet placed under one of the compute dies.
+The Zen 5-powered Ryzen 9 9900X3D has 12 active cores and 24 threads spread evenly across the two compute chiplets (six active cores and two deactivated cores per chiplet). AMD's newly-revamped chipset drivers, which we covered in depth here, do a better job of pinning the gaming code to the single compute die with the cache.
+While gaming, this technique essentially creates a six-core 12-thread processor with 3D V-Cache. Meanwhile, both the 9950X3D and 9800X3D operate as eight-core 16-thread chips while gaming, so they obviously have an inherent advantage in gaming performance, which is reflected in our benchmarks.
+The 9900X3D's other cores kick in during productivity work, giving you 12 cores and 24 threads to chew through more computationally demanding work faster than you can with the eight-core 9800X3D. That said, the 9950X3D remains the king of the X3D hill for productivity work with its 16-core 32-thread design.
+The 9900X3D has 140 MB of total cache and a peak boost clock rate of 5.5 GHz, a 100 MHz decline compared to the prior-gen Ryzen 9 7900X3D. Both chips have the same 5.5 GHz base clock. Like its predecessor, the 9900X3D has a 120W TDP and a 162W PPT (maximum power draw). We have extensive power testing on the following pages as well.
+Let's move on to the gaming, productivity, and workstation benchmarks on the following pages.

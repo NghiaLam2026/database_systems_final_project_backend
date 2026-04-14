@@ -1,0 +1,62 @@
+Tom's Hardware Verdict
+The Ryzen 7 7800X3D is the fastest gaming chip available and easily beats more expensive competitors from both Intel and AMD's own lineup. At an affordable $449 price point that will surely be reduced in the future, the Ryzen 7 7800X3D is the gaming chip to beat.
+Pros
+Fastest gaming chip
+Modern platform
+More auto overclocking support
+Low power consumption, excellent efficiency
+PCIe 5.0
+Cons
+No support for DDR4 memory
+Reduced performance in productivity apps
+No direct multiplier-based overclocking
+Expensive AM5 ecosystem
+Why you can trust Tom's Hardware
+The $449 eight-core Ryzen 7 7800X3D is the new high-performance gaming champion for the desktop PC. Even though the Ryzen 7 7800X3D is much less expensive than its competitors, it’s still 12% faster in gaming on average than Intel’s $580 flagship Core i9-13900K and up to 40% faster in some titles, and it also beats the fastest gaming CPU currently available — AMD’s own $699 16-core Ryzen 9 7950X3D.
+AMD’s exotic second-gen 3D V-Cache tech powers the 7800X3D’s incredible gaming performance by boosting the chips' L3 cache capacity to an incredible 96MB via a 3D-stacked chiplet, assuring it a top spot on our list of the best CPUs for gaming.
+The Ryzen 7 7800X3D has big shoes to fill — the first-gen 3D V-Cache (X3D) chip, the Zen 3-powered Ryzen 7 5800X3D, has become the go-to chip for high-performance gaming at an accessible price point, and it continues to be a favorite. Like its predecessor, the Ryzen 7 7800X3D is specifically designed to blast through CPU-limited games with previously-unseen levels of performance, but the tech doesn’t accelerate all games and can result in lower performance in some productivity applications than the standard Ryzen 7000 models.
+| Price | Cores / Threads (P+E) | P-Core Base / Boost Clock (GHz) | Cache (L2/L3) | TDP / PBP / MTP |
+|---|---|---|---|---|---|
+Ryzen 9 7950X3D | $699 | 16 / 32 | 4.2 / 5.7 | 144MB (16+128) | 120W / 162W |
+Ryzen 9 7900X3D | $599 | 12 / 24 | 4.4 / 5.6 | 140MB (12+128) | 120W / 162W |
+Ryzen 7 7800X3D | $449 | 8 /16 | 4.2 / 5.0 | 104MB (8+96) | 120W / 162W |
+Ryzen 7 5800X3D | $319 | 8 /16 | 3.4 / 4.5 | 104MB (8+96) | 105W |
+However, while the 5800X3D used the Zen 3 architecture and 7nm process, the 5nm Ryzen 7 7800X3D comes with the newer Zen 4 architecture and a much higher 5.0 GHz peak boost, helping to assure a more steady blend of performance in productivity workloads. AMD has also unlocked the 7800X3D for basic overclocking and undervolting, another advantage over the prior-gen model.
+Simplicity is a key advantage for the Ryzen 7 7800X3D. AMD broadened its X3D family with the Zen-4 powered $699 16-core Ryzen 9 7950X3D and $599 12-core Ryzen 9 7900X3D. These heftier models deliver incredible gaming performance in tandem with more cores for the productivity minded, but they have multiple compute chiplets that require AMD’s innovative new thread-targeting tech to extract the best performance. In contrast, the Ryzen 7 7800X3D has a single compute chiplet and should provide more of a plug-and-play experience that doesn’t require additional thread-targeting/software handholding.
+Simple, fast, and efficient is the goal, and AMD's chip mostly delivers on those goals. If peak gaming performance is your only concern and you have the budget, we found that the Ryzen 7 7800X3D doesn’t leave much room for any other chip — it stands far above the rest. That said, Intel isn't sitting idly on the sideline, either, as its Raptor Lake alternatives offer their own advantages. Let’s see how the chips stack up in our gaming benchmarks on the following pages.
+AMD Ryzen 7 7800X3D Pricing and Specifications
+| Street/MSRP | Cores / Threads (P+E) | P-Core Base / Boost Clock (GHz) | E-Core Base / Boost Clock (GHz) | Cache (L2/L3) | TDP / PBP / MTP | Memory |
+|---|---|---|---|---|---|---|---|
+Ryzen 9 7950X3D | $699 | 16 / 32 | 4.2 / 5.7 |
+| 144MB (16+128) | 120W / 162W | DDR5-5200 |
+Core i9-13900KS | $699 | 24 / 32 (8+16) | 3.0 / 6.0 | 2.2 / 4.3 | 68MB (32+36) | 150W / 253W / 320W | DDR4-3200 / DDR5-5600 |
+Core i9-13900K / KF | $580 (K) - $554 (KF) | 24 / 32 (8+16) | 3.0 / 5.8 | 2.2 / 4.3 | 68MB (32+36) | 125W / 253W | DDR4-3200 / DDR5-5600 |
+Ryzen 9 7950X | $579 ($699) | 16 / 32 | 4.5 / 5.7 | - | 80MB (16+64) | 170W / 230W | DDR5-5200 |
+Ryzen 9 7900X3D | $599 | 12 / 24 | 4.4 / 5.6 |
+| 140MB (12+128) | 120W / 162W | DDR5-5200 |
+Ryzen 9 7900X | $430 ($549) | 12 / 24 | 4.7 / 5.6 | - | 76MB (12+64) | 170W / 230W | DDR5-5200 |
+Core i7-13700K / KF | $417 (K) - $384 (KF) | 16 / 24 (8+8) | 3.4 / 5.4 | 2.5 / 4.2 | 54MB (24+30) | 125W / 253W | DDR4-3200 / DDR5-5600 |
+Ryzen 7 7800X3D | $449 | 8 /16 | 4.2 / 5.0 |
+| 104MB (8+96) | 120W / 162W | DDR5-5200 |
+Ryzen 7 5800X3D | $319 ($449) | 8 /16 | 3.4 / 4.5 |
+| 104MB (8+96) | 105W | DDR4-3200 |
+Ryzen 7 7700X | $340 ($399) | 8 /16 | 4.5 / 5.4 | - | 40MB (8+32) | 105W / 142W | DDR5-5200 |
+AMD foreshadowed the arrival of the Ryzen 7 7800X3D when it first unveiled its Ryzen 7000 lineup with a glaring '7800X'-sized hole between the Ryzen 7 7700X and Ryzen 9 7900X. In terms of gaming performance, the Ryzen 7 7800X3D slots in against (and beats) Intel's $580 24-core 32-thread Core i9-13900K, but it is more closely matched to the $417 16-core 24-thread Core i7-13700K in terms of pricing and performance in productivity applications.
+The 7800X3D is somewhat similar to the Zen 3-powered Ryzen 7 5800X3D, with both chips having eight cores, 16 threads, and 3D V-Cache tech, but the similarities stop there. The Ryzen 7 7800X3D steps up to the Zen 4 architecture and has a 500 MHz higher boost frequency of 5.0 GHz and an 800 MHz higher base clock of 4.2 GHz, all of which delivers much more performance in gaming and a more diverse range of applications. As we'll show on the following page, AMD could've clocked the 7800X3D higher but chose to stop at 5.0 GHz.
+Of the modern Zen 4 family, the Ryzen 7 7700X is the closest comparison with the same allotment of eight cores and 16 threads, but it comes without the 3D stacking tech and has a 300 MHz higher base and 400 MHz higher boost clock than the 7800X3D. That's because the Ryzen 7 7800X3D comes with eight cores on a single compute die that's augmented with the 7nm SRAM slice of L3 cache hybrid-bonded on top of the silicon. This cache chiplet creates thermal challenges you can read about here, ultimately leading to a 1.1V voltage limitation and lower peak frequencies than standard chips, a required accommodation to keep thermals in check.
+AMD's 3D V-Cache tech takes the key advantage of chiplet-based design methodologies into the third dimension by stacking an older and less-expensive 7nm process node on top of cores etched on the expensive new 5nm process tech. As with all other 3D V-Cache chiplets, the 3D-stacked SRAM L3 chip weighs in at 64MB. As a result, the 7800X3D comes with 104MB of total cache, with 96MB of that being gaming-boosting L3 cache. The additional L3 cache chiplet has a peak bandwidth of 2.5 TB/s, which is 25% faster than the previous-gen implementation. You can read the finer-grained details of the Second-Gen 3D V-Cache tech here.
+| Header Cell - Column 0 | 65W TDP | 105W TDP | 120W TDP (X3D) | 170W TDP |
+|---|---|---|---|---|
+Socket Power (PPT) Watts | 88W | 142W | 162W | 230W |
+Peak Current (EDC) Amps | 150A | 170A | 180A | 225A |
+Sustained Current (TDC) Amps | 75A | 110A | 120A | 160A |
+AMD’s Zen 4 3D V-Cache processors all have a base TPD of 120W and a max 162W PPT, meaning the 7800X3D’s ratings are 15/20W higher than the 105W/142W rating for the standard 7700X. In contrast, the multi-chiplet 7950X3D and 7900X3D have lower power thresholds than their equivalents because the additional cache chiplet results in slightly higher operating temperatures that need to be kept within a safe range.
+The Ryzen 7 7800X3D's higher TDP threshold doesn't make much sense, though — as you'll see on the following pages, the chip never came close to its rated power limits, and thermals were easy to tame. Speaking of which, the 7800X3D’s maximum supported temperature is 89C, lower than the 7700X’s limit of 95C. The 7800X3D doesn’t come with a bundled cooler — AMD recommends a 280mm water cooler, or better, for the Ryzen 7000X3D processors.
+As with all Ryzen 7000 chips, the Ryzen 7 7800X3D's RDNA 2 integrated GPU has two compute units, 4 ACE, and 1 HWS. This unit doesn't have the necessary horsepower to benefit from faster CPU cores — it is entirely GPU compute-bound. The iGPU also doesn't benefit from the 3D V-Cache tech because it resides on the I/O die and can't access the L3 cache, so performance is the same as the regular Ryzen 7000 processors (see more in our X3D iGPU testing).
+The previous-gen Ryzen 7 5800X3D uses the aging AM4 platform with less advanced interfaces, like PCIe 4.0 and DDR4 memory, while the Ryzen 7 7800X3D snaps into AM5 motherboards that support the latest connectivity tech, like DDR5 and PCIe 5.0. AMD only allowed overclocking the memory and Infinity Fabric for the previous-gen 5800X3D but now allows both the auto-overclocking Precision Boost Overdrive (PBO) and Curve Optimizer. AMD still doesn’t allow direct frequency overclocking due to the aforementioned voltage limitation due to the 3D V-Cache. We have plenty of testing with those features on the following pages — head to our overclocking page for the details.
+Even though we did run into a snag in our testing due to a driver anomaly that we reported to AMD, the Ryzen 7 7800X3D should benefit from the simplicity of a single compute chiplet design. (Update 4/16/2023: These chips are now at retail for roughly two weeks, but we haven't heard of any reports of this issue, which is a positive sign.)
+The Ryzen 9 7950X3D and the 7900X3D have two eight-core Core Compute Die (CCD) chiplets paired with a central I/O Die, marking the first time AMD brought the 3D V-Cache tech to a multi-CCD processor. The above image shows that AMD only mounts a single 7nm SRAM chiplet atop one of the two eight-core CCDs, leaving the other bare. This means that each type of chiplet is best suited for different types of work — the 3D V-Cache enabled chiplet is best for cache latency-sensitive tasks like gaming, and the standard chiplet is for workloads that respond best to higher frequencies.
+You can read the deep-dive details on AMD's thread-targeting implementation here, but the key takeaway is that it requires four different components to work together to alter the thread assignments into the cores automatically.
+In contrast, while we don't have an image of a delidded Ryzen 7 7800X3D (or even a render), it comes with only one of the two smaller rectangular CCDs seen in the image. This means that none of those mechanisms are required to direct the threads to the correct chiplet — there is only one chiplet, so the processor performs as normal. Let's see what performance looks like on the following pages.
+Current page: Bringing the Pain
+Next Page AMD Ryzen 7 7800X3D: Power Consumption, Efficiency, Test Setup, and Overclocking-
