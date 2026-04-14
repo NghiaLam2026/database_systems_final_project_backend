@@ -25,7 +25,7 @@ from app.models.component import (  # noqa: E402
     CPU, GPU, Mobo, Memory, PSU, Case, CPUCooler, CaseFan, Storage,
 )
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "catalog"
 
 # ---------------------------------------------------------------------------
 # Parsing helpers

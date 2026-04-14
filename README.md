@@ -33,7 +33,7 @@ FastAPI backend for the PC Build Assistant. Uses SQLAlchemy + PostgreSQL and JWT
    alembic upgrade head
    ```
 
-4. **Seed the catalog** (optional): Place CSV files in `data/` and run:
+4. **Seed the catalog** (optional): Place CSV files in `data/catalog/` and run:
 
    ```bash
    python -m scripts.seed_catalog              # all categories
@@ -41,7 +41,7 @@ FastAPI backend for the PC Build Assistant. Uses SQLAlchemy + PostgreSQL and JWT
    python -m scripts.seed_catalog --dry-run     # preview without writing
    ```
 
-   Supported categories: `cpu`, `gpu`, `mobo`, `memory`, `psu`, `case`, `cpu_cooler`, `case_fans`, `storage`. Each expects a corresponding CSV in `data/` (e.g. `cpu_data.csv`). Rows without a name or price are skipped. Re-running upserts by name.
+   Supported categories: `cpu`, `gpu`, `mobo`, `memory`, `psu`, `case`, `cpu_cooler`, `case_fans`, `storage`. Each expects a corresponding CSV in `data/catalog/` (e.g. `cpu_data.csv`). Rows without a name or price are skipped. Re-running upserts by name.
 
    To **erase** catalog data:
 
