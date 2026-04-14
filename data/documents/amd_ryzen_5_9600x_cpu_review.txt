@@ -1,0 +1,100 @@
+Tom's Hardware Verdict
+The Zen 5-powered AMD Ryzen 5 9600X and Ryzen 7 9700X deliver generational gaming improvements and class-leading single-threaded performance but still trail Intel in heavily threaded applications. Overall, Ryzen 9000 delivers impressive generational performance gains, but have a 40% lower TDP than their predecessors, ultimately yielding a cooler, quieter and faster system.
+Pros
+Exceptional gaming performance for the price points
+Decent pricing
+Low power consumption, excellent efficiency
+Easy to cool
+Class-leading single-threaded performance
+Native AVX-512 support
+Cons
+No bundled cooler
+Trails competitors in heavily-threaded productivity work
+Why you can trust Tom's Hardware
+Update 8/14/2024: Added testing with Intel's new microcode fix.
+AMD’s six-core 12-thread $280 Ryzen 5 9600X ‘Granite Ridge’ processor arrives packing the new Zen 5 architecture fabbed on TSMC’s 4nm process node, promising up to a 16% improvement in IPC. AMD has made significant generational improvements in productivity workloads, but Intel's processors still hold the lead in heavily-threaded applications. The Ryzen 9000X processors have other advantages, though, delivering well-rounded performance within a mere 65/88W TDP envelope, a 40% decrease from the prior-gen models. The competing 125/253W Core i5 and i7 look like power guzzlers in comparison. Ultimately, the Ryzen 9000 series enables faster, cooler, and quieter systems with a lower bar for supporting componentry, thus earning a spot on our list of the best CPUs for gaming.
+AMD’s Zen 5 launch arrives as Intel struggles to address long-running instability issues that cause seemingly random BSODs with its 13th- and 14th-Gen processors. Intel’s instability issue stems from overvoltage and can potentially impact all its 65W and higher CPUs — Ryzen 5 and 7’s direct competitors — with an unknown percentage of processors experiencing problems. Intel plans to deliver a microcode patch to address the issue within a few weeks. It has also extended its warranty for the impacted product lines by two additional years. For now, the company recommends using conservative power settings to help reduce the chance of errors occurring. Those recommendations are reflected in our testing, effectively giving the Intel chips a haircut in our performance benchmarks. [EDIT - We have now added testing with the microcode fix.]
+| Street/MSRP | Arch | Cores / Threads (P+E) | P-Core Base / Boost Clock (GHz) | E-Core Base / Boost Clock (GHz) | Cache (L2/L3) | TDP / PPT | Memory |
+|---|---|---|---|---|---|---|---|---|
+$649 | Zen 5 | 16 / 32 | 4.3 / 5.7 |
+| 80MB (16+64) | 170W / 230W | DDR5-5600 | |
+$499 | Zen 5 | 12 / 24 | 4.4 / 5.6 |
+| 76MB (12+64) | 120W / 162W | DDR5-5600 | |
+$359 | Zen 5 | 8 /16 | 3.8 / 5.5 |
+| 40MB (8+32) | 65W / 88W | DDR5-5600 | |
+$279 | Zen 5 | 6 / 12 | 3.9 / 5.4 |
+| 38MB (6+32) | 65W / 88W | DDR5-5600 |
+The Ryzen 5 9600X and Ryzen 7 9700X are the first salvo of AMD's four Zen 5 Ryzen 9000 processors, but a schedule delay resulted in the higher-tier Ryzen 9 9750X and 9900X models arriving next week. The new Zen 5 chips span from the $280 six-core 12-thread Ryen 5 9600X to the $649 16-core 32-thread Ryzen 9 9950X, effectively covering the same segments as the prior-gen Zen 4 Ryzen 7000 models. The chips have the same core counts as their predecessors, with a new architecture offering significant performance and efficiency improvements.
+The Ryzen 9000 chips drop into the existing AM5 socket, which AMD will support until 2027+. AMD’s partners will soon launch (timing varies) new X870/X870E motherboards that will increase USB 4.0 connectivity and extend PCIe 5.0 support to both chipsets. For now, existing X670E, X670, B650E, B650, and A620 motherboards will support the new processors once they're updated with new firmware.
+AMD cites doubled cache bandwidth as a key enabler of the Ryzen 9000X’s increased gaming performance. Newly added full support for AVX-512 hardware acceleration also doubles vector and AI performance to provide a big boost for productivity applications that leverage the instructions.
+The Ryzen 9000 chips are strong in our test suite, especially in gaming benchmarks, but they face stiff competition from AMD’s own stable — AMD’s existing gaming-specialized Ryzen X3D processors continue to offer the best gaming bang for your buck, and the company also has its next-gen Ryzen 9000X3D processors coming to market soon, which might give gaming purists pause.
+The previous-gen Ryzen 7000 series processors can also be found at generous discounts, and that pricing will only drop as the new models roll out, so some older models might offer a better value if the price is right. Intel also has yet to release its competing Arrow Lake desktop PC chips, a much-needed reset for the company that also muddies the waters, though we don't expect to see Arrow Lake chips until late this year. For now, let's see how the Ryzen 5 9600X and Ryzen 7 9700X fare in our gaming and productivity benchmarks.
+AMD Ryzen 9000 Specifications and Pricing
+| Street/MSRP | Arch | Cores / Threads (P+E) | P-Core Base / Boost Clock (GHz) | E-Core Base / Boost Clock (GHz) | Cache (L2/L3) | TDP / PBP / MTP | Memory |
+|---|---|---|---|---|---|---|---|---|
+$525 ($699) | Zen 4 X3D | 16 / 32 | 4.2 / 5.7 |
+| 144MB (16+128) | 120W / 162W | DDR5-5200 | |
+$550 (K) - $530 (KF) | Raptor Lake Refresh | 24 / 32 (8+16) | 3.2 / 6.0 | 68MB (32+36) | 125W / 253W | DDR4-3200 / DDR5-5600 | ||
+$649 | Zen 5 | 16 / 32 | 4.3 / 5.7 |
+| 80MB (16+64) | 170W / 230W | DDR5-5600 | |
+$525 ($699) | Zen 4 | 16 / 32 | 4.5 / 5.7 |
+| 80MB (16+64) | 170W / 230W | DDR5-5200 | |
+$420 ($599) | Zen 4 X3D | 12 / 24 | 4.4 / 5.6 |
+| 140MB (12+128) | 120W / 162W | DDR5-5200 | |
+$499 | Zen 5 | 12 / 24 | 4.4 / 5.6 |
+| 76MB (12+64) | 120W / 162W | DDR5-5600 | |
+$360 ($549) | Zen 4 | 12 / 24 | 4.7 / 5.6 |
+| 76MB (12+64) | 170W / 230W | DDR5-5200 | |
+$400 (K) - $375 (KF) | Raptor Lake Refresh | 20 / 28 (8+12) | 3.4 / 5.6 | 2.5 / 4.3 | 61MB (28+33) | 125W / 253W | DDR4-3200 / DDR5-5600 | |
+$375 ($449) | Zen 4 X3D | 8 /16 | 4.2 / 5.0 |
+| 104MB (8+96) | 120W / 162W | DDR5-5200 | |
+$359 | Zen 5 | 8 /16 | 3.8 / 5.5 |
+| 40MB (8+32) | 65W / 88W | DDR5-5600 | |
+$295 ($399) | Zen 4 | 8 /16 | 4.5 / 5.4 |
+| 40MB (8+32) | 105W / 142W | DDR5-5200 | |
+$300 (K) - $294 (KF) | Raptor Lake Refresh | 14 / 20 (6+8) | 3.5 / 5.3 | 2.6 / 4.0 | 44MB (20+24) | 125W / 181W | DDR4-3200 / DDR5-5600 | |
+$279 | Zen 5 | 6 / 12 | 3.9 / 5.4 |
+| 38MB (6+32) | 65W / 88W | DDR5-5600 | |
+$210 ($229) | Zen 4 | 6 / 12 | 4.7 / 5.3 |
+| 38MB (6+32) | 105W / 142W | DDR5-5200 |
+The Ryzen 5 9600X replaces the Ryzen 5 7600X in the ~$300 price bracket, but AMD cut launch-day pricing by $20 compared to the prior generation. On the pricing front, the 9600X contends directly with Intel's $300 Core i5-14600K, a lackluster Raptor Lake Refresh family member that offers very little over its predecessor, the Core i5-13600K.
+The Ryzen 5 9600X gets a slight 100 MHz clock rate increase to a 5.4 GHz boost, driven by the same Precision Boost 2 algorithms as before, but the company also dialed the base clock back by a whopping 800 MHz, which helps reduce the TDP rating. The Ryzen 5 7600X came with a 105/142W TDP/PPT (base/max) rating, but the move to the TSMC 4nm process and the efficiency of the Zen 5 architecture allowed AMD to drastically reduce the 9600X’s rating to 65/88W, an incredible 40% reduction. Coupled with the amount of performance the company manages to wring from the silicon, AMD says the lower power consumption leads to a 22% gain in power efficiency (perf-per-watt).
+The $360 eight-core 16-thread Ryzen 9 9700X gets a 100 MHz bump to a 5.5 GHz boost, but most other specs remain the same. Again, the lower TDP rating of 65W is also a 40W reduction compared to the prior-gen Ryzen 7 7700X despite the similar core counts. Base clocks have been reduced by 700 MHz, which obviously helps to rein in the TDP. This chip debuts at $40 less than the launch pricing of its predecessor and competes with the $380 Core i7-14700K.
+The Ryzen 9000 series runs at much lower temperatures than its predecessors, which helps keep frequency residency high for better effective frequency and longer boost durations. This is due to a 15% improvement in thermal resistance, which AMD says allows the chip to operate at a 7C lower temperature than a Zen 4 chip running at the same TDP. AMD also focused on a more intelligent layout of hot spots on the die, improved sensor placement, and revamped temperature control algorithms to keep temperatures in check.
+Like Intel’s competing K-series models in the same price range, the Ryzen 5 9600X doesn’t have a bundled cooler. However, existing AM4 and AM5 coolers are compatible, and the 9600X’s lower power envelope ensures that even mid-frame tower air coolers (or equivalent) provide sufficient cooling for the processor.
+AMD also improved the 9600X’s base memory support from DDR5-5200 to DDR5-5600, but aside from an expanded 48KB L1 data cache (L1D) for Zen 5 (more below), many other key specifications remain the same. AMD says you can expect generally higher memory overclocking ceilings that could reach up to DDR5-8000, with a particular advantage if you opt for an 800-series motherboard. That said, DDR5-6000 remains the price/performance sweet spot for most users. Once again, AMD supports ECC in the silicon, but implementing that is up to the motherboard OEMs.
+Ryzen 9000 adds real-time memory overclocking, allowing you to change memory speeds and timings in real-time from within the Ryzen Master application — no reboot required. Intel also has a similar feature. AMD also has a new Memory Optimized Performance Profile that allows manual or automatic switching between the JEDEC and EXPO overclocking profiles in real time to prioritize either bandwidth or latency (timings) for the running application. You can toggle between the different profiles in the Ryzen Master utility or enable automatic profile switching. We haven't had time to test this feature yet, but it's on our to-do list.
+AMD has also added some new knobs for CPU overclocking. The existing Curve Optimizer feature allows you to set one negative or positive offset for the entire voltage/frequency curve, which the processor then applies across the full curve. A new Curve Shaper feature provides much more granular control by letting you get in the weeds and adjust three temperature and five frequency points, resulting in 15 control points.
+AMD’s Ryzen Master already has an automated test that assigns the Curve Optimizer offset. That tool will continue to work, but it only applies a single global optimization setting. However, the two features can be used in tandem, with the user assigning additional Curve Shaper points to the single Curve Optimizer value. Curve Shaper acts as a sort of global modifier that will adjust all the assigned ranges.
+The auto-overclocking Precision Boost Overdrive (PBO) also returns. AMD says Ryzen 9000’s lower TDP range enables more headroom for performance gains, which we'll put to the test on the following pages.
+AMD 800-series Chipsets
+AMD has moved forward from its 600-series chipsets for Ryzen 7000 to the 800-series for Ryzen 9000, but the new chipsets still leverage the AM5 LGA1718 socket. The 800-series motherboards won’t arrive until later in the year, with some models coming in late September and others following based on various OEM schedules. The Ryzen 9000 chips are fully compatible with existing AM5 motherboards (after the requisite BIOS update), so there are plenty of options for early adopters. The staggered launch is obviously not ideal, but at least support for future chips will be around for the long haul — AMD plans to support the AM5 socket until 2027+.
+The upper-tier X870 and X870E chipsets come with welcome improvements, but those advances stem from new mandatory feature requirements instead of expanded chip connectivity (more on that below). For instance, the PCIe 5.0 interface is now standard on the X870 lineup for both storage and graphics, whereas it was previously limited to the E-series boards. All X870 boards will now also have the USB 4.0 60 Gbps interfaces courtesy of third-party controllers, like the ASMedia ASM4242 (the controller will consume some of the PCIe lanes from the CPU to operate at full bandwidth). The 800-series is built around the same Promontory 21 chipset silicon from ASMedia as the 600-series.
+The high-end boards are nice, but Ryzen 5 9600X is a natural pairing for a competent B850 motherboard. AMD’s B850 series features largely the same feature set as the existing lineup of B650 motherboards, with full support for overclocking both the processor and memory and support for USB 3.2 20 Gbps. AMD hasn’t yet revealed the full breakdown of the ports, but aside from optional USB 4 support, we’ve gleaned that the B-series feature set remains the same.
+In addition to the lower-tier B850 boards we expected, AMD has added a new tier for the B-series with the new B840 series. This chipset bridges the gap between the A- and B-series to help reduce platform costs. The B840 series supports memory overclocking, but CPU overclocking isn’t supported. They will also come with only the PCIe 3.0 interface, a big reduction from the mix of PCIe 5.0 and 4.0 interfaces on the B850 family. The B850 and B840 also get another cost reduction via support for USB 3.2 instead of the mandatory USB 4 on the X-series motherboards. We don’t know how much the reduced feature set will impact pricing, but the B840 lineup seems best suited for OEMs and office machines.
+AMD Granite Ridge SOC
+AMD’s Ryzen 9000 family uses the same I/O Die (IOD) as the Ryzen 7000 chips, and the overall SoC has the same general layout. Because the IOD remains the same, the Ryzen 9000 CPUs have the same support for 28 lanes of PCIe 5.0, five USB ports, and four display streams from the integrated RDNA 2 graphics engine. The RDNA 2 iGPU has no functional changes, so performance should be nearly identical to Ryzen 7000 — the engine is meant to light up a display and not much more.
+The IOD, which serves as the communication hub for the processor, is paired with either one or two eight-core CCDs (Core Chiplet Die) — the 9600X has a single CCD, while the Ryzen 9 models have two CCDs. Processors with a single CCD have a 32B/cycle read/write port for communication to the IOD via an Infinity Fabric connection. However, as before, dual-CCD chips have a 16B/cycle write and 32B/cycle read connection between the IODs to save power on the high-power SERDES and densify the package layout.
+Codename | Cores | Die Size | Transistor Count | Node | Transistor Density |
+Ryzen 7000 'Durango' | Eight Zen 4 | 71 mm^2 | 6.5 billion | TSMC 5nm | 92.9 MTr/mm^2 |
+Ryzen 9000 'Eldora' | Eight Zen 5 | 70.6 mm^2 | 8.6 billion | TSMC N4P (4nm) | 121.81 MTr/mm^2 |
+I/O Die (IOD) | N/A | 122mm^2 | 3.4 billion | TSMC 6nm | 27.9 MTr/mm^2 |
+The Granite Ridge 'Eldora' CCD has 8.6 billion TSMC N4P transistors spread across 70.6mm^2 of silicon, equating to a transistor density of 121.81 million transistors per square millimeter (MTr/mm^2) — a 31% increase in transistor density over Zen 4's Durango CCD.
+As before, the IOD has 3.4 billion TSMC 6nm transistors spread across 122mm^2 of silicon. As such, a single-CCD Ryzen 5 9600X has a total of 12 billion transistors, while the dual-CCD Ryzen 9 models have 20.6 billion.
+The TSMC N4P (4nm) node
+Process node improvements | Performance | Power Efficiency | Density |
+TSMC N5 (Zen 4) vs N4P (Zen 5) | +11% | +22 | +6% |
+Zen 5 processors use TSMC’s N4P node, a marked improvement over Zen 4’s 5nm node, but AMD will have 3nm variants coming to market in the future. TSMC's N4P delivers some of the best generational improvements of the company's 4nm options (TSMC’s 4nm node is officially part of its 5nm family).
+TSMC says the N4P node offers 11% more performance, 22% higher power efficiency, and 6% higher transistor density (optical shrink) than the N5 (5nm) node. Additionally, due to an increased number of EUV layers, this process uses 6% fewer masks for production, which typically equates to being more cost-effective. The N4P process node obviously helps deliver faster and more power-efficient processor performance.
+The Zen 5 Microarchitecture and 16% IPC improvement
+We’ve written extensively about the Zen 5 microarchitecture, and you can find more details in our Zen 5 microarchitecture deep-dive, our article with additional Zen 5 details, and our interview with AMD’s ‘Father of Zen,’ lead architect Mike Clark.
+(up to values) | Zen 5 (2024) | Zen 4 (2022) | Zen 3 (2020) | Zen 2 (2019) | Zen 1 (2017) |
+IPC Increase (AMD) | +16% | +13% | +19% | +15% | +52% |
+The Zen architecture debuted with a 52% IPC improvement over Bulldozer in 2017, and AMD has delivered double-digit percentage IPC increases with every generation since. In fact, AMD claims it has delivered a 4.1x total increase in IPC since the Piledriver era (based on single-thread Geekbench 5 results).
+According to AMD’s Zen 5 benchmarks across 13 workloads, Zen 5 has a 16% increase in IPC. Zen 5 has dramatically improved vector math performance, with a 32% gain over Zen 4 in single-core machine learning (VNNI) and a 35% gain in single-core AES-XTS encryption workloads (AVX-512), as measured by AMD’s Geekbench subtests.
+The highlights of the Zen 5 architecture include a redesigned front end with improved fetch, decode, and dispatch elements that feed a wider execution engine. Zen 5 also doubles the data bandwidth between its L2 and L1 caches and the L1 to floating point unit over Zen 4, which AMD says helps deliver the generational gaming performance improvements.
+Zen 4 employed a dual-issue AVX-512 pipeline (‘double-pumped’ in AMD lingo), meaning it issued an AVX-256 instruction twice across a 256-bit interface to provide most of the performance benefits of AVX-512 while avoiding large impacts to die area and frequency drops.
+Zen 5 supports the full 512-bit data path to deliver doubled AVX-512 and VNNI throughput, but AMD says the chip still runs at the same frequency as integer work for any given multi-core workload during AVX-512, a byproduct of its careful balancing act with the power characteristics of the integer instruction path. That stands in stark contrast to Intel’s AVX implementation, which results in frequency reductions.
+Other general improvements include a dual-pipe fetch and better branch prediction accuracy, dual-ported instruction and operation caches, a dual four-wide decode path, and an eight-wide dispatch. Zen 4 had a 32KB data cache, which has now been expanded to a 48KB 12-way L1 data cache (L1D) for Zen 5.
+AMD outlined the various contributors to its 16% IPC improvement. The move to 8-wide execution/retire pipelines contributed 34% of the gain, 27% each from the decode/opcache and data bandwidth improvements, and the remaining 12% from the enhanced fetch/branch prediction.
+Now, let's see what those improvements look like in action on the following pages.

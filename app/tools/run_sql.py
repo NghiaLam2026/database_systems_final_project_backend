@@ -10,21 +10,16 @@ import json
 import logging
 from decimal import Decimal
 from datetime import datetime, date
-from typing import TYPE_CHECKING, Any
-
+from typing import Any
 from pydantic_ai import Agent, RunContext
 from sqlalchemy import text
-
+from app.deps import SQLAgentDeps
 from app.services.sql_validator import SQLValidationError, validate_sql
-
-if TYPE_CHECKING:
-    from app.services.sql_agent import SQLAgentDeps
 
 logger = logging.getLogger(__name__)
 
 _MAX_ROWS = 50
 _MAX_RESULT_CHARS = 8_000
-
 
 def _serialise_value(v: Any) -> Any:
     """Make a DB value JSON-friendly."""
@@ -36,10 +31,8 @@ def _serialise_value(v: Any) -> Any:
         return v.hex()
     return v
 
-
 def _rows_to_serialisable(columns: list[str], rows: list[tuple]) -> list[dict]:
     return [{c: _serialise_value(v) for c, v in zip(columns, row)} for row in rows]
-
 
 def register(agent: Agent) -> None:
     """Attach the ``run_sql`` tool to *agent*."""

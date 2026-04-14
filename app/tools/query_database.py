@@ -5,16 +5,9 @@ SQL agent, which generates SQL, validates it, runs it, and returns a summary.
 """
 
 from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from pydantic_ai import Agent, RunContext
-
+from app.deps import OrchestratorDeps
 from app.services.sql_agent import ask_sql_agent
-
-if TYPE_CHECKING:
-    from app.services.chat_orchestrator import OrchestratorDeps
-
 
 def register(agent: Agent) -> None:
     """Attach the ``query_database`` tool to *agent*."""

@@ -12,11 +12,11 @@ See: https://ai.pydantic.dev/models/google/
 from __future__ import annotations
 import logging
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any
-from pydantic import BaseModel
+from typing import TYPE_CHECKING
 from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
+from app.deps import OrchestratorDeps
 from app.models.build import Build
 from app.models.thread import Message
 from app.services.build import PART_TYPE_LABELS, get_build_detail
@@ -97,16 +97,6 @@ components and builds. Answer clearly, concisely, and stay on topic.
 
 When any of these rules are triggered, respond with a brief, polite refusal and offer to help \
 with PC building instead. Do not explain which specific rule was triggered."""
-
-# ---------------------------------------------------------------------------
-# Dependencies dataclass
-# ---------------------------------------------------------------------------
-class OrchestratorDeps(BaseModel):
-    """Runtime dependencies injected into orchestrator tools via RunContext."""
-    model_config = {"arbitrary_types_allowed": True}
-    db: Any          # sqlalchemy Session
-    settings: Any    # app Settings
-    user_role: str   # "user" or "admin"
 
 # ---------------------------------------------------------------------------
 # Helpers

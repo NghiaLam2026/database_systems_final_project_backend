@@ -20,13 +20,11 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any
-
-from pydantic import BaseModel
+from typing import TYPE_CHECKING
 from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
-
+from app.deps import SQLAgentDeps
 from app.tools import register_run_sql
 
 if TYPE_CHECKING:
@@ -118,17 +116,6 @@ The full semantic layer is provided below. Use it as your schema reference.
 {semantic_layer}
 ```
 """
-
-
-# ---------------------------------------------------------------------------
-# Dependencies dataclass (passed to tool via RunContext)
-# ---------------------------------------------------------------------------
-class SQLAgentDeps(BaseModel):
-    """Runtime dependencies injected into the agent's tool context."""
-    model_config = {"arbitrary_types_allowed": True}
-    db: Any        # sqlalchemy Session
-    settings: Any  # app Settings
-    user_role: str # "user" or "admin"
 
 
 # ---------------------------------------------------------------------------

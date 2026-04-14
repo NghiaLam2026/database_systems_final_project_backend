@@ -7,13 +7,10 @@ similarity query.  No LLM-generated SQL — the query is fully static.
 
 from __future__ import annotations
 import logging
-from typing import TYPE_CHECKING
 from pydantic_ai import Agent, RunContext
 from sqlalchemy import text
+from app.deps import RAGAgentDeps
 from app.services.embedding import embed_texts
-
-if TYPE_CHECKING:
-    from app.services.rag_agent import RAGAgentDeps
 
 logger = logging.getLogger(__name__)
 
