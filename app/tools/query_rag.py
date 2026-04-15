@@ -15,12 +15,14 @@ def register(agent: Agent) -> None:
 
     @agent.tool
     def query_rag(ctx: RunContext["OrchestratorDeps"], question: str) -> str:
-        """Search the knowledge base for guides, articles, and documentation.
+        """Search the knowledge base for hardware reviews, benchmarks, guides, and articles.
 
-        Use this tool when the user asks about PC hardware concepts, build
-        guides, compatibility explanations, overclocking tips, or any
-        topic that might be covered in documentation rather than in the
-        parts catalog database.
+        Use this tool when the user asks for component recommendations,
+        "which part is best for gaming/productivity/etc.", real-world
+        performance comparisons, benchmark data, build guides,
+        compatibility explanations, overclocking tips, or any question
+        that benefits from expert reviews and articles rather than raw
+        catalog data.
 
         Args:
             question: The natural-language question to answer from docs.
