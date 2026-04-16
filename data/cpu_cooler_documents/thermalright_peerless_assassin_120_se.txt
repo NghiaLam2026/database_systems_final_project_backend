@@ -1,0 +1,73 @@
+Tom's Hardware Verdict
+Wow. Not only is Thermalright’s Peerless Assassin 120 SE the best-performing air cooler I’ve tested. It runs whisper silent and is only $36. You can’t beat the value and performance offered by this cooler.
+Pros
+Capable of cooling 200W+ with Alder Lake CPUs
+Budget-friendly price of just $36 USD
+Extremely quiet
+Exceptionally strong performance at lower TDPs
+Cons
+None!
+Why you can trust Tom's Hardware
+Thermalright was founded in Taiwan in 2001, and established itself as a cooling contender in decades past with options like its all-copper SP94 cooler, and unique products like the HR-07 memory cooler, which provided a full heatsink with two heatpipes for DDR2 RAM. The company’s current lineup includes air & liquid coolers, fans, thermal pastes, and a variety of accessories.
+After posting the previous review of DeepCool’s AK500, some of our readers asked us to test Thermalright’s Peerless Assassin 120 SE. We reached out to Thermalright, and the company sent us a sample for testing. It features a dual-tower radiator and two 120mm fans, but is that enough to tame Intel’s 12900K and earn a spot on our Best CPU Coolers list? The short answer is yes, but we’ll have to put it through testing to find out just how good it is. First, let’s check out the cooler’s specifications from Thermalright.
+Specifications for the Thermalright Peerless Assassin 120 SE
+| Cooler | Thermalright Peerless Assassin 120 SE |
+| MSRP | $36 USD |
+| Heatsink Dimensions | 125mm x 110mm x 155mm |
+| Heatpipes | 6 x 6mm |
+| Net Weight | 850g |
+| Socket Compatibility | AM4/AM5 |
+| LGA 115x/1200/1700 | |
+| Rated Noise Level | Up to 25.6 dBA |
+| CPU Block | C1100 Nickel plated Copper |
+Packing and Included Contents
+The Peerless Assassin 120 SE arrives in a medium-sized brown cardboard box, with cardboard and molded foam for protection.
+Included with the package are the following:
+- Dual-tower heatsink
+- 2x TL-C12C 120mm fans
+- Mounts for modern Intel & AMD platforms
+- A medium-sized tube of thermal paste
+- Fan splitter
+- Installation guide
+Cooler Installation
+Installing the Peerless Assassin was not hard. To begin, you’ll first want to secure the backplate to your motherboard. Next, mount the stand-offs and then secure the mounting brackets with the provided screws. After applying thermal paste, place the cooler on the brackets and secure them with the captive screws. Finally, attach the fans to the towers using the provided clips.
+New Testing Configuration
+| Cooler | Thermalright Peerless Assassin 120 SE |
+| Comparison Coolers Tested | BeQuiet Pure Loop 2 FX, 360mm AIO |
+| Cooler Master Master Liquid PL360 Flux, 360mm AIO | |
+| Cooler Master Master Liquid PL240 Flux, 240mm AIO | |
+| Cougar Forza 85, Air Cooler | |
+| Cougar Poseidon GT 360, 360m AIO | |
+| Corsair iCUE H100i Elite, 240mm AIO | |
+| DeepCool AK500, Air Cooler | |
+| DeepCool LS520, 240mm AIO | |
+| DeepCool LS320, 120mm AIO | |
+| CPU | Intel i9-12900K |
+| Motherboard | MSI z690 A-Pro DDR4 |
+| Case | BeQuiet! Silent Base 802 Window |
+| PSU | DeepCool PQ1000M |
+What's different than other coolers?
+- Budget-friendly price of $36 USD
+While it’s not unheard of to find a single tower air cooler for $40, most dual-tower air coolers are priced higher at $60 and more.
+- Generous Packaging
+I don’t normally comment on a cooler’s packaging in this section of the review, the Peerless Assassin is packaged exceptionally well, with cardboard cutouts and molded foam which make it highly unlikely it will get damaged during shipping. Its brown exterior and black ink are far from flashy, but what’s here is all about utility, and as we’ll see soon in testing, that goes deepter than just the packaging.
+- Dual TL-C12C 120mm Fans
+There’s more to an air cooler than just the heatsink. The fan included has a significant impact on cooling, noise levels, and performance. Included with Thermalright’s Peerless Assassin 120 SE are a pair of TL-C12C 120mm fans. There’s no RGB or lighting at all, but again, this cooler is all about performance at a low price. And as our testing will show, it’s truly unmatchable on that front.
+| Model | TL-C12C |
+| Dimensions | 120 x 120 x 25 mm |
+| Fan Speed | 1550 RPM±10% |
+| Air Flow | Up to 66.17 CFM |
+| Air Pressure | Up to 1.53mm H2O |
+| Noise Level | Up to 25.6 dB(A) |
+| Lighting | None |
+I'll be testing Thermalright’s Peerless Assassin 120 SE with Intel's Core i9-12900K. Due to the increased thermal density of the Intel 7 manufacturing process, as well as changes to core and component layouts, Alder Lake CPUs are more difficult to cool than previous generation CPUs in the most heat-intensive of workloads.
+This means that coolers that kept previous-gen products like the i9-10900K nice and cool sometimes struggle to keep Intel's i9-12900K under Tj max–the maximum temperature before the CPU starts to throttle. Many coolers, air coolers in particular, fail to keep the i9-12900K under TJ max when power limits are removed in workloads like Cinebench and OCCT when I’ve tested them, including many coolers I previously considered top of the line.
+Please note there are many factors other than the CPU cooler that can influence your cooling performance. A system's motherboard can especially influence this, as there are boards on the market with CPU sockets that aren't up to Intel's spec, which can cause warping or poor contact with the CPU. The case you use will also influence cooling results.
+With Alder Lake's cooling demands in mind, I'll be rating CPU Coolers in 3 different tiers.
+Tier 1: These coolers are able to keep the i9-12900K below TJ max in most loads, with no power limits enforced. I expect only the best liquid coolers to meet this standard.
+Tier 2: These coolers are able to keep the i9-12900K under the TJ max threshold with CPU power limits of 200W enforced. I expect most liquid coolers and the best air coolers to meet this standard.
+Tier 3: These coolers are able to keep the i9-12900K under TJ max with CPU power limits of 140W enforced.
+Testing Methodology
+To test the limits of a cooler's thermal dissipation capabilities, I run two primary stress tests: Cinebench and OCCT, each for 10 minutes. While this may be a short amount of time, it is sufficient to push most coolers–air and liquid–to their limits.
+While stress testing in Cinebench, I run both with power limits removed and with an enforced 200W CPU power limit, using MSI’s Z690 A Pro DDR4 Motherboard and Be Quiet’s Silent Base 802 Computer Case. Only the most capable coolers are able to pass Cinebench testing when power limits are removed.
+I don’t test OCCT without power limits, because attempting to do so results in CPU package power consumption jumping to over 270W and instantly throttling with even the best AIO coolers. Instead, I test at 200W to give coolers a chance at passing. I also include 140W to give data comparable to cooling a CPU like Intel’s i5-12600K. 95w results are also included to give data closer to low TDP CPUs such as AMD’s Ryzen 5600X or Intel’s i5-12400.

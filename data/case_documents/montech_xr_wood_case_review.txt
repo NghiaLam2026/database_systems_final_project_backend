@@ -1,0 +1,55 @@
+Tom's Hardware Verdict
+Montech’s XR Wood is a nice-looking case with wood strip accents, available at a reasonable price of only $79 in the U.S. – that’s cheaper than many AIO coolers.
+Pros
+Reasonable price
+Good thermal performance with pre-installed fans
+Cons
+“Wood” is limited to two small strips on the front
+Why you can trust Tom's Hardware
+Montech’s XR Wood is the latest PC case is a mid-sized tower that picks up with the trend started by Fractal Design, incorporating wood accents into the case. The XR Wood is available in black or white and features a relatively budget price of only $79, making it even cheaper than the HyperFlow Silent 360 AIO cooler we recently reviewed from Montech.
+Will Montech’s XR Wood make our list of best PC cases? Let’s take a look at the specifications and features of the case, then we’ll go over the features and wrap up our review with thermal testing.
+Product Specifications
+Motherboard Support | ATX, Micro ATX, Mini ITX |
+Color | Black or white |
+Type | Mid-tower |
+Case Dimensions (D x W x H) | 475 x 230 x 456 mm / 18.7 x 9.1 x 17.95 inches |
+2.5-inch Drive Support | Up to 2x 2.5-inch drives supported |
+3.5-inch Drive Support | Up to 2x 3.5-inch drives supported |
+PCI-E Expansion Slots | 7 |
+Fan Support | Up to 12 |
+Pre-Installed fans | Four Montech GF120 ARGB fans |
+CPU Cooler Clearance | 175mm |
+GPU Clearance | 420mm |
+Vertical GPU Support | No |
+PSU Length | Up to 230 mm |
+Radiator Support | 360 mm supported in top, 280 mm supported in front |
+MSRP | $79.99 US |
+Other features | Wood accents on front |
+Features of Montech’s XR Wood computer case
+▶️ Build quality
+The build quality of the Montech XR Wood is good, with no obvious major weaknesses.
+▶️ Side view and customization options, GPU Holder
+At first glance, things might seem fairly typical for a medium-sized mid-tower case, but there are two things that stand out to me: In addition to front-mounted fans, the Montech XR Wood supports two side intake fans and three fans on the PSU shroud.
+▶️ Radiator and fan support
+This case can be equipped with up to 12 fans. Up to 360 mm-sized radiators can be installed at the top of the case, and a 280 mm AIO can be installed in the front.
+▶️ Dust filters, Bottom View
+The case features multiple dust filters, which are simple to remove and magnetically attached. The dust filters are located at the top, side, front, and bottom of the unit.
+On the bottom of the case is a small dust filter for the PSU intake and four feet with rubber bottoms.
+▶️ Rear side view, storage, and cable management features
+The default configuration has velcro straps along a middle routing path to keep cables tidy and organized. Storage support is highlighted in blue above. You can install two 3.5-inch drives or one 2.5- and one 3.5-inch drive in the storage drive at the bottom of the case, and one 2.5-inch drive on the plate located behind the motherboard.
+▶️ Front view
+The front of the case has a mesh grille protecting the front fans, with wood strips accenting the tops and bottoms of the unit. It’s not much wood, but it does look nice if you’re into this current case trend.
+▶️ IO Panel
+The included IO panel has (from left to right) a power button, power and storage activity indicator lights, a reset button, separate microphone and audio jacks, two USB-A ports, and one USB-C port.
+▶️ Rear view
+The rear view of the case is pretty standard, with not much out of the ordinary.
+Thermal tests, test setup, and testing methodology
+CPU | |
+CPU Cooler | Ocypus Iota A62 WH dual-tower cooler, configured with a single fan |
+System fans | Default Pre-installed fans Ocypus Gamma F12 BK ARGB |
+Motherboard | ASUS Z790-P Prime Wifi |
+GPU | MSI RTX 4070Ti Super Ventus 3X OC |
+Our thermal tests are presented to give you more information about the product’s performance, but aren’t intended as the sole judgment of the chassis. The style, price, features, and noise levels of a case should also be considered, and we all have different preferences. What I might like in a case, you might not, and that’s OK. My goal with these reviews is to give everyone, no matter their preferences, enough information to decide whether or not a product is right for them.
+With today’s review, I’ve updated the configuration and testing methods I use for testing compared to previous reviews. For example, I used to use a single tower air cooler, but I’ve decided to use a dual-tower air cooler in case reviews going forward.
+The measurements I’ve benchmarked this case against focus on the efficiency of the case’s thermal transfer.
+We’ll test the system with its pre-installed fans at full speed and noise normalized at 38.9 dBA. For standardized testing, we’ll show one set of benchmarks with Ocypus fans set at full speeds for maximum potential. The other set of benchmarks will show performance with fan speeds set to 30% for those who prefer silently running systems.

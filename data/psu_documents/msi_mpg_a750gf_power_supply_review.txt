@@ -1,0 +1,115 @@
+Tom's Hardware Verdict
+The MSI MPG A750GF uses an older, but still capable, platform, provided by CWT, feahigh build quality.
+Pros
++ Full power at 47 degrees Celsius
++ High enough overall performance
++ Good build quality
++ Quality cooling fan
++ Tight load regulation on all rails
++ High enough average efficiency
++ Silent at light and moderate loads
++ Fully modular
++ Loads of connectors
++ Compatible with the alternative sleep mode
++ Adequate distance between peripheral connectors
++ 10-year warranty
+Cons
+Inaccurate power ok signal
+Increased EMI emissions
+Mediocre transient response
+Low PF readings
+Lower than 70% efficiency with 2% load
+Increased noise under stressful conditions
+Not so efficient 5VSB rail
+Why you can trust Tom's Hardware
+The MSI MPG A750GF is not far from the tough competition when it comes to overall performance, but the big letdowns are the inaccurate power ok signal and the low hold-up time, which don't allow it a place in our best PSUs article. Moreover, MSI's offering is not among the silent 750W Gold PSUs. If you need a quiet PSU, under all conditions, instead take a look at the Cooler Master V750 Gold V2 or the XPG Core Reactor 750.
+MSI currently has two PSU lines, with the top one called MPG. There are three MPG models with capacities from 650W to 850W, and in this review, we will look at the middle MPG member with 750W max power. All MPG units are made by Channel Well Technology and use a fully modular cable design, which most users prefer.
+The 750 W MPG model has two EPS and six PCIe connectors, which are overkill for this capacity range. Nonetheless, two PCIe connectors are on dedicated cables, which is preferred for energy-hungry graphics cards. Another notable feature in this unit is the double ball-bearing fan, which won't have a problem operating under high operating temperatures.
+Specifications of MSI MPG A750GF
+| Manufacturer (OEM) | CWT |
+| Max. DC Output | 750W |
+| Efficiency | 80 PLUS Gold, Cybenetics Platinum (89-91%) |
+| Noise | Cybenetics Standard++ (30-35 dB[A]) |
+| Modular | ✓ (fully) |
+| Intel C6/C7 Power State Support | ✓ |
+| Operating Temperature (Continuous Full Load) | 0 - 40°C |
+| Over Voltage Protection | ✓ |
+| Under Voltage Protection | ✓ |
+| Over Power Protection | ✓ |
+| Over Current (+12V) Protection | ✓ (only +12VMBPH and +12VCPU) |
+| Over Temperature Protection | ✓ |
+| Short Circuit Protection | ✓ |
+| Surge Protection | ✓ |
+| Inrush Current Protection | ✓ |
+| Fan Failure Protection | ✗ |
+| No Load Operation | ✓ |
+| Cooling | 140mm Double Ball Bearing Fan (HA1425M12B-Z) |
+| Semi-Passive Operation | ✗ |
+| Dimensions (W x H x D) | 150 x 85 x 160mm |
+| Weight | 1.55 kg (3.42 lb) |
+| Form Factor | ATX12V v2.52, EPS 2.92 |
+| Warranty | 10 Years |
+Power Specifications of MSI MPG A750GF
+| Rail | Row 0 - Cell 1 | 3.3V | 5V | 12VMBPH | 12VCPU | 12VVGA1 | 12VVGA2 | 5VSB | -12V |
+| Max. Power | Amps | 22 | 22 | 25 | 25 | 35 | 35 | 2.5 | 0.3 |
+| Watts | Row 2 - Cell 1 | 120 | Row 2 - Cell 3 | Row 2 - Cell 4 | Row 2 - Cell 5 | 750 | Row 2 - Cell 7 | Row 2 - Cell 8 | |
+| Total Max. Power (W) | Row 3 - Cell 1 | Row 3 - Cell 2 | Row 3 - Cell 3 | Row 3 - Cell 4 | Row 3 - Cell 5 | Row 3 - Cell 6 | Row 3 - Cell 7 | Row 3 - Cell 8 | 750 |
+| 12VMBPH | ATX, Peripheral |
+| 12V CPU | 2x EPS or 1x EPS & 1 PCIe |
+| 12V VGA1 | 2x PCIe |
+| 12V VGA2 | 1x PCIe |
+There are four +12V rails, one for the ATX and peripheral connectors, one for the EPS connectors, and two for the PCIe connectors. If you only need a single EPS connector, you can use the other socket on the modular PCB to connect a PCIe cable, increasing their number. This means that you cannot have all four PCIe and two EPS cables connected at the PSU simultaneously. You can either have three PCIe cables and two EPS or four PCIe cables and a single EPS, which are more than enough anyway for a 750W PSU.
+Cables and Connectors for MSI MPG A750GF
+| Description | Cable Count | Connector Count (Total) | Gauge | In Cable Capacitors |
+|---|---|---|---|---|
+| ATX connector 20+4 pin (600mm) | 1 | 1 | 18AWG | No |
+| 4+4 pin EPS12V (700mm) | 2 | 2 | 18AWG | No |
+| 6+2 pin PCIe (500mm) | 2 | 2 | 18AWG | No |
+| 6+2 pin PCIe (500mm+150mm) | 2 | 4 | 18AWG | No |
+| SATA (500mm+150mm+150mm+150mm) | 2 | 8 | 18AWG | No |
+4 pin Molex (500mm+150mm+150mm+150mm) / FDD (+150mm) | 1 | 4 / 1 | 18-20AWG | No |
+| AC Power Cord (1400mm) - C13 coupler | 1 | 1 | 18AWG | - |
+There are enough cables and connectors, for a 750W power supply, and the distance between the peripheral connectors is ideal at 150mm. All connectors use the standard AWG18 gauges, and there are no in-cable caps which might help in ripple suppression, even in transient response, but make the cables bulky and difficult to route inside a case.
+Component Analysis of MSI MPG A750GF
+We strongly encourage you to have a look at our PSUs 101 article, which provides valuable information about PSUs and their operation, allowing you to better understand the components we're about to discuss.
+| General Data | - |
+| Manufacturer (OEM) | CWT |
+| PCB Type | Double Sided |
+| Primary Side | - |
+| Transient Filter | 4x Y caps, 2x X caps, 2x CM chokes, 1x MOV, 1x Power Integrations CAP200DG (Discharge IC) |
+| Inrush Protection | NTC Thermistor SCK-055 (5 Ohm) & Relay |
+| Bridge Rectifier(s) | 2x GBU1506 (800V, 15A @ 120°C) |
+| APFC MOSFETs | 2x Infineon IPA60R125P6 (600V, 19A @ 100°C, Rds(on): 0.125Ohm) |
+| APFC Boost Diode | 1x On Semiconductor FFSP0665A (650V, 6A @ 153°C) |
+| Bulk Cap(s) | 1x Nippon Chemi-Con (420V, 560uF, 2,000h @ 105°C, KMR) |
+| Main Switchers | 2x Infineon IPA60R125P6 (600V, 19A @ 100°C, Rds(on): 0.125Ohm) |
+| APFC Controller | Champion CM6502UHH & CM03X |
+| Resonant Controller | Champion CM6901X |
+| Topology |
+Primary side: APFC, Half-Bridge & LLC converter Secondary side: Synchronous Rectification & DC-DC converters |
+| Secondary Side | - |
+| +12V MOSFETs | 6x Infineon BSC014N04LS (40V, 125A @ 100°C, Rds(on): 1.4mOhm) |
+| 5V & 3.3V | DC-DC Converters: 2x UBIQ QM3006D (30V, 57A @ 100°C, Rds(on): 5.5mOhm) 2x UBIQ QM3016D (30V, 68A @ 100°C, Rds(on): 4mOhm) PWM Controller(s): ANPEC APW7159C |
+| Filtering Capacitors |
+Electrolytic: 6x Nichicon (4-10,000h @ 105°C, HE), 3x Rubycon (4-10,000h @ 105°C, YXF), 2x Rubycon (6-10,000h @ 105°C, ZLH), 5x Nichicon (4-10,000h @ 105°C, KY), 2x Nichicon (4-10,000h @ 105°C, KYA) |
+| Supervisor IC | Sitronix ST9S429-PG14 (OCP, OVP, UVP, SCP, PG) & EST EST7618 (OCP, SC) |
+| Fan Model | Hong Hua HA1425M12B-Z (140mm, 12V, 0.36A, Ball Bearing Fan) |
+| 5VSB Circuit | - |
+| Standby PWM Controller | Power Integrations TNY177PN |
+This is the popular CWT GPU platform, which is also used in the Bitfenix Whisper series models. Although it is not cutting edge anymore, still it is highly competitive, especially if you tune it a bit and carefully select some crucial parts. The heat sinks are small, but build quality is high and there is also ample space on the PCB, for good airflow.
+The transient and EMI filter has all the necessary parts. It also includes a discharge IC to restrict energy losses.
+The pair of bridge rectifiers can handle up to 30A of current.
+The APFC converter uses two Infineon FETs and a single boost diode provided by On Semiconductor. The bulk cap is of high quality, but it doesn't have the necessary capacity to offer a longer than 17ms hold-up time. Lastly, the APFC controller is a Champion CM6502UHH.
+The main FETs, two Infineon IPA60R125P6, are installed in a half-bridge topology. The resonant controller is a Champion CM6901X.
+Six Infineon FETs regulate the 12V rail, and two DC-DC converters generate the minor rails.
+All filtering caps are of high quality, and besides electrolytic caps many polymer ones are also used.
+The standby PWM controller is a Power Integrations TNY177PN IC.
+Several polymer caps are installed on the modular board, along with bus bar which transfer power with minimized energy losses.
+The main supervisor IC is a Sitronix ST9S429-PG14 and it is supported by an EST EST7618 IC.
+Soldering quality is good.
+The cooling fan is by Hong Hua and uses a double ball-bearing, so it will last for a long time, even under high operating temperatures. DBB fans are considered of higher quality than FDB ones, but are also more noisy and more expensive.
+MORE: Best Power Supplies
+MORE: How We Test Power Supplies
+MORE: All Power Supply Content
+Current page: Specifications and Part Analysis
+Next Page Load Regulation, Hold-Up Time, Inrush & Leakage Current, Efficiency and Noise

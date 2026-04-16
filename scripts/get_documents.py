@@ -1,7 +1,7 @@
 """Fetch web pages and save extracted text as documents for RAG ingestion.
 
 Uses trafilatura to download and extract clean text content from URLs.
-Output files are saved to ``data/documents/`` ready for the ingestion
+Output files are saved under ``data/*_documents/`` ready for the ingestion
 pipeline (``scripts/ingest_documents.py``).
 
 Source note (important):
@@ -48,7 +48,21 @@ from urllib.parse import urlparse
 from trafilatura import extract, fetch_url
 from trafilatura.settings import Extractor
 
-OUTPUT_DIR = Path(__file__).resolve().parents[1] / "data" / "documents"
+_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+
+_CATEGORY_TO_DIRNAME: dict[str, str] = {
+    "cpu": "cpu_documents",
+    "cpu_cooler": "cpu_cooler_documents",
+    "gpu": "gpu_documents",
+    "storage": "storage_documents",
+    "motherboard": "motherboard_documents",
+    "case_fans": "case_fans_documents",
+    "psu": "psu_documents",
+    "case": "case_documents",
+    "memory": "memory_documents",
+    "mobo": "motherboard_documents",
+    "other": "other_documents",
+}
 
 _FORMAT_EXTENSIONS = {
     "txt": ".txt",
@@ -160,6 +174,7 @@ def _load_urls_from_file(filepath: str) -> list[str]:
 def fetch_and_extract(
     url: str,
     *,
+    output_dir: Path,
     output_format: str,
     custom_name: str | None,
     with_metadata: bool,
@@ -174,7 +189,7 @@ def fetch_and_extract(
     target_language: str | None,
     clean: bool,
 ) -> Path | None:
-    """Fetch a URL, extract content, and save to data/documents/."""
+    """Fetch a URL, extract content, and save a document file."""
     print(f"\nFetching: {url}")
     downloaded = fetch_url(url)
     if downloaded is None:
@@ -215,12 +230,12 @@ def fetch_and_extract(
     else:
         filename = _filename_from_url(url, output_format)
 
-    output_path = OUTPUT_DIR / filename
+    output_path = output_dir / filename
 
     counter = 1
     base = output_path.stem
     while output_path.exists():
-        output_path = OUTPUT_DIR / f"{base}_{counter}{output_path.suffix}"
+        output_path = output_dir / f"{base}_{counter}{output_path.suffix}"
         counter += 1
 
     output_path.write_text(content, encoding="utf-8")
@@ -255,7 +270,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Fetch web pages and save extracted text for RAG ingestion.",
         epilog=(
-            "Output files are saved to data/documents/ for use with ingest_documents.py.\n\n"
+            "Output files are saved under data/ for use with ingest_documents.py.\n\n"
             "Recommended for RAG:\n"
             "  python -m scripts.get_documents URL --favor-precision --no-images --clean"
         ),
@@ -283,6 +298,23 @@ def main():
         choices=["txt", "markdown", "xml", "json"],
         default="txt",
         help="Output format (default: txt).",
+    )
+    parser.add_argument(
+        "--category",
+        choices=sorted(_CATEGORY_TO_DIRNAME.keys()),
+        help=(
+            "Which component category folder to save into under data/. "
+            "Example: --category cpu saves into data/cpu_documents/. "
+            "If omitted, defaults to data/other_documents/."
+        ),
+    )
+    parser.add_argument(
+        "--output-dir",
+        dest="output_dir",
+        help=(
+            "Explicit output directory path. Overrides --category. "
+            "Example: --output-dir data/cpu_documents"
+        ),
     )
     parser.add_argument(
         "--clean",
@@ -366,7 +398,16 @@ def main():
     if args.custom_name and len(urls) > 1:
         parser.error("--name can only be used with a single URL.")
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    if args.output_dir:
+        out_dir = Path(args.output_dir)
+        if not out_dir.is_absolute():
+            out_dir = (Path(__file__).resolve().parents[1] / out_dir).resolve()
+    elif args.category:
+        out_dir = _DATA_DIR / _CATEGORY_TO_DIRNAME[args.category]
+    else:
+        out_dir = _DATA_DIR / _CATEGORY_TO_DIRNAME["other"]
+
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     include_images = args.include_images and not args.no_images
     include_tables = args.include_tables and not args.no_tables
@@ -377,6 +418,7 @@ def main():
     for url in urls:
         result = fetch_and_extract(
             url,
+            output_dir=out_dir,
             output_format=args.output_format,
             custom_name=args.custom_name,
             with_metadata=args.with_metadata,
@@ -399,7 +441,7 @@ def main():
     print(f"\n{'='*50}")
     print(f"Results: {len(saved)} saved, {len(failed)} failed")
     if saved:
-        print(f"Output directory: {OUTPUT_DIR}")
+        print(f"Output directory: {out_dir}")
         for p in saved:
             print(f"  - {p.name}")
     if failed:

@@ -1,16 +1,23 @@
 """Ingest text/markdown documents into the RAG vector store.
 
-Reads files from ``data/documents/``, splits them into overlapping chunks,
-generates embeddings via a local Ollama model (default: ``qwen3-embedding:8b``),
-and upserts into the ``documents`` + ``document_chunks`` tables.
+Reads files from one or more component document folders under ``data/``,
+splits them into overlapping chunks, generates embeddings via a local Ollama
+model (default: ``qwen3-embedding:8b``), and upserts into the
+``documents`` + ``document_chunks`` tables.
 
 Prerequisites:
     1. Ollama must be installed and running (``ollama serve``).
     2. Pull the embedding model: ``ollama pull qwen3-embedding:8b``
 
 Usage:
-    python -m scripts.ingest_documents                   # ingest all files
-    python -m scripts.ingest_documents guide.md faq.txt  # specific files only
+    python -m scripts.ingest_documents
+        # ingest all component folders (data/*_documents/) by default
+
+    python -m scripts.ingest_documents --folder cpu_documents
+        # ingest only one folder
+
+    python -m scripts.ingest_documents guide.md faq.txt
+        # ingest specific filenames inside the selected folder (default: all)
     python -m scripts.ingest_documents --dry-run          # preview without DB writes
     python -m scripts.ingest_documents --chunk-size 800   # custom chunk size
 """
@@ -28,7 +35,7 @@ from app.config import get_settings  # noqa: E402
 from app.models.document import Document, DocumentChunk  # noqa: E402
 from app.services.embedding import embed_texts  # noqa: E402
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "documents"
+DATA_ROOT = Path(__file__).resolve().parents[1] / "data"
 _SUPPORTED_EXTENSIONS = {".txt", ".md", ".markdown"}
 
 _DEFAULT_CHUNK_SIZE = 1000  # characters
@@ -50,12 +57,12 @@ def _chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]:
 
     return chunks
 
-def _discover_files(names: list[str] | None) -> list[Path]:
-    """Return sorted list of document files to process."""
+def _discover_files(data_dir: Path, names: list[str] | None) -> list[Path]:
+    """Return sorted list of document files to process in *data_dir*."""
     if names:
         paths = []
         for name in names:
-            p = DATA_DIR / name
+            p = data_dir / name
             if not p.exists():
                 print(f"  [warn] file not found: {p}")
                 continue
@@ -67,7 +74,7 @@ def _discover_files(names: list[str] | None) -> list[Path]:
 
     return sorted(
         p
-        for p in DATA_DIR.iterdir()
+        for p in data_dir.iterdir()
         if p.is_file() and p.suffix.lower() in _SUPPORTED_EXTENSIONS
     )
 
@@ -84,6 +91,7 @@ def _load_sidecar(file_path: Path) -> dict | None:
 def ingest_file(
     engine: sa.Engine,
     settings,
+    data_dir: Path,
     file_path: Path,
     *,
     chunk_size: int,
@@ -112,7 +120,7 @@ def ingest_file(
             print(f"    ... and {len(chunks) - 3} more")
         return len(chunks)
 
-    doc_meta = {"path": str(file_path.relative_to(DATA_DIR))}
+    doc_meta = {"path": str(file_path.relative_to(data_dir))}
     if sidecar:
         doc_meta["fetched_at"] = sidecar.get("fetched_at")
         doc_meta["flags"] = sidecar.get("flags")
@@ -164,9 +172,18 @@ def main():
         description="Ingest text/markdown documents into the RAG vector store."
     )
     parser.add_argument(
+        "--folder",
+        dest="folder",
+        help=(
+            "Which document folder to ingest. "
+            "Examples: cpu_documents (resolved under data/), or data/cpu_documents, "
+            "or an absolute path. If omitted, ingests all data/*_documents/ folders."
+        ),
+    )
+    parser.add_argument(
         "files",
         nargs="*",
-        help="Specific filenames inside data/documents/ (default: all).",
+        help="Specific filenames inside the selected folder (default: all).",
     )
     parser.add_argument(
         "--dry-run",
@@ -190,22 +207,42 @@ def main():
     settings = get_settings()
     engine = sa.create_engine(settings.database_url)
 
-    files = _discover_files(args.files or None)
-    if not files:
-        print("No documents found in", DATA_DIR)
+    target_dirs: list[Path] = []
+    if args.folder:
+        folder = Path(args.folder)
+        if not folder.is_absolute():
+            # Try resolving "cpu_documents" under data/, else treat as relative path.
+            candidate = DATA_ROOT / folder
+            project_root = Path(__file__).resolve().parents[1]
+            folder = candidate if candidate.exists() else (project_root / folder).resolve()
+        target_dirs = [folder]
+    else:
+        target_dirs = sorted(p for p in DATA_ROOT.iterdir() if p.is_dir() and p.name.endswith("_documents"))
+
+    target_dirs = [d for d in target_dirs if d.exists() and d.is_dir()]
+    if not target_dirs:
+        print("No document folders found under", DATA_ROOT)
         return
 
-    print(f"Found {len(files)} document(s) to process.\n")
     total_chunks = 0
-    for f in files:
-        total_chunks += ingest_file(
-            engine,
-            settings,
-            f,
-            chunk_size=args.chunk_size,
-            overlap=args.overlap,
-            dry_run=args.dry_run,
-        )
+    for data_dir in target_dirs:
+        files = _discover_files(data_dir, args.files or None)
+        if not files:
+            print(f"[skip] No supported documents found in {data_dir}")
+            continue
+
+        print(f"\nFolder: {data_dir}")
+        print(f"Found {len(files)} document(s) to process.\n")
+        for f in files:
+            total_chunks += ingest_file(
+                engine,
+                settings,
+                data_dir,
+                f,
+                chunk_size=args.chunk_size,
+                overlap=args.overlap,
+                dry_run=args.dry_run,
+            )
 
     print(f"\nFinished. {total_chunks} total chunks processed.")
 

@@ -1,0 +1,17 @@
+{
+  "source_url": "https://www.tomshardware.com/reviews/thermalright-peerless-assassin-120-se",
+  "fetched_at": "2026-04-16T04:04:50.412382+00:00",
+  "output_format": "txt",
+  "flags": {
+    "favor_precision": true,
+    "favor_recall": false,
+    "no_fallback": false,
+    "clean": true,
+    "include_tables": true,
+    "include_images": false,
+    "include_comments": false,
+    "include_links": false,
+    "include_formatting": false,
+    "with_metadata": false
+  }
+}

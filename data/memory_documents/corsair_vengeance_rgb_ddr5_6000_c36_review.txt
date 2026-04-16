@@ -1,0 +1,57 @@
+Tom's Hardware Verdict
+The Corsair Vengeance RGB DDR5-6000 C36 performs just as well as it looks -- maybe even a bit better.
+Pros
+Good performance
+Samsung B-die ICs
+Appealing design
+Cons
+Slightly slower than similarly-specced rival
+Why you can trust Tom's Hardware
+Corsair's Dominator and Vengeance series are two of the most popular memory lineups among enthusiasts. The former has always been the brand's more premium offering out of the pair. Vengeance memory kits aren't a pushover, either. They offer some of the best performance for gamers, content creators, and prosumers. The data rates on the Veangeance RGB DDR5 memory range from DDR5-5200 to impressive DDR5-6600. There are limited capacity options, though. The Vengeance RGB memory kits start at 32GB (2x16GB) and go up to 64GB (2x32GB). Corsair doesn't offer the memory in 16GB (2x8GB) flavors.
+The Vengeance RGB DDR5 memory didn’t suffer any radical aesthetic changes compared to its DDR4 counterpart -- much of Corsair’s original design recipe is still present. The new DDR5 memory modules carry a redesigned aluminum heat spreader with a familiar rectangular theme and triangle pattern. Consumers can choose between a black or white heat spreader.
+The vanilla Vengeance DDR5 memory modules measure 35mm (1.38 inches) in height, whereas the RGB version stands 44mm (1.73 inches) tall, a whopping 25% increase in height to accommodate the fancy RGB light bar. Therefore, the Vengeance DDR5 RGB ends at the same height as Corsair’s Dominator Platinum DDR5. However, there are differences regarding the lighting. The Vengeance RGB DDR5 features a ten-zone RGB illumination with ten individually addressable, bright RGB LEDs. The Dominator Platinum DDR5 flaunts 12 RGB LEDs hailing from the more exclusive Capellix LED camp. As with any Corsair memory, you’ll need to install the company's iCUE software to fully customize the memory module’s lighting.
+The Vengeance RGB DDR5 memory modules each have a capacity of 16GB, adhering to a single-rank design. However, enthusiasts and overclockers will be happy to know that Corsair has opted to incorporate Samsung’s K4RAH086VB-BCQK (B-die) integrated circuits (ICs). B-die is still a big deal with DDR5, and it’s right up there with SK hynix’s M-die ICs, although many would agree that the latter has a slight edge regarding overclocking potential. The power management IC (PMIC) on the Vengeance RGB DDR5 memory is from ANPEC, with the part number APW8502C-AY242.
+When you boot up your system for the first time with this kit, you’ll find the Vengeance RGB DDR5 memory modules at the default DDR5-4800 data rate with 40-40-40-76 timings. Flipping the XMP 3.0 switch will load the only profile on board, for DDR5-6000 with 36-36-36-76 timings and 1.35V DRAM voltage. See our PC Memory 101 feature and How to Shop for RAM story for more on timings and frequency considerations.
+Comparison Hardware
+| Memory Kit | Part Number | Capacity | Data Rate | Primary Timings | Voltage | Warranty |
+|---|---|---|---|---|---|---|
+| Corsair Dominator Platinum RGB DDR5 | CMT32GX5M2X6600C32 | 2 x 16GB | DDR5-6600 (XMP) | 32-39-39-76 (2T) | 1.40 | Lifetime |
+| G.Skill Trident Z5 RGB | F5-6400J3239G16GX2-TZ5RK | 2 x 16GB | DDR5-6400 (XMP) | 32-39-39-102 (2T) | 1.40 | Lifetime |
+| V-Color Manta XPrism | TMXPL1662836WW-DW | 2 x 16GB | DDR5-6200 (XMP) | 36-39-39-76 (2T) | 1.30 | Lifetime |
+| Patriot Viper Venom RGB | PVVR532G620C40K | 2 x 16GB | DDR5-6200 (XMP) | 40-40-40-76 (2T) | 1.35 | Lifetime |
+| PNY XLR8 Gaming Mako | MD32GK2D5620042MXR | 2 x 16GB | DDR5-6200 (XMP) | 42-42-42-88 (2T) | 1.30 | Lifetime |
+| G.Skill Trident Z5 RGB | F5-6000U3636E16GX2-TZ5RS | 2 x 16GB | DDR5-6000 (XMP) | 36-36-36-76 (2T) | 1.30 | Lifetime |
+| Corsair Vengeance RGB DDR5 | CMH32GX5M2D6000C36 | 2 x 16GB | DDR5-6000 (XMP) | 36-36-36-76 (2T) | 1.35 | Lifetime |
+| TeamGroup T-Force Delta RGB | FF3D516G6000HC40ABK | 2 x 16GB | DDR5-6000 (XMP) | 40-40-40-80 (2T) | 1.35 | Lifetime |
+| Corsair Dominator Platinum RGB DDR5 | CMT32GX5M2B5200C38 | 2 x 16GB | DDR5-5200 (XMP) | 38-38-38-84 (2T) | 1.25 | Lifetime |
+| Kingston Fury Beast | KF552C40BBK2-32 | 2 x 16GB | DDR5-5200 (XMP) | 40-40-40-80 (2T) | 1.25 | Lifetime |
+| Crucial | CT2K8G48C40U5 | 2 x 8GB | DDR5-4800 | 40-39-39-77 (2T) | 1.10 | Lifetime |
+| Sabrent Rocket | SB-DR5U-16G x 2 | 2 x 16GB | DDR5-4800 | 40-40-40-76 (2T) | 1.10 | 5 Years |
+Our DDR5 test system consists of Intel's Core i9-12900K flagship Alder Lake processor with Corsair's CUE H100i Elite LCD liquid cooler taking care of the cooling. The 16-core Alder Lake chip resides on the MSI MEG Z690 Unify-X motherboard, running the 7D28vA8 firmware. On the other hand, the MSI GeForce RTX 2080 Ti Gaming Trio is responsible for our gaming RAM benchmarks.
+Our Windows 11 installation, benchmarking software, and games reside on Crucial's MX500 SSDs, whereas the RM650x feeds our entire system with power. Lastly, the Streacom BC1 open bench table ensures all of our hardware is well kept and tidy.
+| Header Cell - Column 0 | Intel DDR5 System |
+|---|---|
+| Processor | Intel Core i9-12900K |
+| Motherboard | MSI MEG Z690 Unify-X |
+| Graphics Card | MSI GeForce RTX 2080 Ti Gaming X Trio |
+| Storage | Crucial MX500 500GB, 2TB |
+| Cooling | Corsair iCUE H100i Elite LCD |
+| Power Supply | Corsair RM650x 650W |
+| Case | Streacom BC1 |
+Intel Performance
+The Vengeance RGB DDR5 memory performed reasonably well in different application workloads, ranking in fourth place overall. Although the memory kit didn’t stand out in any particular workload, it did outperform the competition in gaming. The delta between the first and second place wasn’t significant, meaning the Vengeance RGB DDR5 only won by a hair.
+Overclocking and Latency Tuning
+There's always a potential risk of damage when you run hardware outside the manufacturer's specifications. That's the standard caveat with overclocking any hardware, not just memory.
+Samsung told us that the company does not guarantee an overclocking voltage for its ICs. The absolute maximum DC of the drain voltage is 1.4V.
+Since the Vengeance RGB DDR5 runs at 1.35V, there was some leftover voltage headroom for overclocking. At 1.4V, we could hit DDR5-6600, a 6.7% overclock over the advertised data rate. However, we had to make some compromises, such as relaxing the memory timings to 38-38-38-78, which aren't horrible.
+Lowest Stable Timings
+| Memory Kit | DDR5-6000 (1.4V) | DDR5-6200 (1.4V) | DDR5-6400 (1.4V) |
+|---|---|---|---|
+| TeamGroup T-Force Delta RGB DDR5-6000 C40 | 38-38-38-78 (2T) | N/A | 40-40-40-82 (2T) |
+| G.Skill Trident Z5 RGB DDR5-6000 C36 | 36-33-33-73 (2T) | 36-36-36-76 | N/A |
+| Corsair Vengeance RGB DDR5-6000 C36 | 34-34-34-74 (2T) | N/A | 38-38-38-78 (2T) |
+The Vengeance RGB DDR5-6000 C36 and Trident Z5 RGB DDR5-6000 C36 used similar Samsung B-die ICs. Nonetheless, we had more luck on the former. We got the memory to operate stably at 34-34-34-74 at 1.4V. But unfortunately for G.Skill, the same settings wouldn't run on the Trident Z5 RGB memory kit.
+Bottom Line
+In DDR5's current state, DDR5-6000 memory kits have the appropriate balance between performance and cost. They're faster than your typical DDR5-5200 or DDR5-5600 alternatives but don't carry the hefty premium of the higher-end DDR5-6600 options. The Vengeance RGB DDR5-6000 C36 is everything that you would expect from a memory kit of this caliber and timings. You can't complain about the performance, and it's slightly slower than the Trident Z5 RGB DDR5-6000 C36, which has similar timings but a 0.05V lower DRAM voltage. However, if you crave more performance, the Vengeance RGB DDR5-6000 C36 has some gas left in the tank.
+Corsair prices the Vengeance RGB DDR5-6000 C36 decently, as well. At $254.99 before any sales or Corsair discount codes, the memory is in the same realm as its competitors. However, if the lack of RGB lighting isn't a letdown for you, there are similar memory kits that start at $230. But if you like jazzy aesthetics and high performance, the Vengeance RGB DDR5-6000 C36 is just right.
+Zhiye Liu is a news editor, memory reviewer, and SSD tester at Tom’s Hardware. Although he loves everything that’s hardware, he has a soft spot for CPUs, GPUs, and RAM.
