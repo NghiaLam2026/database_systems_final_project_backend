@@ -17,13 +17,14 @@ Flow
 
 from __future__ import annotations
 
-import logging
+import time
 from pathlib import Path
 from functools import lru_cache
 from typing import TYPE_CHECKING
 from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
+import structlog
 from app.deps import SQLAgentDeps
 from app.tools import register_run_sql
 
@@ -31,7 +32,7 @@ if TYPE_CHECKING:
     from sqlalchemy.orm import Session
     from app.config import Settings
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 _SEMANTIC_LAYER_PATH = Path(__file__).resolve().parents[2] / "semantic_layer.yaml"
 
@@ -168,6 +169,7 @@ def ask_sql_agent(
         ``"user"`` or ``"admin"``.  Controls which tables the generated
         SQL is allowed to touch.
     """
+    start = time.perf_counter()
     agent = _build_sql_agent(settings, user_role=user_role)
     deps = SQLAgentDeps(db=db, settings=settings, user_role=user_role)
 
@@ -175,7 +177,21 @@ def ask_sql_agent(
         result = agent.run_sync(user_question, deps=deps)
         out = (result.output or "").strip()
         if out:
+            logger.info(
+                "agent.finish",
+                name="sql_agent",
+                role=user_role,
+                duration_ms=round((time.perf_counter() - start) * 1000, 1),
+                output_chars=len(out),
+            )
             return out
+        logger.info(
+            "agent.finish",
+            name="sql_agent",
+            role=user_role,
+            duration_ms=round((time.perf_counter() - start) * 1000, 1),
+            output_chars=0,
+        )
         return "The SQL agent returned an empty response. Please try rephrasing."
     except Exception:
         logger.exception("SQL agent run failed")

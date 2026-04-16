@@ -79,6 +79,13 @@ class Settings(BaseSettings):
         description="Reject messages longer than this before calling the model.",
     )
 
+    # Logging
+    log_level: str = Field(
+        default="INFO",
+        alias="LOG_LEVEL",
+        description="Python logging level (DEBUG, INFO, WARNING, ERROR).",
+    )
+
 @lru_cache
 def get_settings() -> Settings:
     """Cached settings instance."""

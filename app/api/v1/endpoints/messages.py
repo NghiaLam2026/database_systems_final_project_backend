@@ -2,6 +2,7 @@
 
 from typing import Literal
 from fastapi import APIRouter, HTTPException, Query, status
+import structlog
 from app.api.deps import CurrentUser, DbSession
 from app.config import get_settings
 from app.models.build import Build
@@ -17,6 +18,7 @@ from app.services.chat_orchestrator import generate_chat_reply
 from app.services.thread_service import get_active_thread_for_user, touch_thread_updated_at
 
 router = APIRouter()
+logger = structlog.get_logger(__name__)
 
 def _messages_in_thread(db, thread_id: int):
     return db.query(Message).filter(Message.thread_id == thread_id, Message.deleted_at.is_(None))
@@ -38,6 +40,13 @@ def send_message(
     if not thread:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Thread not found")
 
+    structlog.contextvars.bind_contextvars(
+        user_id=user.id,
+        thread_id=thread_id,
+    )
+    log = logger.bind(build_id=payload.build_id)
+    log.info("chat.message_received", chars=len(payload.user_request or ""))
+
     if payload.build_id is not None:
         build = db.query(Build).filter(
             Build.id == payload.build_id,
@@ -53,6 +62,7 @@ def send_message(
     settings = get_settings()
     block_reason = scan_user_message(payload.user_request, settings)
     if block_reason is not None:
+        log.info("chat.guardrail_blocked", reason=block_reason)
         log_guardrail_block(block_reason)
         msg = Message(
             thread_id=thread_id,
@@ -77,6 +87,7 @@ def send_message(
     db.commit()
     db.refresh(msg)
 
+    structlog.contextvars.bind_contextvars(message_id=msg.id, user_role=user.role.value)
     msg.ai_response = generate_chat_reply(
         db,
         settings,

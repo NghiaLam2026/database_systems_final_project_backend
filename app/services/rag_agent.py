@@ -10,11 +10,12 @@ agent via the ``query_rag`` tool.
 """
 
 from __future__ import annotations
-import logging
+import time
 from typing import TYPE_CHECKING
 from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
+import structlog
 from app.deps import RAGAgentDeps
 from app.tools.retrieve_chunks import register as register_retrieve_chunks
 
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
     from sqlalchemy.orm import Session
     from app.config import Settings
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 _RAG_SYSTEM_PROMPT = """\
 You are a **PC hardware knowledge specialist** embedded inside the PC Build
@@ -79,6 +80,7 @@ def ask_rag_agent(
 
     Called by the orchestrator's ``query_rag`` tool.
     """
+    start = time.perf_counter()
     agent = _build_rag_agent(settings)
     deps = RAGAgentDeps(db=db, settings=settings)
 
@@ -86,7 +88,19 @@ def ask_rag_agent(
         result = agent.run_sync(user_question, deps=deps)
         out = (result.output or "").strip()
         if out:
+            logger.info(
+                "agent.finish",
+                name="rag_agent",
+                duration_ms=round((time.perf_counter() - start) * 1000, 1),
+                output_chars=len(out),
+            )
             return out
+        logger.info(
+            "agent.finish",
+            name="rag_agent",
+            duration_ms=round((time.perf_counter() - start) * 1000, 1),
+            output_chars=0,
+        )
         return "The knowledge-base agent returned an empty response. Please try rephrasing."
     except Exception:
         logger.exception("RAG agent run failed")

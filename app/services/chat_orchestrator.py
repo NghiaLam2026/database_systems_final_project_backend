@@ -11,6 +11,7 @@ See: https://ai.pydantic.dev/models/google/
 
 from __future__ import annotations
 import logging
+import time
 from decimal import Decimal
 from typing import TYPE_CHECKING
 from pydantic_ai import Agent
@@ -229,13 +230,23 @@ def generate_chat_reply(
     if build_section:
         user_blob = f"{build_section}\n\n---\n\n{user_blob}"
 
+    start = time.perf_counter()
     try:
         agent = _build_agent(settings)
         deps = OrchestratorDeps(db=db, settings=settings, user_role=user_role)
         result = agent.run_sync(user_blob, deps=deps)
         out = (result.output or "").strip()
         if out:
+            logger.debug(
+                "agent.finish name=orchestrator duration_ms=%.1f output_chars=%s",
+                (time.perf_counter() - start) * 1000,
+                len(out),
+            )
             return out
+        logger.debug(
+            "agent.finish name=orchestrator duration_ms=%.1f output_chars=0",
+            (time.perf_counter() - start) * 1000,
+        )
         return (
             "The assistant returned an empty reply. Try rephrasing or shortening your message."
         )

@@ -6,8 +6,11 @@ SQL agent, which generates SQL, validates it, runs it, and returns a summary.
 
 from __future__ import annotations
 from pydantic_ai import Agent, RunContext
+import structlog
 from app.deps import OrchestratorDeps
 from app.services.sql_agent import ask_sql_agent
+
+logger = structlog.get_logger(__name__)
 
 def register(agent: Agent) -> None:
     """Attach the ``query_database`` tool to *agent*."""
@@ -27,6 +30,13 @@ def register(agent: Agent) -> None:
             A natural-language summary of the query results, or an error
             message if the lookup failed.
         """
+        logger.info(
+            "agent.delegate",
+            from_agent="orchestrator",
+            to_agent="sql_agent",
+            role=ctx.deps.user_role,
+            question_chars=len(question or ""),
+        )
         return ask_sql_agent(
             ctx.deps.db,
             ctx.deps.settings,

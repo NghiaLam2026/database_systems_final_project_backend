@@ -30,6 +30,9 @@ google-genai>=1.0.0
 # SQL parsing / validation (text-to-SQL agent safety filter)
 sqlglot>=26.0.0
 
+# Logging (structured + contextual binding)
+structlog>=25.0.0
+
 # Local embedding model (Ollama Python client)
 ollama>=0.4.0
 

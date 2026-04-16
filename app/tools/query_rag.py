@@ -7,8 +7,11 @@ grounded answer.
 
 from __future__ import annotations
 from pydantic_ai import Agent, RunContext
+import structlog
 from app.deps import OrchestratorDeps
 from app.services.rag_agent import ask_rag_agent
+
+logger = structlog.get_logger(__name__)
 
 def register(agent: Agent) -> None:
     """Attach the ``query_rag`` tool to *agent*."""
@@ -31,6 +34,12 @@ def register(agent: Agent) -> None:
             A grounded answer based on retrieved document chunks, or an
             error message if the lookup failed.
         """
+        logger.info(
+            "agent.delegate",
+            from_agent="orchestrator",
+            to_agent="rag_agent",
+            question_chars=len(question or ""),
+        )
         return ask_rag_agent(
             ctx.deps.db,
             ctx.deps.settings,

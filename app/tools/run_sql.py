@@ -8,15 +8,17 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 from decimal import Decimal
 from datetime import datetime, date
 from typing import Any
 from pydantic_ai import Agent, RunContext
 from sqlalchemy import text
+import structlog
 from app.deps import SQLAgentDeps
 from app.services.sql_validator import SQLValidationError, validate_sql
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 _MAX_ROWS = 50
 _MAX_RESULT_CHARS = 8_000
@@ -51,11 +53,17 @@ def register(agent: Agent) -> None:
         try:
             clean_sql = validate_sql(sql_query, user_role=ctx.deps.user_role)
         except SQLValidationError as exc:
-            logger.warning("SQL validation rejected: %s — %s", sql_query[:120], exc)
+            logger.warning(
+                "sql.rejected",
+                role=ctx.deps.user_role,
+                reason=str(exc),
+                sql_prefix=(sql_query or "")[:120],
+            )
             return json.dumps({"error": f"SQL rejected: {exc}"})
 
         db = ctx.deps.db
         try:
+            start = time.perf_counter()
             result = db.execute(text(clean_sql))
             columns = list(result.keys())
             rows = result.fetchmany(_MAX_ROWS)
@@ -75,14 +83,28 @@ def register(agent: Agent) -> None:
                     default=str,
                 )
                 if len(payload) <= _MAX_RESULT_CHARS:
+                    logger.info(
+                        "sql.executed",
+                        role=ctx.deps.user_role,
+                        rows=len(data),
+                        truncated=truncated,
+                        duration_ms=round((time.perf_counter() - start) * 1000, 1),
+                    )
                     return payload
                 data = data[: len(data) // 2]
                 truncated = True
 
+            logger.info(
+                "sql.executed",
+                role=ctx.deps.user_role,
+                rows=0,
+                truncated=True,
+                duration_ms=round((time.perf_counter() - start) * 1000, 1),
+            )
             return json.dumps(
                 {"columns": columns, "rows": [], "row_count": 0, "truncated": True},
                 default=str,
             )
         except Exception as exc:
-            logger.exception("SQL execution failed: %s", clean_sql[:120])
+            logger.exception("sql.failed", role=ctx.deps.user_role, sql_prefix=clean_sql[:120])
             return json.dumps({"error": f"Query execution failed: {exc}"})
