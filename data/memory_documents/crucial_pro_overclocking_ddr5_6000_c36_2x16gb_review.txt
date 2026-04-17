@@ -1,0 +1,60 @@
+Tom's Hardware Verdict
+The Crucial Pro Overclocking DDR5-6000 C36 isn't the flashiest memory kit, but it delivers the performance you expect from high-end memory.
+Pros
+Good performance
+Minimalist design
+Intel XMP 3.0 and AMD EXPO support
+Cons
+Below-average gaming performance
+Somewhat pricey
+Why you can trust Tom's Hardware
+With adjectives like “Pro” and “Overclocking” in its model name, the Crucial Pro Overclocking DDR5-6000 C36 memory kit seems like one designed to rival the best RAM on the market. Crucial remains a key player in the memory game despite Micron having retired its Ballistix sub-brand that catered to enthusiasts and gamers. Having made the change, Crucial has been producing JEDEC-based memory kits until recently, when the brand jumped back to somewhat enthusiast-level memory kits. Marketed under Crucial’s Pro lineup, the new Crucial Pro Overclocking memory kits now scale up to DDR5-6000. Crucial may make faster memory down the road, but DDR5-6000 is the best of what the brand presently offers.
+When Crucial designed the Pro Overclocking memory, the vendor had the KISS principle in mind. It’s not a bad thing since the memory market is full of dazzling designs, and Crucial had to, in some way, stay true to the “Pro” part. As a result, the memory modules feature a simple anodized aluminum heat spreader that comes in black or white. The marketing on the memory modules is minimal, as there are only two mentions of the Crucial brand, along with the typical sticker for the specifications.
+While the Crucial Pro Overclocking memory has a minimalistic vibe, the design isn’t exactly low-profile. The memory has a height of 1.38 inches (35mm), 12% taller than your run-of-the-mill DDR5 memory module. Compatibility isn’t something we would be worried about with the Crucial Pro Overclocking memory modules since many big CPU air coolers often provide 1.57 inches (40mm) or more of clearance space. However, if your cooler excessively large, double-checking doesn’t hurt.
+Crucial’s memory kit has two 16GB DDR5 memory modules with a single-rank design. The black PCB is home to eight integrated circuits (ICs), each 2GB in capacity. The chips carry the “D8GCD” FBGA code, so these are Micron’s MT60B2G8RZ-60P:D (D-die) ICs. The markings on the power management IC (PMIC) were faint, but we managed to make them out to be the 0H-9G S5G, so the PMIC is undoubtedly from Taiwanese manufacturer Richtek.
+You’ll find the memory modules at DDR5-5600 by default, with their timings molded to 46-45-45-90 for maximum compatibility. Crucial has embedded two configurations into the memory. DDR5-6000 runs at 36-38-38-80 with 1.35V, whereas DDR5-5600 sticks to 36-38-38-80 with 1.25V. The memory modules support Intel XMP 3.0 and AMD EXPO technologies, amounting to four profiles. See our PC Memory 101 feature and How to Shop for RAM story for more timings and frequency considerations.
+Comparison Hardware
+| Memory Kit | Part Number | Capacity | Data Rate | Primary Timings | Voltage | Warranty |
+|---|---|---|---|---|---|---|
+| Corsair Vengeance RGB DDR5 | CMH32GX5M2B6000Z30 | 2 x 16GB | DDR5-6000 (EXPO) | 30-36-36-76 (2T) | 1.40 | Lifetime |
+| TeamGroup T-Force Vulcan Eco | FLESD532G6000HC30DC01 | 2 x 16GB | DDR5-6000 (XMP & EXPO) | 30-36-36-76 (2T) | 1.35 | Lifetime |
+| G.Skill Trident Z5 Neo RGB | F5-6000J3038F16GX2-TZ5NR | 2 x 16GB | DDR5-6000 (EXPO) | 30-38-38-96 (2T) | 1.35 | Lifetime |
+| G.Skill Ripjaws S5 | F5-6000J3238F16GX2-RS5K | 2 x 16GB | DDR5-6000 (XMP) | 32-38-38-96 (2T) | 1.35 | Lifetime |
+| Lexar Ares RGB | LD5FU016G-R6000GDGA | 2 x 16GB | DDR5-6000 (XMP & EXPO) | 34-38-38-76 (2T) | 1.30 | Lifetime |
+| G.Skill Trident Z5 RGB | F5-6000U3636E16GX2-TZ5RS | 2 x 16GB | DDR5-6000 (XMP) | 36-36-36-76 (2T) | 1.30 | Lifetime |
+| Corsair Vengeance RGB DDR5 | CMH32GX5M2D6000C36 | 2 x 16GB | DDR5-6000 (XMP) | 36-36-36-76 (2T) | 1.35 | Lifetime |
+| Crucial Pro Overclocking | CP2K16G60C36U5W | 2 x 16GB | DDR5-6000 (XMP & EXPO) | 36-38-38-80 (2T) | 1.35 | Lifetime |
+| TeamGroup T-Force Deltaα RGB | FF7D532G6000HC38ADC01 | 2 x 16GB | DDR5-6000 (EXPO) | 38-38-38-78 (2T) | 1.25 | Lifetime |
+| TeamGroup T-Force Vulcanα DDR5 | FLABD532G6000HC38ADC01 | 2 x 16GB | DDR5-6000 (EXPO) | 38-38-38-78 (2T) | 1.25 | Lifetime |
+| Adata XPG Lancer RGB | AX5U6000C4016G-DCLARBK | 2 x 16GB | DDR5-6000 (XMP & EXPO) | 40-40-40-76 (2T) | 1.35 | Lifetime |
+| TeamGroup T-Force Delta RGB | FF3D516G6000HC40ABK | 2 x 16GB | DDR5-6000 (XMP) | 40-40-40-80 (2T) | 1.35 | Lifetime |
+Our Intel test system runs the Core i9-13900K on the MSI MEG Z690 Unify-X with the 7D28vAF firmware. In contrast, the AMD system pairs the Ryzen 7 7700X with the MSI MPG X670E Carbon WiFi updated to the 7D70v1E5 firmware. The Corsair CUE H100i Elite LCD liquid cooler keeps our Raptor Lake and Zen 4 processor operating temperatures under check.
+The MSI GeForce RTX 4080 16GB Gaming X Trio tackles the more graphics-intensive workloads, ensuring that there isn't a graphics bottleneck in our gaming RAM benchmarks. The Windows 11 installation, benchmarking software, and games reside on Crucial's MX500 SSDs. Meanwhile, the Corsair RM1000x Shift ATX 3.0 power supply provides our systems with clean and abundant power, directly feeding the GeForce RTX 4080 with a native 16-pin (12VHPWR) power cable. Lastly, the Streacom BC1 open-air test bench is vital to organizing our hardware.
+| Component | Intel System | AMD System |
+|---|---|---|
+| Processor | Intel Core i9-13900K | AMD Ryzen 7 7700X |
+| Motherboard | MSI MEG Z690 Unify-X | MSI MPG X670E Carbon WiFi |
+| Graphics Card | MSI GeForce RTX 4080 16GB Gaming X Trio | MSI GeForce RTX 4080 16GB Gaming X Trio |
+| Storage | Crucial MX500 500GB, 2TB | Crucial MX500 500GB, 2TB |
+| Cooling | Corsair iCUE H100i Elite LCD | Corsair iCUE H100i Elite LCD |
+| Power Supply | Corsair RM1000x Shift | Corsair RM1000x Shift |
+| Case | Streacom BC1 | Streacom BC1 |
+Intel Performance
+The Crucial Pro Overclocking memory kit was the second fastest on the Intel platform. For most of the benchmarks, it placed in the top three spots. However, as the results showed, gaming wasn’t the Crucial Pro Overclocking’s forte. The memory kit was near the bottom in terms of cumulative gaming performance.
+AMD Performance
+The AMD test results aligned with the level of performance that we saw from the memory kit on the Intel platform. Crucial's memory kit performed very well and was only a hair away from catching the T-Force Vulcanα DDR5-6000 C38. The Crucial Pro Overclocking showed similar gaming performance on the AMD platform.
+Overclocking and Latency Tuning
+Most brands utilize SK hynix ICs due to their fantastic overclocking potential, and one or two oddballs go with Samsung ICs. It was refreshing to overclock a Micron IC for once since we haven't done so since the early A-die IC days. It's too early to say since it's only one sample, but Micron D-die was still at SK Hynix M-die and Samsung B-die levels. While we could not hit DDR5-6600 with 1.4V, we achieved DDR5-6400 with better timings than some of the rivals with SK hynix ICs.
+Lowest Stable Timings
+| Memory Kit | DDR5-6000 (1.4V) | DDR5-6200 (1.4V) | DDR5-6400 (1.4V) | DDR5-6600 (1.4V) |
+|---|---|---|---|---|
+| Adata XPG Lancer RGB DDR5-6000 C40 | 34-34-34-74 (2T) | N/A | N/A | 36-36-36-76 (2T) |
+| TeamGroup T-Force Deltaα DDR5-6000 C38 | 36-36-36-76 (2T) | N/A | N/A | 38-38-38-78 (2T) |
+| Crucial Pro Overclocking DDR5-6000 C36 | 36-36-36-80 (2T) | N/A | 36-36-36-80 (2T) | N/A |
+| TeamGroup T-Force Vulcanα DDR5-6000 C38 | 36-36-36-76 (2T) | N/A | 38-38-38-78 (2T) | N/A |
+| G.Skill Trident Z5 RGB DDR5-6000 C36 | 36-33-33-73 (2T) | 36-36-36-76 (2T) | N/A | N/A |
+Timing-wise, Micron D-die ICs show margins similar to SK Hynix's. The Crucial Pro Overclocking would run with timings as tight as 36-36-36. We had better results with some SK hynix- and Samsung-based memory kits.
+Bottom Line
+We have often heard that, for mainstream users, DDR5-6000 is the sweet spot for Intel and AMD platforms. Crucial is aiming for that segment of customers with the Crucial Pro Overclocking DDR5-6000 C36. Aesthetic-wise, the memory kit will look good to some and boring to others, but you can't deny that it offers a very decent amount of performance, although gaming performance is a bit lacking. Platform compatibility shouldn't be an issue since the memory kit supports Intel XMP 3.0 and AMD EXPO. It was also thoughtful of Crucial to offer a fallback profile for those consumers who can't get the advertised memory to work, whether because of the processor or motherboard.
+Competing in the crowded DDR5-6000 category is tough. Similar C36 32GB (2x16GB) memory kits start at a low price of $86.99 while gradually increasing. The Crucial Pro Overclocking DDR5-6000 C36 is widely available for $109.99. The white version, which launched today, retails for $102.99. The pricing is a little more expensive than the competition. Nonetheless, it's a fair price for the performance, build, and quality you receive from a Crucial product.
+Zhiye Liu is a news editor, memory reviewer, and SSD tester at Tom’s Hardware. Although he loves everything that’s hardware, he has a soft spot for CPUs, GPUs, and RAM.

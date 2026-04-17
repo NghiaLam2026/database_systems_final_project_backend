@@ -1,0 +1,17 @@
+{
+  "source_url": "https://www.tomshardware.com/pc-components/ssds/kingston-nv3-ssd-review",
+  "fetched_at": "2026-04-17T04:43:33.854328+00:00",
+  "output_format": "txt",
+  "flags": {
+    "favor_precision": true,
+    "favor_recall": false,
+    "no_fallback": false,
+    "clean": true,
+    "include_tables": true,
+    "include_images": false,
+    "include_comments": false,
+    "include_links": false,
+    "include_formatting": false,
+    "with_metadata": false
+  }
+}

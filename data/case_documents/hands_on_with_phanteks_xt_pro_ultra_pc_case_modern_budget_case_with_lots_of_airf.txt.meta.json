@@ -1,0 +1,17 @@
+{
+  "source_url": "https://www.tomshardware.com/pc-components/pc-cases/hands-on-with-phanteks-xt-pro-ultra-pc-case-modern-budget-case-with-lots-of-airflow-and-rgb-out-of-the-box",
+  "fetched_at": "2026-04-17T04:33:43.796926+00:00",
+  "output_format": "txt",
+  "flags": {
+    "favor_precision": true,
+    "favor_recall": false,
+    "no_fallback": false,
+    "clean": true,
+    "include_tables": true,
+    "include_images": false,
+    "include_comments": false,
+    "include_links": false,
+    "include_formatting": false,
+    "with_metadata": false
+  }
+}

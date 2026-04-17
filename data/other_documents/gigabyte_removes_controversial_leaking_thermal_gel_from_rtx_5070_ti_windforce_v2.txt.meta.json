@@ -1,0 +1,17 @@
+{
+  "source_url": "https://www.tomshardware.com/pc-components/gpus/gigabyte-removes-controversial-leaking-thermal-gel-from-rtx-5070-ti-windforce-v2-company-opts-for-traditional-thermal-pads-with-updated-graphics-card",
+  "fetched_at": "2026-04-17T04:32:30.410642+00:00",
+  "output_format": "txt",
+  "flags": {
+    "favor_precision": true,
+    "favor_recall": false,
+    "no_fallback": false,
+    "clean": true,
+    "include_tables": true,
+    "include_images": false,
+    "include_comments": false,
+    "include_links": false,
+    "include_formatting": false,
+    "with_metadata": false
+  }
+}

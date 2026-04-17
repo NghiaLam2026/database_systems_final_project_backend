@@ -1,0 +1,17 @@
+{
+  "source_url": "https://www.tomshardware.com/pc-components/case-fans/pc-fan-faceoff-can-arctics-usd7-p12-pro-compete-with-the-usd40-noctua-nf-a12x25-g2",
+  "fetched_at": "2026-04-17T04:37:10.225250+00:00",
+  "output_format": "txt",
+  "flags": {
+    "favor_precision": true,
+    "favor_recall": false,
+    "no_fallback": false,
+    "clean": true,
+    "include_tables": true,
+    "include_images": false,
+    "include_comments": false,
+    "include_links": false,
+    "include_formatting": false,
+    "with_metadata": false
+  }
+}

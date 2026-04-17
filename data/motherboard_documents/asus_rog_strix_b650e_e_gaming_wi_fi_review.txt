@@ -1,0 +1,95 @@
+Tom's Hardware Verdict
+The Asus ROG Strix B650E-E Gaming Wi-Fi ($349.99) is a worthwhile option at the top of the B650 stack. Its 12 USB ports, four M.2 sockets (two PCIe 5.0 x4), and high-quality audio solution stand out, while the ROG Strix’s black-with-red accents look blends in well with most build themes.
+Pros
+12 USB ports on Rear IO
+Two PCIe 5.0 M2 sockets
+Q-Release and Q-Latch for PCIe/M.2
+ROG stying
+Cons
+Lacks 40 Gbps ports
+Why you can trust Tom's Hardware
+The Asus B650E-E Gaming Wi-Fi is Asus’ flagship motherboard in the B650 lineup, presenting users with a less-expensive yet full-featured option supporting AMD’s 7000 series processors. Priced at $150 less than the X670E-E Gaming Wi-Fi, you still end up with most of the features from its big brother, including multiple PCIe 5.0 M.2 sockets, ample USB count on the rear IO, high-quality audio, capable power delivery, the classic ROG look, and more. For around $350, it’s a solid option for a B650 flagship-class motherboard.
+The rest of Asus’ B650 product stack consists of eight boards, from the ROG Strix, Prime and TUF Gaming lines. They also come in all shapes and sizes, including Micro ATX and Mini-ITX options, with prices ranging from $199.99 (Prime B650-M-A AX) to our $349.99 flagship.
+Digging into some features, the B650E-E Gaming includes two PCIe 5.0 slots for graphics, two PCIe 5.0 M.2 sockets (four total M.2), PCIe Slot Q-Release, M.2 Q-Latch, and more. The power delivery isn’t the most robust we’ve seen using, 70A MOSFETs, but it does do the job even with our Ryzen 9 7950X. And although it has a lot of USB connectivity on the rear IO, it does lack 40 Gpbs ports (as do most B650 boards). Performance when using our B650E-E Gaming board played out well across our testing suite, ending up average among other tested boards. It does well in some tests, including gaming and the Procyon office tests, and never really struggled outside of the Cinebench multi-threaded result.
+While this board doesn’t quite make our best motherboards list, it’s still one of the more complete options for the platform at around $350. Before we get into all the details, here is a complete list of specs for the ROG Strix B650E-E Gaming Wi-Fi, direct from Asus.
+Specifications: Asus ROG Strix B650E-E Gaming Wi-Fi
+| Socket | AM5 |
+| Chipset | B650E |
+| Form Factor | ATX |
+| Voltage Regulator | 18 Phase (16x 70A SPS MOSFETs for Vcore) |
+| Video Ports | (1) HDMI (v2.1) |
+| (1) DisplayPort (v1.4) | |
+| USB Ports | (1) USB 3.2 Gen 2x2 (20 Gbps) Type-C |
+| (7) USB 3.2 Gen 2 (10 Gbps) | |
+| (4) USB 2.0 (480 Mbps) | |
+| Network Jacks | (1) 2.5 GbE |
+| Audio Jacks | (5) Analog + SPDIF |
+| Legacy Ports/Jacks | ✗ |
+| Other Ports/Jack | ✗ |
+| PCIe x16 | (2) v5.0 (x16, x8/x4) |
+| (1) v4.0 (x4) | |
+| PCIe x8 | ✗ |
+| PCIe x4 | ✗ |
+| PCIe x1 | ✗ |
+| CrossFire/SLI | ? |
+| DIMM Slots | (4) DDR5 6400+(OC), 128GB Capacity |
+| M.2 Sockets | (1) PCIe 5.0 x4 (128 Gbps) / PCIe (up to 80 mm) |
+| (1) PCIe 5.0 x4 (128 Gbps) / PCIe (up to 110 mm) | |
+| (2) PCIe 4.0 x4 (64 Gbps) / PCIe (up to 80 mm) | |
+| Supports RAID 0/1/10 | |
+| SATA Ports | (4) SATA3 6 Gbps |
+| Supports RAID 0/1/10 | |
+| USB Headers | (1) USB v3.2 Gen 2, Type-C (10 Gbps) |
+| (1) USB v3.2 Gen 1 (5 Gbps) | |
+| (2) USB v2.0 (480 Mbps) | |
+| Fan/Pump Headers | (8) 4-Pin (CPU, CPU OPT, AIO Pump, Chassis fan) |
+| RGB Headers | (3) aRGB (3-pin) |
+| (1) AURA RGB (4-pin) | |
+| Diagnostics Panel | (1) Q-LEDs LEDs (4x) |
+| (1) Q-Code LED | |
+| Internal Button/Switch | ✗ |
+| SATA Controllers | (1) ASMedia ASM1061 |
+| (1) Genesys Logic GL3590 | |
+| Ethernet Controller(s) | (1) Intel i-225V (2.5 GbE) |
+| Wi-Fi / Bluetooth | Wi-Fi 6E (2x2 ax, MU-MIMO, 2.4/5/6 GHz, 160 MHz, BT 5.2) |
+| USB Controllers | ✗ |
+| HD Audio Codec | ROG Supreme FX (Realtek ALC4080), Savitech SV3H712 Amp |
+| DDL/DTS | ✗ / DTS Sound Unbound |
+| Warranty | 3 Years |
+Inside the Box of the Asus ROG Strix B650E-E Gaming Wi-Fi
+The Strix B650E-E Gaming comes with several accessories to help get you going on your build. It includes the usual collection of SATA cables, Wi-Fi antenna, and more. Our sample didn’t include a driver disk/USB stick, so if your retail B650E-E Gaming doesn’t, you can download all drivers from the website. Below is a complete list of the included accessories:
+- (2) SATA 6Gb/s cables
+- Thermal pad for M.2
+- ASUS Wi-Fi moving antennas
+- Cable ties pack
+- M.2 Q-Latch package
+- ROG key chain
+- ROG Strix stickers
+- ROG Strix thank you card
+- Rubber Packages for M.2
+- User guide
+Design of the B650E-E Gaming Wi-Fi
+Asus’ B650E-E Gaming Wi-Fi uses an 8-layer matte black PCB, with light gray labeling on the ICs. The board uses large black heatsinks with deep mitered cuts to increase surface area and cooling capability and improve the aesthetic. Heatsinks cover all four M.2 sockets and the chipset. You’ll find the Strix branding on an M.2 heatsink, while the shroud above the left VRM heatsink has a ROG symbol illuminated from below – the only RGB element on the board.
+Overall, we like the appearance. The brushed aluminum finish on most parts and minimal RGBs do give off the premium vibe many users look for. And the board has plenty of RGB headers if you need additional RGB lighting. Since any color on the board is only accents, the E Gaming Wi-Fi fits in well with most build themes.
+On the top half of the board on the left, we see the ROG branding and the finishing details more closely. Above the hefty VRM heatsink is the RGB element that shines through the ROG symbol. It’s not bright, but the colors are saturated, so it looks good. You control the RGBs with Asus’ AURA RGB software within Armoury Crate.
+Above the VRM heatsinks are two reinforced 8-pin EPS connectors (dubbed Pro Cool Power connectors) to feed the processor power. Only one is required. Moving past the busy socket area, we run into the four unreinforced DRAM slots with locking mechanisms on one just the top side. The four slots support up to 128GB of DDR5 RAM, with speeds listed up to DDR5-6400+(OC). We didn’t have any issues with either of the memory kits used for testing, up to DDR5-6000, but your mileage may vary.
+Above the DRAM slots are three (of eight) 4-pin fan headers (CPU_FAN, CPU_OPT and AIO_PUMP). Each header supports PWM and DC-controlled devices and outputs up to 1A/12W. This isn’t a lot, and we’d like to see at least one header with 24/36W available. If you plan on powering your watercooling pump or want to piggyback fans on the same header, check their power draw and do not overload the header. The AIO_PUMP header runs at full speed by default, while the rest are Q-Fan controlled through the BIOS or Armoury Crate software.
+In the upper-right corner is a 4-pin RGB header and a 3-pin ARGB header to connect RGB strips. There are two additional 3-pin ARGB headers at the bottom of the board. Moving down the right edge, we run into the Q-Code and Q-LED features that tell you if there is a problem during the POST process. Just below that is the 24-pin ATX connector to feed the board power, along with a front panel USB 3.2 Gen 2 (10 Gbps) and USB 3.2 Gen 1 (5 Gbps) USB headers.
+Moving to the VRMs, the B650E-E Gaming sports an 18-phase VRM for the system, with 16 phases dedicated to Vcore. Power comes from the 8-pin EPS connector(s) and onto the Digi+ EPU (ASP2206) VRM controller. Next, power flows to the 16x 70A MPS MPS2129 MOSFETs. The 1,120A available, while lower than most other boards at this price point, is plenty to support the flagship Ryzen 9 7950X processor at stock and while overclocked. There’s nothing to be concerned about with the power delivery.
+Onto the bottom half of the board, we’ll start with the audio on the left-hand side. A Realtek ALC4080 codec hides below the Supreme FX-labeled faraday cage. Supplementing the codec is a Savitech brand SV3H712 amp. While this isn’t the flagship audio codec (ALC4082 is), it is from the latest generation, and an overwhelming majority of users will be happy with the integrated audio solution.
+In the middle of the board are three full-length PCIe slots and four total M.2 sockets mixed in, each with its own heatsink. The two primary graphics slots (reinforced, called Safeslots by Asus) source their lanes from the CPU and run at PCIe 5.0 speeds. The top slot supports up to x16, while the second supports up to x4. The bottom slot receives bandwidth from the chipset and runs up to PCIe 4.0 x4. When M.2_3 (the bottom M.2 socket) is used, the top graphics slot breaks down to PCIe 5.0 x8 speeds. But remember that x8 5.0 is effectively the same bandwidth of x16 4.0, so bandwidth shouldn’t be an issue on any current-gen cards at that speed.
+Mixed in around the PCIe slots and all hidden under heatsinks are four M.2 sockets. The top M.2 socket (M.2_1) sources its lanes from the CPU and runs at PCIe 5.0 x4 (128 Gbps) and can handle up to 80mm modules. M.2_2 and M.2_4 source their lanes from the chipset running up to PCIe 4.0 x4 (64 Gbps) speeds and support up to 80mm modules. Last, M.2_3 also sources its lanes from the chipset and runs PCIe 4.0 x4 (64 Gbps) speeds, but it supports longer 110mm modules. If you want to RAID these drives, the board supports RAID0/1/10 modes. All SATA ports and M.2 sockets work concurrently, so you can have up to eight storage drives between the SATA ports and M.2 sockets. Lane sharing only affects PCIe 5.0 bandwidth for the slots.
+Along the right edge of the board is an additional 4-pin fan header and four SATA ports (supports RAID0/1/10. Across the bottom of the board are several more exposed headers. You’ll find the typical fare here, including additional USB, RGB, and 4-pin fan headers. Below is a complete list from left to right:
+- Front panel audio
+- (2) 4-pin chassis fan headers
+- Thunderbolt header
+- (2) 3-pin ARGB header
+- SPI TPM header
+- (2) USB 2.0 headers
+- 2-pin Temperature sensor header
+- (1) 4-pin System fan header
+- Front Panel
+The rear IO on the B650E Aorus Master comes pre-installed and attached to the motherboard, just like its big brother. It has a black background with the ports labeled in white, making them easier to read. The Q_Flash+ button, AMD Wi-Fi 6E antenna connections, and HDMI video port are on the left. There are a total of 13 USB ports on the rear IO. One USB Type-C port (10 Gbps) sits on the bottom, while surrounding it are four USB 3.2 Gen 2 (10 Gbps) and four 3.2 Gen 1 (5 Gbps) ports along and four USB 2.0 ports. I’d be surprised if users could fill all of these up. You’ll also find the 2.5 GbE port, the audio stack sporting line out, the mic 3.5 mm ports, and a digital SPDIF back here.
+MORE: Best Motherboards
+MORE: How To Choose A Motherboard
+MORE: All Motherboard Content

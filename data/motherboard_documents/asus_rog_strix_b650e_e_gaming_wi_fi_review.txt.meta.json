@@ -1,0 +1,17 @@
+{
+  "source_url": "https://www.tomshardware.com/reviews/asus-rog-strix-b650e-e-gaming-wi-fi-review",
+  "fetched_at": "2026-04-17T04:42:19.355625+00:00",
+  "output_format": "txt",
+  "flags": {
+    "favor_precision": true,
+    "favor_recall": false,
+    "no_fallback": false,
+    "clean": true,
+    "include_tables": true,
+    "include_images": false,
+    "include_comments": false,
+    "include_links": false,
+    "include_formatting": false,
+    "with_metadata": false
+  }
+}

@@ -1,0 +1,54 @@
+Tom's Hardware Verdict
+The AMD Radeon RX 9070 XT provides strong mainstream performance at a great price. The RDNA 4 architecture delivers significant generational improvements in AI and ray tracing performance, without sacrificing rasterization performance. The biggest concerns will be retail availability and pricing — and the lack of any true high-end solutions.
+Pros
+Excellent mainstream value and performance
+Big generational improvements compared to RDNA 3
+Finally addresses AI and ray tracing properly
+16GB of VRAM without breaking the bank
+Cons
+Concerns with retail availability and pricing
+Still trails Nvidia in ray tracing and AI performance
+Nvidia still wins on software support and features
+Why you can trust Tom's Hardware
+Introducing the AMD Radeon RX 9070 XT and RX 9070
+The AMD Radeon RX 9070 XT and RX 9070 are here, ushering in the RDNA 4 GPU architecture and RX 9000 series of graphics cards. AMD spilled the beans on the hardware and specs last week, and we've already done a deeper dive into what makes these new GPUs tick, but now it's time to see how the RX 9070 XT and RX 9070 stand up to the best graphics cards — all while we wait to see what happens with the retail launch tomorrow and how quickly the supply disappears.
+RDNA 4 represents a throwback to AMD architectures of years past, as the company is once again targeting mainstream performance and maybe even budget performance further down the road. But today, we're getting the $599 RX 9070 XT and $549 RX 9070 cards. And while some might feel cards at up to $600 don't qualify as "mainstream," in today's market, we'd say mainstream stretches from around $400 up to $600, while anything below about $300 is clearly in the budget range. The PC graphics card market has become much more expensive in the past decade.
+The one question we can't answer is what retail availability will look like. It seems like the AIBs have been stockpiling cards for about two or three months now, but how quickly were they being supplied the requisite GPUs? We don't know. Maybe there are tens of thousands of 9070 series cards just waiting to go on sale tomorrow; maybe there are only a few thousand. What we do know is that if there aren't enough to meet demand, prices are going to head north, just as they did with the RTX 50-series launches of the past two months.
+If you want to know more about the AMD RDNA 4 architecture and Radeon RX 9000-series GPUs, start with our "everything you need to know" primer that goes into a lot more detail about the design and architectural changes that power these graphics cards.
+Speaking of which, the Nvidia RTX 5070 officially goes on sale this morning. Of course we knew the performance of the RX 9070 XT and 9070 when we posted that review yesterday. What we don't know — what no one outside of Nvidia and its distributors and retail partners knows — is how many 5070 cards will be available today. The RTX 5070 Ti, RTX 5080, and RTX 5090 have all sold out almost immediately, and we've seen prices shoot up by 50% or more relative to the MSRPs.
+Will the AMD graphics cards buck that trend or join the "party?" We'll find out in the coming days, but considering what happened with Intel's Arc B580, it's obvious that lower-priced cards aren't immune from the potential supply and demand problems. Our default assumption right now, based on nearly all prior generation graphics cards already being sold out and/or overpriced — with only the RTX 4060 and RX 7600 still available at or near MSRP — is that RDNA 4 isn't going to be a magic bullet to solve the availability issues plaguing the graphics card market right now.
+Let's also clear the air on the comparison GPUs in our charts. We've (or at least I've) been testing GPUs more or less constantly since the beginning of 2025. Drivers keep changing, certain tests that failed to run in the past have been fixed, bugs come and go, and we have a new GPU testbed and test suite. Ideally, we'd love to have every reasonable comparison present in the charts, but it will be a while before we have all the data compiled at a rate of a few GPUs getting tested per week.
+So, the RTX 4070 Super wasn't tested for the 5070 review, not because we don't think it's important but because of time. Similarly, the RX 7900 GRE won't be in this review because we don't have time. Eventually, we'll get those tested, and all the data will be available in our GPU benchmarks hierarchy. You should be able to reasonably estimate where those 'missing' cards would land, and as both of those were later additions to their respective GPU families, it seemed to make more sense to leave those out rather than some other GPUs.
+All good? Good. Let's hit the specs.
+| Graphics Card | RX 9070 XT | RX 9070 | RX 7900 XTX | RX 7900 XT | RX 7900 GRE | RX 7800 XT | RTX 5070 Ti | RTX 5070 |
+|---|---|---|---|---|---|---|---|---|
+| Architecture | Navi 48 | Navi 48 | Navi 31 | Navi 31 | Navi 31 | Navi 32 | GB203 | GB205 |
+| Process Technology | TSMC N4P | TSMC N4P | TSMC N5 + N6 | TSMC N5 + N6 | TSMC N5 + N6 | TSMC N5 + N6 | TSMC 4N | TSMC 4N |
+| Transistors (Billion) | 53.9 | 53.9 | 45.6 + 6x 2.05 | 45.6 + 5x 2.05 | 45.6 + 4x 2.05 | 28.1 + 4x 2.05 | 45.6 | 31 |
+| Die size (mm^2) | 356.5 | 356.5 | 300 + 225 | 300 + 225 | 300 + 225 | 200 + 150 | 378 | 263 |
+| SMs / CUs | 64 | 56 | 96 | 84 | 80 | 60 | 70 | 48 |
+| GPU Shaders (ALUs) | 4096 | 3584 | 6144 | 5376 | 5120 | 3840 | 8960 | 6144 |
+| Tensor / AI Cores | 128 | 112 | 192 | 168 | 160 | 120 | 280 | 192 |
+| Ray Tracing Cores | 64 | 56 | 96 | 84 | 80 | 60 | 70 | 48 |
+| Boost Clock (MHz) | 2970 | 2520 | 2500 | 2400 | 2245 | 2430 | 2452 | 2512 |
+| VRAM Speed (Gbps) | 20 | 20 | 20 | 20 | 18 | 19.5 | 28 | 28 |
+| VRAM (GB) | 16 | 16 | 24 | 20 | 16 | 16 | 16 | 12 |
+| VRAM Bus Width | 256 | 256 | 384 | 320 | 256 | 256 | 256 | 192 |
+| L2 / Infinity Cache | 64 | 64 | 96 | 80 | 64 | 64 | 48 | 48 |
+| Render Output Units | 128 | 128 | 192 | 192 | 160 | 96 | 96 | 80 |
+| Texture Mapping Units | 256 | 224 | 384 | 336 | 320 | 240 | 280 | 192 |
+| TFLOPS FP32 (Boost) | 48.7 | 36.1 | 61.4 | 51.6 | 46.0 | 37.3 | 43.9 | 30.9 |
+| TFLOPS FP16 (INT4/FP4 TOPS) | 389 (1557) | 289 (1156) | 122.8 | 103.2 | 92 | 74.6 | 352 (1406) | 247 (988) |
+| Bandwidth (GB/s) | 640 | 640 | 960 | 800 | 576 | 624 | 896 | 672 |
+| TBP (watts) | 304 | 220 | 355 | 315 | 260 | 263 | 300 | 250 |
+| Launch Date | Mar 2025 | Mar 2025 | Dec 2022 | Dec 2022 | Jul 2023 | Sep 2023 | Feb 2025 | Feb 2025 |
+| MSRP | $599 | $549 | $999 | $749 | $549 | $499 | $749 | $549 |
+The raw specs are interesting, but there's more to GPU performance than specs. For example, Intel's Arc B580 as an example has "worse" compute performance than the Arc A770: 14.6 TFLOPS versus 19.7 TFLOPS. But in actual benchmarks, the B580 is up to 17% faster across our gaming test suite at 1440p. Both AMD and Nvidia have also updated their core architectures to improve performance, and today we find out just how much.
+The RX 9070 XT offers theoretical peak compute of 48.7 TFLOPS for FP32, which is used for graphics, and up to 1557 TOPS of INT4 AI compute (with sparsity). The previous generation RX 7900 XTX offers 61.4 TFLOPS of FP32, but only 122.8 TFLOPS of FP16 for AI workloads — or alternative 122.8 TOPS of INT8 compute. We'll spoil the surprise a bit by saying that, for a lot of games, the 7900 XTX is still faster... but in AI tasks and RT games, the tables can turn.
+It's not just compute performance that matters, of course. Memory bandwidth and capacity are also factors. The 7900 XTX had a 384-bit interface and 24GB of VRAM, compared to the 9070 XT and 9070 with 256-bit interfaces and 16GB of VRAM. In all cases the memory is GDDR6 clocked at 20 Gbps, so the prior generation halo card had 50% more bandwidth and capacity.
+There's also the RT accelerators. AMD's RDNA 4 has doubled the ray/triangle and ray/box intersection rates with RDNA 4 compared to RDNA 3, which means the 64 RT units in the 9070 XT should be the performance equivalent of 128 RDNA 3 RT units, but the 7900 XTX only has 96 RT accelerators. So that's potentially 33% higher ray tracing performance from the new generation.
+As already noted, the prices on paper look good. What we don't know is whether prices will stay close to what AMD recommends, or if they'll get jacked up by the retail outlets and AIBs. Because AMD isn't making any graphics cards itself this round, it will be up to the add-in board (AIB) partners to determine prices on the various models. There are probably requirements for each company to have an MSRP priced GPU, but we've seen those disappear in the past — or things like Asus's "special launch pricing" on some of its RTX 50-series cards.
+We can also look at what graphics cards are available at retail. Last November, during the holiday shopping season, most graphics cards went on sale at prices below MSRP. And then they were gone. Now, virtually everything at the usual places for the U.S. — Newegg, Amazon, B&H, Best Buy, etc. — is either out of stock or seriously overpriced. RX 7900 XTX was selling for as little as $819, now the best price we can find is $1,094 for a PSU and GPU combo, and after that the price jumps to $1,283 at Amazon.
+The same pattern applies to pretty much every other GPU. Outside of the RTX 4060, RX 7600, and Arc B570, we can't find anything at MSRP, never mind below MSRP. If you want a mainstream or higher performance GPU, it's currently overpriced compared to just a month or two back. Given the scarcity of any graphics card with an MSRP above $400, then, it's hard to imagine the 9070 XT and 9070 will stay at MSRPs in the near term. But we'll wait and see.
+Current page: Introducing the AMD Radeon RX 9070 XT and RX 9070
+Next Page AMD Radeon RX 9070 XT and RX 9070, by PowerColorJarred Walton is a senior editor at Tom's Hardware focusing on everything GPU. He has been working as a tech journalist since 2004, writing for AnandTech, Maximum PC, and PC Gamer. From the first S3 Virge '3D decelerators' to today's GPUs, Jarred keeps up with all the latest graphics trends and is the one to ask about game performance.

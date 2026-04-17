@@ -1,0 +1,87 @@
+Tom's Hardware Verdict
+The MSI MAG A850GLS is offering solid engineering fundamentals with some premium touches. While it delivers reliable power with impressive efficiency characteristics, component selections and certification choices reveal its mainstream positioning within MSI's hierarchy. A competent workhorse that gets the job done without breaking the bank.
+Pros
+ATX 3.1 compliance
+Fully modular design
+Premium cable design
+Striking aesthetics
+Excellent efficiency
+Good electrical performance
+Quiet operation
+7-year warranty
+Cons
+Mid-tier component selections
+Premium pricing at launch
+Peculiar connector configuration
+Why you can trust Tom's Hardware
+MSI's journey from motherboard specialist to comprehensive system builder has been marked by calculated expansions into adjacent markets, with their power supply division representing perhaps their most ambitious foray yet. The MAG line positions itself one step below MSI's MPG series and two steps beneath their flagship MEG offerings, creating a clear hierarchy that mirrors their motherboard strategy.
+The MAG A850GLS emerges as MSI's attempt to democratize premium power delivery aesthetics without the associated premium pricing—a balancing act that's proven historically challenging in the power supply market. Like a well-tailored suit from a department store, it looks the part from a distance but reveals its compromises upon closer inspection. How does it stack against the best power supplies in the market? This 850W unit represents MSI's move towards the newest ATX 3.1 standard while incorporating distinctive design elements that separate it from the sea of generic black boxes. With its dual 12V-2x6 connectors and geometric chassis styling, the A850GLS targets enthusiasts who demand both form and function but remain mindful of their budget constraints.
+Specifications and Design
+RAIL | +3.3V | +5V | +12V | +5Vsb | -12V |
+MAX OUTPUT | 20A | 20A | 70.8A | 3A | 0.3A |
+| Row 2 - Cell 0 | 100W | 100W | 849.6W | 15W | 3.6W |
+TOTAL | 850W | Row 3 - Cell 2 | Row 3 - Cell 3 | Row 3 - Cell 4 | Row 3 - Cell 5 |
+AC INPUT | 100 - 240 VAC, 50 - 60 Hz | Row 4 - Cell 2 | Row 4 - Cell 3 | Row 4 - Cell 4 | Row 4 - Cell 5 |
+MSRP | $150 | Row 5 - Cell 2 | Row 5 - Cell 3 | Row 5 - Cell 4 | Row 5 - Cell 5 |
+In the Box
+The MSI MAG A850GLS arrives in packaging that transmits the company's design philosophy, a sturdy cardboard box adorned with brushed metal aesthetic themes. The robust construction and foam inserts provide adequate protection, though the presentation feels slightly overwrought for a mainstream product.
+MSI keeps the bundle straightforward, including only essential mounting hardware and the requisite AC power cable. There are no cable ties or straps included as a bundle but the cables do have wire combs pre-installed.
+The cable selection deserves particular praise, featuring all-black construction with individually sleeved wires that MSI terms "embossed jacket cables." The cables are particularly flexible. This premium treatment extends throughout the cable set, creating a uniform appearance, with pre-installed wire combs on the primary ATX, CPU, and PCIe connectors.
+Connector type | Hardwired | Modular |
+|---|---|---|
+ATX 24 Pin | - | 1 |
+EPS 4+4 Pin | - | 2 |
+EPS 8 Pin | - | - |
+PCI-E 5.0 | - | 2 |
+PCI-E 8 Pin | - | 2 |
+SATA | - | 8 |
+Molex | - | 3 |
+Floppy | - | 1 |
+External Appearance
+MSI has invested significant resources in the MAG A850GLS's visual presentation, clearly aiming for much more than mere utility. The unit measures a reasonable 150mm in depth which slightly exceeds ATX specifications but should remain compatible with virtually all modern cases except the most space-constrained designs.
+The matte black chassis finish provides an excellent backdrop for the unit's geometric patterning, featuring complex embossed shapes and etched lines that create visual interest without appearing ostentatious. The custom fan finger guard deserves special mention, incorporating a distinctive hexagonal shape that adds technical flair while maintaining practical airflow characteristics.
+The modular connector layout on the rear panel maintains clean organization, with MSI's full series logo etched discreetly above the connection points. At the front, we can only see the typical AC cable receptacle and on/off switch – there is no switch for disabling the unit’s hybrid mode. The hybrid fan mode operates automatically without user override capability.
+Internal Design
+Cooling responsibilities fall to a ZETA ZFF132512H 135mm fan equipped with fluid dynamic bearings. FDB fans are a technology that represents the sweet spot between cost and performance for mainstream applications. While lacking the extended lifespan characteristics of hydraulic and/or ball bearing systems, fluid dynamic bearings provide excellent noise characteristics and reasonable durability expectations for typical consumer use patterns. The choice of ZETA as fan supplier raises eyebrows, as this manufacturer maintains virtually no online presence and we practically never find their products in premium PC PSUs.
+Channel Well Technology (CWT) serves as the OEM partner, bringing considerable expertise from their extensive work with premium brands over the past couple of decades. CWT's reputation is not unfounded, stemming from their seasoned engineering capabilities and proven track record for performance and reliability, with their platforms frequently appearing in mid-to-high tier PC PSUs from respected manufacturers.
+The filtering stage implements a competent design featuring six Y capacitors, two X capacitors, and two filtering inductors. Right after the filtering stage, we find two rectifying bridges on a sizable heatsink. The APFC circuit employs two ST Microelectronics 33N60M2 MOSFETs and a diode placed on a simplistic heatsink near the edge of the board. The passive components consist of one encased inductor and a single Teapo 560μF capacitor.
+The primary inversion stage utilizes a half-bridge LLC topology built around two ST Microelectronics 33N60M2 MOSFETs, a mature design choice that prioritizes efficiency over cutting-edge performance characteristics. These active components receive their own dedicated heatsink positioned immediately after the APFC stage, though their size appears somewhat basic for the unit's power output requirements.
+At the secondary side of the transformer, we find six IPS 014N04SA MOSFETs positioned on the main PCB that handle primary 12V line generation, with small heatsinks providing indirect cooling. DC-to-DC conversion circuits handle the increasingly less critical 3.3V and 5V rails.
+Component selection reveals the unit's mainstream positioning most clearly through capacitor choices. The secondary side features a mixed selection of Teapo and ChengX products - manufacturers with proven reliability records but lacking the prestige and extended lifespan expectations of Japanese alternatives like Nippon Chemi-Con or Rubycon. More concerning are several polymer capacitors bearing no manufacturer markings whatsoever and which we could not identify. This component anonymity is not a common compromise even in mainstream PSUs.
+Cold Test Results
+Cold Test Results (25°C Ambient)
+For the testing of PSUs, we are using high precision electronic loads with a maximum power draw of 2700 Watts, a Rigol DS5042M 40 MHz oscilloscope, an Extech 380803 power analyzer, two high precision UNI-T UT-325 digital thermometers, an Extech HD600 SPL meter, a self-designed hotbox and various other bits and parts.
+The MSI MAG A850GLS demonstrates impressive efficiency characteristics that significantly exceed its 80Plus Gold certification requirements. At 115 VAC input, the unit achieves an outstanding 90.5% average nominal load efficiency, while 230 VAC operation improves performance to an exceptional 92.4%. These results earned the unit Cybenetics Platinum recognition. Notably, MSI still chose to market this unit as "Gold" certified, obviously because MAG represents their mainstream-level series and the company did not want internal competition with their MPG series. The efficiency curve peaks at approximately 50% load with consistently excellent performance throughout the entire 10-100% nominal load range. The unit maintains good efficiency at very low loads.
+Fan behavior proves exemplary during cold testing, with the fan remaining completely stopped until reaching 50% load, after which point it gradually increases speed with low acoustic output maintained across most of the power range. However, the fan control algorithm exhibits an explosive speed increase at maximum load, probably due to a characteristic that prioritizes reliability under such conditions. The thermal performance of the unit proves excellent considering the relatively simplistic heatsink designs throughout the internal architecture.
+Hot Test Results
+Hot Test Results (~45°C Ambient)
+Elevated temperature testing reveals both the strengths and limitations of the MAG A850GLS's thermal design under stressful operating conditions. High ambient temperatures have a reasonable effect on the electrical performance of the unit, with efficiency dropping to 89.7% at 115 VAC and 91.6% at 230 VAC - reductions of approximately 0.8% that represent just the expected performance degradation for a quality PSU with seemingly zero signs of thermal stress.
+The fan control algorithm becomes significantly more aggressive under hot conditions, starting operation at 50% load but ramping speed much faster than during cold operation, reaching maximum RPM when the unit operates at 90% capacity. The unit becomes loud when heavily loaded.
+Internal temperature management proves adequate under all tested conditions, with component temperatures rising predictably under sustained high-load operation. The internal temperatures exhibit a noticeable increase when operating at maximum load for prolonged periods, as the fan had already reached its maximum speed at 90% load. The relatively simple heatsink design reaches its thermal limits under extreme conditions, though all temperatures remain well within safe operational levels throughout testing.
+PSU Quality and Bottom Line
+Power Supply Quality
+The MSI MAG A850GLS delivers good electrical performance and power output quality overall that meets modern system requirements without achieving standout excellence. Voltage ripple filtering could be better but proves adequate for a unit of this class, with maximum measurements of 58 mV on the 12V rail, 28 mV on the 5V rail, and 28 mV on the 3.3V rail. While these figures exceed the performance of premium competitors, they remain well within ATX specifications and pose no practical limitations for system operation. Voltage regulation demonstrates exceptional performance across all rails, achieving remarkable 0.8% regulation on the 12V rail, 0.7% on the 5V rail, and 0.8% on the 3.3V rail - performance that proves impressive even on the secondary rails that are often neglected in modern designs.
+During our thorough assessment, we evaluate the essential protection features of every power supply unit we review, including Over Current Protection (OCP), Over Voltage Protection (OVP), Over Power Protection (OPP), and Short Circuit Protection (SCP). All protection mechanisms were activated and functioned correctly during testing.
+The protection features work well during comprehensive testing, though some calibration decisions are questionable. Over Current Protection appears too lax on the minor rails, even for an ATX 3.1 unit, triggering at 142% for the 3.3V rail and 144% for the 5V rail. However, OCP protection on the 12V rail proves perfect at 120%, while Over Power Protection demonstrates ideal calibration at 122% under hot conditions, showing appropriate engineering focus on the critical primary power delivery circuit.
+Load (Watts) | 171.5 W | 428.23 W | Header Cell - Column 4 | 638.32 W | Header Cell - Column 6 | 850.33 W | Header Cell - Column 8 | |
+|---|---|---|---|---|---|---|---|---|
+Load (Percent) | 20.18% | Row 0 - Cell 2 | 50.38% | Row 0 - Cell 4 | 75.1% | Row 0 - Cell 6 | 100.04% | Row 0 - Cell 8 |
+| Row 1 - Cell 0 | Amperes | Volts | Amperes | Volts | Amperes | Volts | Amperes | Volts |
+3.3 V | 1.82 | 3.37 | 4.56 | 3.36 | 6.84 | 3.35 | 9.11 | 3.35 |
+5 V | 1.82 | 5.1 | 4.56 | 5.09 | 6.84 | 5.06 | 9.11 | 5.06 |
+12 V | 12.91 | 12.09 | 32.26 | 12.08 | 48,4 | 12 | 64.53 | 11.99 |
+Line | Regulation (20% to 100% load) | Voltage Ripple (mV) | Header Cell - Column 3 | Header Cell - Column 4 | Header Cell - Column 5 | Header Cell - Column 6 | Header Cell - Column 7 |
+|---|---|---|---|---|---|---|---|
+| Row 0 - Cell 0 | Row 0 - Cell 1 | 20% Load | 50% Load | 75% Load | 100% Load | CL1 12V | CL2 3.3V + 5V |
+3.3V | 0.8% | 18 | 14 | 20 | 28 | 20 | 26 |
+5V | 0.7% | 16 | 14 | 22 | 28 | 18 | 28 |
+12V | 0.8% | 30 | 22 | 46 | 58 | 56 | 26 |
+Bottom Line
+The MSI MAG A850GLS represents a thoughtful attempt to bring premium power supply aesthetics and features to mainstream pricing - a challenging proposition that yields mixed results. The partnership with Channel Well Technology has produced a mature, well-engineered platform that demonstrates solid electrical performance and reasonable build quality. The premium cable treatment and distinctive chassis styling provide genuine value for system builders who prioritize aesthetics. The comprehensive 7-year warranty demonstrates MSI's confidence in their engineering decisions and provides reasonable protection for the investment.
+The unit's dual 12V-2x6 connector configuration represents forward-thinking design that anticipates future graphics card requirements, though the limited number of traditional 8-pin PCIe connectors may constrain compatibility with current high-end multi-GPU configurations. The excellent efficiency characteristics and solid voltage regulation create a foundation for reliable system operation across a wide range of loading conditions. The unit's ability to maintain tight voltage regulation, combined with adequate ripple suppression and well-calibrated protection circuits on the critical 12V rail, provide the electrical stability necessary for sensitive modern components including high-end CPUs and graphics cards.
+However, the component selection reveals the compromises inherent in mainstream positioning. The mid-tier capacitor choices and anonymous polymer components raise questions about long-term reliability expectations, particularly when compared to units utilizing Japanese capacitors throughout. Thermal performance is good but better heatsinks would improve it dramatically and, in turn, acoustics under heavy loads would also improve significantly.
+At the current $150 retail pricing, which is the unit’s MSRP price, the MAG A850GLS faces formidable competition that would be extremely difficult to overcome. Products rarely stay at MSRP prices for long however, thus we expect the retail price to drop significantly in the months to come. For builders who value distinctive aesthetics, the unit provides competent power delivery wrapped in an attractive package. While it may not achieve the engineering excellence of premium competitors, it delivers reliable power with style, which is a combination that may prove compelling for budget-conscious enthusiasts willing to accept reasonable compromises if there are modest price cuts.
+MORE: Best Power Supplies
+MORE: How We Test Power Supplies
+MORE: All Power Supply Content
+Dr. E. Fylladitakis has been passionate about PCs since the 8088 era, beginning his PC gaming journey with classics like Metal Mutant and Battle Chess. Not long after, he built his first PC, a 486, and has been an enthusiast ever since. In the early 2000’s, he delved deeply into overclocking Duron and Pentium 4 processors, liquid cooling, and phase-change cooling technologies. While he has an extensive and broad engineering education, Dr. Fylladitakis specializes in electrical and energy engineering, with numerous articles published in scientific journals, some contributing to novel cooling technologies and power electronics. He has been a hardware reviewer at AnandTech for nearly a decade. Outside of his professional pursuits, he enjoys immersing himself in a good philosophy book and unwinding through PC games.
